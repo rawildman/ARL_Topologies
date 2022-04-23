@@ -22,7 +22,7 @@
 
 #include "topoptuniverse.h"
 #include "topoptrep.h"
-#include "catch.hpp"
+#include "catch2/catch_all.hpp"
 #include <vector>
 #include <fstream>
 
@@ -67,7 +67,7 @@ TEST_CASE("Testing 3D voxel, element-based densities","[Topologies]")
 	// Compare
 	REQUIRE(realRep.size() == resVec.size());
 	for(std::size_t k = 0; k < realRep.size(); ++k)
-		REQUIRE(realRep[k] == Approx(resVec[k]));
+		REQUIRE(realRep[k] == Catch::Approx(resVec[k]));
 }
 
 TEST_CASE("Testing 3D voxel, element-based densities and tetrahedral elements","[Topologies]")
@@ -86,7 +86,7 @@ TEST_CASE("Testing 3D voxel, element-based densities and tetrahedral elements","
 	// Compare
 	REQUIRE(realRep.size() == resVec.size());
 	for(std::size_t k = 0; k < realRep.size(); ++k)
-		REQUIRE(realRep[k] == Approx(resVec[k]));
+		REQUIRE(realRep[k] == Catch::Approx(resVec[k]));
 }
 
 TEST_CASE("Testing 3D heaviside with voxel, node-based densities","[Topologies]")
@@ -106,7 +106,7 @@ TEST_CASE("Testing 3D heaviside with voxel, node-based densities","[Topologies]"
 	// Compare
 	REQUIRE(realRep.size() == resVec.size());
 	for(std::size_t k = 0; k < realRep.size(); ++k)
-		REQUIRE(realRep[k] == Approx(resVec[k]));
+		REQUIRE(realRep[k] == Catch::Approx(resVec[k]));
 }
 
 TEST_CASE("Testing 3D tet mesh with a fixed block","[Topologies]")
@@ -125,7 +125,7 @@ TEST_CASE("Testing 3D tet mesh with a fixed block","[Topologies]")
 	// Compare
 	REQUIRE(realRep.size() == resVec.size());
 	for(std::size_t k = 0; k < realRep.size(); ++k)
-		REQUIRE(realRep[k] == Approx(resVec[k]));
+		REQUIRE(realRep[k] == Catch::Approx(resVec[k]));
 }
 
 TEST_CASE("Testing 3D tet mesh with a fixed block and Heaviside proj.","[Topologies]")
@@ -144,6 +144,6 @@ TEST_CASE("Testing 3D tet mesh with a fixed block and Heaviside proj.","[Topolog
 	// Compare
 	REQUIRE(realRep.size() == resVec.size());
 	for(std::size_t k = 0; k < realRep.size(); ++k)
-		REQUIRE(realRep[k] == Approx(resVec[k]));
+		REQUIRE(realRep[k] == Catch::Approx(resVec[k]));
 }
 

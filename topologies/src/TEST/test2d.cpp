@@ -22,7 +22,7 @@
 
 #include "topoptuniverse.h"
 #include "topoptrep.h"
-#include "catch.hpp"
+#include "catch2/catch_all.hpp"
 #include <vector>
 #include <fstream>
 
@@ -67,7 +67,7 @@ TEST_CASE("Testing 2D pixel, element-based densities","[Topologies]")
 	// Compare
 	REQUIRE(realRep.size() == resVec.size());
 	for(std::size_t k = 0; k < realRep.size(); ++k)
-		REQUIRE(realRep[k] == Approx(resVec[k]));
+		REQUIRE(realRep[k] == Catch::Approx(resVec[k]));
 }
 
 TEST_CASE("Testing 2D pixel, element-based densities with triangular mesh","[Topologies]")
@@ -86,7 +86,7 @@ TEST_CASE("Testing 2D pixel, element-based densities with triangular mesh","[Top
 	// Compare
 	REQUIRE(realRep.size() == resVec.size());
 	for(std::size_t k = 0; k < realRep.size(); ++k)
-		REQUIRE(realRep[k] == Approx(resVec[k]));
+		REQUIRE(realRep[k] == Catch::Approx(resVec[k]));
 }
 
 TEST_CASE("Testing 2D heaviside with pixel, node-based densities","[Topologies]")
@@ -105,7 +105,7 @@ TEST_CASE("Testing 2D heaviside with pixel, node-based densities","[Topologies]"
 	// Compare
 	REQUIRE(realRep.size() == resVec.size());
 	for(std::size_t k = 0; k < realRep.size(); ++k)
-		REQUIRE(realRep[k] == Approx(resVec[k]));
+		REQUIRE(realRep[k] == Catch::Approx(resVec[k]));
 }
 
 TEST_CASE("Testing 2D mesh, auto-generated mesh","[Topologies]")
@@ -124,7 +124,7 @@ TEST_CASE("Testing 2D mesh, auto-generated mesh","[Topologies]")
 	// Compare
 	REQUIRE(realRep.size() == resVec.size());
 	for(std::size_t k = 0; k < realRep.size(); ++k)
-		REQUIRE(realRep[k] == Approx(resVec[k]));
+		REQUIRE(realRep[k] == Catch::Approx(resVec[k]));
 }
 
 TEST_CASE("Testing 2D mesh, exodus mesh with fixed block","[Topologies]")
@@ -143,7 +143,7 @@ TEST_CASE("Testing 2D mesh, exodus mesh with fixed block","[Topologies]")
 	// Compare
 	REQUIRE(realRep.size() == resVec.size());
 	for(std::size_t k = 0; k < realRep.size(); ++k)
-		REQUIRE(realRep[k] == Approx(resVec[k]));
+		REQUIRE(realRep[k] == Catch::Approx(resVec[k]));
 }
 
 TEST_CASE("Testing 2D heaviside with exodus mesh and fixed block","[Topologies]")
@@ -162,7 +162,7 @@ TEST_CASE("Testing 2D heaviside with exodus mesh and fixed block","[Topologies]"
 	// Compare
 	REQUIRE(realRep.size() == resVec.size());
 	for(std::size_t k = 0; k < realRep.size(); ++k)
-		REQUIRE(realRep[k] == Approx(resVec[k]));
+		REQUIRE(realRep[k] == Catch::Approx(resVec[k]));
 }
 
 TEST_CASE("Testing 2D mesh, gmsh mesh with fixed block","[Topologies]")
@@ -182,6 +182,6 @@ TEST_CASE("Testing 2D mesh, gmsh mesh with fixed block","[Topologies]")
 	// Compare
 	REQUIRE(realRep.size() == resVec.size());
 	for(std::size_t k = 0; k < realRep.size(); ++k)
-		REQUIRE(realRep[k] == Approx(resVec[k]));
+		REQUIRE(realRep[k] == Catch::Approx(resVec[k]));
 }
 
