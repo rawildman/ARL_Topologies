@@ -22,7 +22,7 @@
 
 #include "tomeshprocessing.h"
 #include "tomesh.h"
-#include "catch.hpp"
+#include "catch2/catch_all.hpp"
 #include <algorithm>
 #include <iostream>
 
@@ -42,10 +42,10 @@ TEST_CASE("Testing TOMeshProcessing namespace functions, 2D","[TOMeshProcessing]
 		{
 			connVec[0] = elemConn;
 			TOMesh2D mesh(nodeVec, connVec, optVals);
-			REQUIRE(computeElementVolume(0, &mesh) == Approx(1.));
+			REQUIRE(computeElementVolume(0, &mesh) == Catch::Approx(1.));
 			Point_2_base centroid = getElementCentroid2D(0, &mesh);
-			REQUIRE(centroid.x() == Approx(0.5));
-			REQUIRE(centroid.y() == Approx(0.5));
+			REQUIRE(centroid.x() == Catch::Approx(0.5));
+			REQUIRE(centroid.y() == Catch::Approx(0.5));
 		} while(std::next_permutation(elemConn.begin(),elemConn.end()));
 	}
 	SECTION("Tri element, positive node order")
@@ -55,10 +55,10 @@ TEST_CASE("Testing TOMeshProcessing namespace functions, 2D","[TOMeshProcessing]
 		{
 			connVec[0] = elemConn;
 			TOMesh2D mesh(nodeVec, connVec, optVals);
-			REQUIRE(computeElementVolume(0, &mesh) == Approx(0.5));
+			REQUIRE(computeElementVolume(0, &mesh) == Catch::Approx(0.5));
 			Point_2_base centroid = getElementCentroid2D(0, &mesh);
-			REQUIRE(centroid.x() == Approx(1./3.));
-			REQUIRE(centroid.y() == Approx(1./3.));
+			REQUIRE(centroid.x() == Catch::Approx(1./3.));
+			REQUIRE(centroid.y() == Catch::Approx(1./3.));
 		} while(std::next_permutation(elemConn.begin(),elemConn.end()));
 	}
 }
@@ -78,11 +78,11 @@ TEST_CASE("Testing TOMeshProcessing namespace functions, 3D","[TOMeshProcessing]
 		{
 			connVec[0] = elemConn;
 			TOMesh3D mesh(nodeVec, connVec, optVals);
-			REQUIRE(computeElementVolume(0, &mesh) == Approx(1.));
+			REQUIRE(computeElementVolume(0, &mesh) == Catch::Approx(1.));
 			Point_3_base centroid = getElementCentroid3D(0, &mesh);
-			REQUIRE(centroid.x() == Approx(0.5));
-			REQUIRE(centroid.y() == Approx(0.5));
-			REQUIRE(centroid.z() == Approx(0.5));
+			REQUIRE(centroid.x() == Catch::Approx(0.5));
+			REQUIRE(centroid.y() == Catch::Approx(0.5));
+			REQUIRE(centroid.z() == Catch::Approx(0.5));
 		} while(std::next_permutation(elemConn.begin(),elemConn.end()));
 	}
 	SECTION("Tet element, all permutations")
@@ -92,11 +92,11 @@ TEST_CASE("Testing TOMeshProcessing namespace functions, 3D","[TOMeshProcessing]
 		{
 			connVec[0] = elemConn;
 			TOMesh3D mesh(nodeVec, connVec, optVals);
-			REQUIRE(computeElementVolume(0, &mesh) == Approx(1./6.));
+			REQUIRE(computeElementVolume(0, &mesh) == Catch::Approx(1./6.));
 			Point_3_base centroid = getElementCentroid3D(0, &mesh);
-			REQUIRE(centroid.x() == Approx(0.25));
-			REQUIRE(centroid.y() == Approx(0.25));
-			REQUIRE(centroid.z() == Approx(0.25));
+			REQUIRE(centroid.x() == Catch::Approx(0.25));
+			REQUIRE(centroid.y() == Catch::Approx(0.25));
+			REQUIRE(centroid.z() == Catch::Approx(0.25));
 		} while(std::next_permutation(elemConn.begin(),elemConn.end()));
 	}
 }

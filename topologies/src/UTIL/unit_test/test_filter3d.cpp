@@ -23,7 +23,7 @@
 #include "filter3d.h"
 #include "tomesh.h"
 #include "tomeshprocessing.h"
-#include "catch.hpp"
+#include "catch2/catch_all.hpp"
 #include <iostream>
 #include <fstream>
 
@@ -68,31 +68,31 @@ TEST_CASE("Testing Filter3D with uniform mesh input.", "[Filter3D]")
 		std::vector<double> row = {1., 1., 1., 1., 1., 1., 1., 0.960180539842167, 0.8349864995396327, 0.6243290624690414, 
 			0.3756709375309588, 0.1650135004603672, 0.03981946015783239, 0., 0., 0., 0., 0., 0., 0.};
 		for(unsigned kx = 0; kx < nx; ++kx)
-			REQUIRE(res[(nz/2)*ny*nz + (ny/2)*nx + kx] == Approx(row[kx]));
+			REQUIRE(res[(nz/2)*ny*nz + (ny/2)*nx + kx] == Catch::Approx(row[kx]));
 		// Check symmetry
 		for(unsigned kz = 0; kz < nz; ++kz)
 			for(unsigned ky = 0; ky < ny; ++ky)
 				for(unsigned kx = 0; kx < nx/2; ++kx)
-					REQUIRE(fabs(res[kz*ny*nz + ky*nx + kx] - 0.5) == Approx(fabs(res[kz*ny*nz + ky*nx + nx - kx - 1] - 0.5)));
+					REQUIRE(fabs(res[kz*ny*nz + ky*nx + kx] - 0.5) == Catch::Approx(fabs(res[kz*ny*nz + ky*nx + nx - kx - 1] - 0.5)));
 		for(unsigned kz = 0; kz < nz; ++kz)
 			for(unsigned ky = 0; ky < ny/2; ++ky)
 				for(unsigned kx = 0; kx < nx; ++kx)
-					REQUIRE(res[kz*ny*nz + ky*nx + kx] == Approx(res[kz*ny*nz + (ny - ky - 1)*nx + kx]));
+					REQUIRE(res[kz*ny*nz + ky*nx + kx] == Catch::Approx(res[kz*ny*nz + (ny - ky - 1)*nx + kx]));
 		for(unsigned kz = 0; kz < nz/2; ++kz)
 			for(unsigned ky = 0; ky < ny; ++ky)
 				for(unsigned kx = 0; kx < nx; ++kx)
-					REQUIRE(res[kz*ny*nz + ky*nx + kx] == Approx(res[(nz - kz - 1)*ny*nz + ky*nx + kx]));
+					REQUIRE(res[kz*ny*nz + ky*nx + kx] == Catch::Approx(res[(nz - kz - 1)*ny*nz + ky*nx + kx]));
 		// Test single points
 		std::vector<Point_3_base> ptVec = {Point_3_base(0., 0.5, 0.5), Point_3_base(0.5, 0.5, 0.5), 
 			Point_3_base(1., 0.5, 0.5), Point_3_base(2., 2., 2.)};
 		row = {1., 0.5, 0., 0.}; // Check values
 		for(std::size_t k = 0; k < ptVec.size(); ++k)
-			REQUIRE(testFilt(ptVec[k]) == Approx(row[k]));
+			REQUIRE(testFilt(ptVec[k]) == Catch::Approx(row[k]));
 		// Retest with the filter derivative (same results can be computed since it's a linear filter)
 		SparseMatrix diffMat = testFilt.diffFilter(ptVec, rad);
 		res = filterWithDiff(xVec, ptVec.size(), diffMat);
 		for(std::size_t k = 0; k < res.size(); ++k)
-			REQUIRE(res[k] == Approx(row[k]));
+			REQUIRE(res[k] == Catch::Approx(row[k]));
 	}
 	SECTION("Testing nodal points")
 	{
@@ -127,31 +127,31 @@ TEST_CASE("Testing Filter3D with uniform mesh input.", "[Filter3D]")
 		std::vector<double> row = {1., 1., 1., 1., 1., 1., 1., 0.9800902699210855, 0.8975835196909002, 0.7296577810043378, 
 			0.500000000000000, 0.2703422189956631, 0.1024164803091, 0.01990973007891617, 0., 0., 0., 0., 0., 0., 0.};
 		for(unsigned kx = 0; kx < nx; ++kx)
-			REQUIRE(res[(nz/2)*ny*nz + (ny/2)*nx + kx] == Approx(row[kx]));
+			REQUIRE(res[(nz/2)*ny*nz + (ny/2)*nx + kx] == Catch::Approx(row[kx]));
 		// Check symmetry
 		for(unsigned kz = 0; kz < nz; ++kz)
 			for(unsigned ky = 0; ky < ny; ++ky)
 				for(unsigned kx = 0; kx < nx/2; ++kx)
-					REQUIRE(fabs(res[kz*ny*nz + ky*nx + kx] - 0.5) == Approx(fabs(res[kz*ny*nz + ky*nx + nx - kx - 1] - 0.5)));
+					REQUIRE(fabs(res[kz*ny*nz + ky*nx + kx] - 0.5) == Catch::Approx(fabs(res[kz*ny*nz + ky*nx + nx - kx - 1] - 0.5)));
 		for(unsigned kz = 0; kz < nz; ++kz)
 			for(unsigned ky = 0; ky < ny/2; ++ky)
 				for(unsigned kx = 0; kx < nx; ++kx)
-					REQUIRE(res[kz*ny*nz + ky*nx + kx] == Approx(res[kz*ny*nz + (ny - ky - 1)*nx + kx]));
+					REQUIRE(res[kz*ny*nz + ky*nx + kx] == Catch::Approx(res[kz*ny*nz + (ny - ky - 1)*nx + kx]));
 		for(unsigned kz = 0; kz < nz/2; ++kz)
 			for(unsigned ky = 0; ky < ny; ++ky)
 				for(unsigned kx = 0; kx < nx; ++kx)
-					REQUIRE(res[kz*ny*nz + ky*nx + kx] == Approx(res[(nz - kz - 1)*ny*nz + ky*nx + kx]));
+					REQUIRE(res[kz*ny*nz + ky*nx + kx] == Catch::Approx(res[(nz - kz - 1)*ny*nz + ky*nx + kx]));
 		// Test single points
 		std::vector<Point_3_base> ptVec = {Point_3_base(0., 0.5, 0.5), Point_3_base(0.5, 0.5, 0.5), 
 			Point_3_base(1., 0.5, 0.5), Point_3_base(2., 2., 2.)};
 		row = {1., 0.5, 0., 0.}; // Check values
 		for(std::size_t k = 0; k < ptVec.size(); ++k)
-			REQUIRE(testFilt(ptVec[k]) == Approx(row[k]));
+			REQUIRE(testFilt(ptVec[k]) == Catch::Approx(row[k]));
 		// Retest with the filter derivative (same results can be computed since it's a linear filter)
 		SparseMatrix diffMat = testFilt.diffFilter(ptVec, rad);
 		res = filterWithDiff(xVec, ptVec.size(), diffMat);
 		for(std::size_t k = 0; k < res.size(); ++k)
-			REQUIRE(res[k] == Approx(row[k]));
+			REQUIRE(res[k] == Catch::Approx(row[k]));
 	}
 }
 
@@ -217,17 +217,17 @@ TEST_CASE("Testing Filter3D with TOMesh tet input","[Filter3D]")
 		REQUIRE(res.size() == xVec.size());
 		REQUIRE(res.size() == centroidRes.size());
 		for(std::size_t k = 0; k < res.size(); ++k)
-			REQUIRE(res[k] == Approx(centroidRes[k]));
+			REQUIRE(res[k] == Catch::Approx(centroidRes[k]));
 		// Test outside region
-		REQUIRE(testFilt(Point_3_base(2.,2.,2)) == Approx(0.));
-		REQUIRE(testFilt(Point_3_base(-2.,2.,2.)) == Approx(0.));
-		REQUIRE(testFilt(Point_3_base(2.,-2.,2.)) == Approx(0.));
-		REQUIRE(testFilt(Point_3_base(2.,2.,-2.)) == Approx(0.));
+		REQUIRE(testFilt(Point_3_base(2.,2.,2)) == Catch::Approx(0.));
+		REQUIRE(testFilt(Point_3_base(-2.,2.,2.)) == Catch::Approx(0.));
+		REQUIRE(testFilt(Point_3_base(2.,-2.,2.)) == Catch::Approx(0.));
+		REQUIRE(testFilt(Point_3_base(2.,2.,-2.)) == Catch::Approx(0.));
 		// Retest with the filter derivative (same results can be computed since it's a linear filter)
 		SparseMatrix diffMat = testFilt.diffFilter(centroidPts, rad);
 		res = filterWithDiff(xVec, centroidRes.size(), diffMat);
 		for(std::size_t k = 0; k < res.size(); ++k)
-			REQUIRE(res[k] == Approx(centroidRes[k]));
+			REQUIRE(res[k] == Catch::Approx(centroidRes[k]));
 	}
 	SECTION("Testing nodal points")
 	{
@@ -248,17 +248,17 @@ TEST_CASE("Testing Filter3D with TOMesh tet input","[Filter3D]")
 		REQUIRE(res.size() == xVec.size());
 		REQUIRE(res.size() == nodalRes.size());
 		for(std::size_t k = 0; k < res.size(); ++k)
-			REQUIRE(res[k] == Approx(nodalRes[k]));
+			REQUIRE(res[k] == Catch::Approx(nodalRes[k]));
 		// Test outside region
-		REQUIRE(testFilt(Point_3_base(2.,2.,2)) == Approx(0.));
-		REQUIRE(testFilt(Point_3_base(-2.,2.,2.)) == Approx(0.));
-		REQUIRE(testFilt(Point_3_base(2.,-2.,2.)) == Approx(0.));
-		REQUIRE(testFilt(Point_3_base(2.,2.,-2.)) == Approx(0.));
+		REQUIRE(testFilt(Point_3_base(2.,2.,2)) == Catch::Approx(0.));
+		REQUIRE(testFilt(Point_3_base(-2.,2.,2.)) == Catch::Approx(0.));
+		REQUIRE(testFilt(Point_3_base(2.,-2.,2.)) == Catch::Approx(0.));
+		REQUIRE(testFilt(Point_3_base(2.,2.,-2.)) == Catch::Approx(0.));
 		// Retest with the filter derivative (same results can be computed since it's a linear filter)
 		SparseMatrix diffMat = testFilt.diffFilter(ptVec, rad);
 		res = filterWithDiff(xVec, ptVec.size(), diffMat);
 		for(std::size_t k = 0; k < res.size(); ++k)
-			REQUIRE(res[k] == Approx(nodalRes[k]));
+			REQUIRE(res[k] == Catch::Approx(nodalRes[k]));
 	}
 }
 

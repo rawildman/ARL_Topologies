@@ -21,7 +21,7 @@
 #define CATCH_CONFIG_MAIN
 
 #include "inputloader.h"
-#include "catch.hpp"
+#include "catch2/catch_all.hpp"
 #include <string>
 #include <vector>
 
@@ -39,7 +39,7 @@ TEST_CASE("Testing wrapper functions for PugiXML","[PugiXMLWrapper]")
 	{
 		// Test full path
 		path.push_back("doubledata");
-		REQUIRE(readDoublePCData(xmldoc, path) == Approx(10.));
+		REQUIRE(readDoublePCData(xmldoc, path) == Catch::Approx(10.));
 		path.pop_back();
 		path.push_back("unsigneddata");
 		REQUIRE(readUnsignedPCData(xmldoc, path) == 3);
@@ -85,7 +85,7 @@ TEST_CASE("Testing wrapper functions for PugiXML","[PugiXMLWrapper]")
 	REQUIRE(rootNode);
 	SECTION("PC data, 1 node path")
 	{
-		REQUIRE(readDoublePCData(rootNode, "doubledata") == Approx(10.));
+		REQUIRE(readDoublePCData(rootNode, "doubledata") == Catch::Approx(10.));
 		REQUIRE(readUnsignedPCData(rootNode, "unsigneddata") == 3);
 		REQUIRE(readIntPCData(rootNode, "intdata") == -2);
 		REQUIRE(readStringPCData(rootNode, "stringdata") == "This is a string.");
@@ -110,9 +110,9 @@ TEST_CASE("Testing wrapper functions for PugiXML","[PugiXMLWrapper]")
 	{
 		std::vector<double> pcDoubleVec = readDoubleVecPCData(rootNode, "doublevec");
 		REQUIRE(pcDoubleVec.size() == 3);
-		REQUIRE(pcDoubleVec[0] == Approx(1.));
-		REQUIRE(pcDoubleVec[1] == Approx(2.));
-		REQUIRE(pcDoubleVec[2] == Approx(3.));
+		REQUIRE(pcDoubleVec[0] == Catch::Approx(1.));
+		REQUIRE(pcDoubleVec[1] == Catch::Approx(2.));
+		REQUIRE(pcDoubleVec[2] == Catch::Approx(3.));
 		std::vector<unsigned> pcUnsignedVec = readUnsignedVecPCData(rootNode, "unsignedvec");
 		REQUIRE(pcUnsignedVec.size() == 4);
 		REQUIRE(pcUnsignedVec[0] == 4);
@@ -133,7 +133,7 @@ TEST_CASE("Testing wrapper functions for PugiXML","[PugiXMLWrapper]")
 	SECTION("PC data, direct node")
 	{
 		pugi::xml_node pcdnode = rootNode.child("doubledata");
-		REQUIRE(readDoublePCData(pcdnode) == Approx(10.));
+		REQUIRE(readDoublePCData(pcdnode) == Catch::Approx(10.));
 		pcdnode = rootNode.child("unsigneddata");
 		REQUIRE(readUnsignedPCData(pcdnode) == 3);
 		pcdnode = rootNode.child("intdata");
@@ -168,7 +168,7 @@ TEST_CASE("Testing wrapper functions for PugiXML","[PugiXMLWrapper]")
 	{
 		std::string attrname = "attr";
 		path.push_back("doubleattr");
-		REQUIRE(readDoubleAttribute(xmldoc, path, attrname) == Approx(10.));
+		REQUIRE(readDoubleAttribute(xmldoc, path, attrname) == Catch::Approx(10.));
 		path.pop_back();
 		path.push_back("unsignedattr");
 		REQUIRE(readUnsignedAttribute(xmldoc, path, attrname) == 3);
@@ -203,7 +203,7 @@ TEST_CASE("Testing wrapper functions for PugiXML","[PugiXMLWrapper]")
 	SECTION("Attributes, 1 node path")
 	{
 		std::string attrname = "attr";
-		REQUIRE(readDoubleAttribute(rootNode, "doubleattr", attrname) == Approx(10.));
+		REQUIRE(readDoubleAttribute(rootNode, "doubleattr", attrname) == Catch::Approx(10.));
 		REQUIRE(readUnsignedAttribute(rootNode, "unsignedattr", attrname) == 3);
 		REQUIRE(readIntAttribute(rootNode, "intattr", attrname) == -2);
 		REQUIRE(readStringAttribute(rootNode, "stringattr", attrname) == "This is a string.");
@@ -228,7 +228,7 @@ TEST_CASE("Testing wrapper functions for PugiXML","[PugiXMLWrapper]")
 	{
 		std::string attrname = "attr";
 		pugi::xml_node pcdnode = rootNode.child("doubleattr");
-		REQUIRE(readDoubleAttribute(pcdnode, attrname) == Approx(10.));
+		REQUIRE(readDoubleAttribute(pcdnode, attrname) == Catch::Approx(10.));
 		pcdnode = rootNode.child("unsignedattr");
 		REQUIRE(readUnsignedAttribute(pcdnode, attrname) == 3);
 		pcdnode = rootNode.child("intattr");

@@ -21,7 +21,7 @@
 #include "lintri.h"
 #include "linquad.h"
 #include <algorithm>
-#include "catch.hpp"
+#include "catch2/catch_all.hpp"
 
 using namespace Topologies;
 

@@ -22,7 +22,7 @@
 
 #include "stltxtloader.h"
 #include "tomesh.h"
-#include "catch.hpp"
+#include "catch2/catch_all.hpp"
 #include <string>
 #include <CGAL/Triangle_3.h>
 
@@ -42,7 +42,7 @@ TEST_CASE("Testing STL load","[STLTxtLoader]")
           fit->halfedge()->opposite()->vertex()->point());
 			sa += sqrt(t3.squared_area());
 		}
-		REQUIRE(sa == Approx(600.));
+		REQUIRE(sa == Catch::Approx(600.));
 	}
 	SECTION("Test TOMesh")
 	{
@@ -56,7 +56,7 @@ TEST_CASE("Testing STL load","[STLTxtLoader]")
 			Mesh_K::Triangle_3 t3(upTOM->getNode3D(connVec[0]), upTOM->getNode3D(connVec[1]), upTOM->getNode3D(connVec[2]));
 			sa += sqrt(t3.squared_area());
 		}
-		REQUIRE(sa == Approx(600.));
+		REQUIRE(sa == Catch::Approx(600.));
 	}
 }
 

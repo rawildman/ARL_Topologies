@@ -21,7 +21,7 @@
 #include "topoptrep.h"
 #include "torfactory.h"
 #include "inputloaderrep.h"
-#include "catch.hpp"
+#include "catch2/catch_all.hpp"
 #include <memory>
 
 using namespace Topologies;
@@ -51,8 +51,8 @@ void testGradient(TopOptRep& testTOR, TOFEMObjFun& testObjFun)
 	REQUIRE(res2.first.size() == res3.first.size());
 	for(std::size_t k = 0; k < res1.first.size(); ++k)
 	{
-		REQUIRE(res1.first[k] == Approx(res3.first[k]).epsilon(1e-3));
-		REQUIRE(res2.first[k] == Approx(res3.first[k]).epsilon(1e-3));
+		REQUIRE(res1.first[k] == Catch::Approx(res3.first[k]).epsilon(1e-3));
+		REQUIRE(res2.first[k] == Catch::Approx(res3.first[k]).epsilon(1e-3));
 	}
 }
 
@@ -65,7 +65,7 @@ void testConstraintGradient(TopOptRep& testTOR, TOFEMObjFun& testObjFun)
 	REQUIRE(res2.second);
 	REQUIRE(res1.first.size() == res2.first.size());
 	for(std::size_t k = 0; k < res1.first.size(); ++k)
-		REQUIRE(res1.first[k] == Approx(res2.first[k]).epsilon(1e-4));
+		REQUIRE(res1.first[k] == Catch::Approx(res2.first[k]).epsilon(1e-4));
 }
 
 TEST_CASE("Testing TOFEMObjFun with VolMesh2D", "[TOFEMObjFun]")

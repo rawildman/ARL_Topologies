@@ -22,7 +22,7 @@
 
 #include "objfuntest.h"
 #include "pixelrep.h"
-#include "catch.hpp"
+#include "catch2/catch_all.hpp"
 #include <iostream>
 
 using namespace Topologies; 
@@ -48,16 +48,16 @@ TEST_CASE("Testing TopOptObjFun finite difference gradient with test derived cla
 	{
 		std::cout << "f and c" << std::endl;
 		std::pair<double, bool> res = testOF(testPR);
-		REQUIRE(res.first == Approx(0.5));
+		REQUIRE(res.first == Catch::Approx(0.5));
 		REQUIRE(res.second);
 		std::pair<std::vector<double>, bool> outRes;
 		testOF.f(testPR, outRes);
 		REQUIRE(outRes.first.size() == 1);
-		REQUIRE(outRes.first[0] == Approx(0.5));
+		REQUIRE(outRes.first[0] == Catch::Approx(0.5));
 		REQUIRE(outRes.second);
 		testOF.c(testPR, outRes);
 		REQUIRE(outRes.first.size() == 1);
-		REQUIRE(outRes.first[0] == Approx(0.5));
+		REQUIRE(outRes.first[0] == Catch::Approx(0.5));
 		REQUIRE(outRes.second);
 	}
 	SECTION("Gradient of f")
@@ -66,7 +66,7 @@ TEST_CASE("Testing TopOptObjFun finite difference gradient with test derived cla
 		std::pair<std::vector<double>, bool> outRes;
 		testOF.g(testPR, outRes);
 		for(auto oit = outRes.first.begin(); oit != outRes.first.end(); ++oit)
-			REQUIRE(*oit == Approx(vol));
+			REQUIRE(*oit == Catch::Approx(vol));
 	}
 	SECTION("Gradient of c")
 	{
@@ -74,7 +74,7 @@ TEST_CASE("Testing TopOptObjFun finite difference gradient with test derived cla
 		std::pair<std::vector<double>, bool> outRes;
 		testOF.gc(testPR, outRes);
 		for(auto oit = outRes.first.begin(); oit != outRes.first.end(); ++oit)
-			REQUIRE(*oit == Approx(vol));
+			REQUIRE(*oit == Catch::Approx(vol));
 	}
 	SECTION("f and grad f")
 	{
@@ -83,11 +83,11 @@ TEST_CASE("Testing TopOptObjFun finite difference gradient with test derived cla
 		testOF.fAndG(testPR, fRes, gRes);
 		// f
 		REQUIRE(fRes.first.size() == 1);
-		REQUIRE(fRes.first[0] == Approx(0.5));
+		REQUIRE(fRes.first[0] == Catch::Approx(0.5));
 		REQUIRE(fRes.second);
 		// g
 		for(auto oit = gRes.first.begin(); oit != gRes.first.end(); ++oit)
-			REQUIRE(*oit == Approx(vol));
+			REQUIRE(*oit == Catch::Approx(vol));
 	}
 }
 

@@ -21,7 +21,7 @@
 #define CATCH_CONFIG_MAIN
 
 #include "helper.h"
-#include "catch.hpp"
+#include "catch2/catch_all.hpp"
 #include <iostream>
 #include <string>
 
@@ -76,7 +76,7 @@ TEST_CASE("Testing functions in HelperNS namespace","[HelperNS]")
 	std::vector<double> res = getPenalizedPixels(array1, penalPower, minDensity);
 	REQUIRE(res.size() == array1.size());
 	for(std::size_t k = 0; k < array1.size(); ++k)
-		REQUIRE(res[k] == Approx((1. - minDensity)*pow(array1[k], penalPower) + minDensity));
+		REQUIRE(res[k] == Catch::Approx((1. - minDensity)*pow(array1[k], penalPower) + minDensity));
 	// RGWrapper
 	RGWrapper testRGW(std::make_pair(-1., 1.));
 	for(unsigned k = 0; k < 100; ++k)
@@ -91,36 +91,36 @@ TEST_CASE("Testing functions in HelperNS namespace","[HelperNS]")
 		REQUIRE(testr2d(val) == 1);
 	// affineTrans1d
 	affineTrans1d testat1d(2., 3.);
-	REQUIRE(testat1d(1.) == Approx(5.));
-	REQUIRE(testat1d(-1.) == Approx(1.));
+	REQUIRE(testat1d(1.) == Catch::Approx(5.));
+	REQUIRE(testat1d(-1.) == Catch::Approx(1.));
 	// powPenal
 	powPenal testpowPenal(2.);
-	REQUIRE(testpowPenal(3.3) == Approx(3.3*3.3));
+	REQUIRE(testpowPenal(3.3) == Catch::Approx(3.3*3.3));
 	powPenal dtestpowPenal(2., true);
-	REQUIRE(dtestpowPenal(3.3) == Approx(2.*3.3));
+	REQUIRE(dtestpowPenal(3.3) == Catch::Approx(2.*3.3));
 	// powPenalMin
 	powPenalMin testpowPenalMin(3., 0.1);
-	REQUIRE(testpowPenalMin(3.3) == Approx(3.3*3.3*3.3*0.9 + 0.1));
-	REQUIRE(testpowPenalMin(0.) == Approx(0.1));
+	REQUIRE(testpowPenalMin(3.3) == Catch::Approx(3.3*3.3*3.3*0.9 + 0.1));
+	REQUIRE(testpowPenalMin(0.) == Catch::Approx(0.1));
 	powPenalMin dtestpowPenalMin(3., 0.1, true);
-	REQUIRE(dtestpowPenalMin(3.3) == Approx(3.*3.3*3.3*0.9));
-	REQUIRE(dtestpowPenalMin(0.) == Approx(0.));
+	REQUIRE(dtestpowPenalMin(3.3) == Catch::Approx(3.*3.3*3.3*0.9));
+	REQUIRE(dtestpowPenalMin(0.) == Catch::Approx(0.));
 	// powSum
 	powSum testpowSum(3.);
-	REQUIRE(testpowSum(4., 5.) == Approx(4. + 5.*5.*5.));
+	REQUIRE(testpowSum(4., 5.) == Catch::Approx(4. + 5.*5.*5.));
 	// regularizedHeaviside
 	regularizedHeaviside testrh(9.);
-	REQUIRE(testrh(0.5) == Approx(9.889527083638011e-01));
+	REQUIRE(testrh(0.5) == Catch::Approx(9.889527083638011e-01));
 	regularizedHeaviside dtestrh(9., true);
-	REQUIRE(dtestrh(0.5) == Approx(1.001043786482674e-01));
+	REQUIRE(dtestrh(0.5) == Catch::Approx(1.001043786482674e-01));
 	// thresholdHeaviside
 	thresholdHeaviside testth(0.25, 11.);
-	REQUIRE(testth(0.5) == Approx(9.959132968164297e-01));
+	REQUIRE(testth(0.5) == Catch::Approx(9.959132968164297e-01));
 	thresholdHeaviside dtestth(0.25, 11., true);
-	REQUIRE(dtestth(0.5) == Approx(8.954303588654487e-02));
+	REQUIRE(dtestth(0.5) == Catch::Approx(8.954303588654487e-02));
 	// divVal
 	divVal testdv(2.);
-	REQUIRE(testdv(1.) == Approx(0.5));
+	REQUIRE(testdv(1.) == Catch::Approx(0.5));
 	// multVal
 	multVal<int> testmv(2);
 	REQUIRE(testmv(1) == 2);
@@ -133,7 +133,7 @@ TEST_CASE("Testing functions in HelperNS namespace","[HelperNS]")
 	REQUIRE(!testltx(1.));
 	REQUIRE(testltx(0.));
 	// vector norm
-	REQUIRE(norm(array1) == Approx(1.962141687034859));
+	REQUIRE(norm(array1) == Catch::Approx(1.962141687034859));
 	// vecSum
 	std::vector<double> array2 = {0., -0.1, 0.2, -0.3, 0.4, -0.5, 0.6, -0.7, 0.8, -0.9, 1.};
 	std::vector<double> exactRes = {0., 0., 0.4, 0., 0.8, 0., 1.2, 0., 1.6, 0., 2.};
@@ -142,7 +142,7 @@ TEST_CASE("Testing functions in HelperNS namespace","[HelperNS]")
 	REQUIRE(res.size() == array2.size());
 	REQUIRE(res.size() == exactRes.size());
 	for(std::size_t k = 0; k < res.size(); ++k)
-		REQUIRE(res[k] == Approx(exactRes[k]));
+		REQUIRE(res[k] == Catch::Approx(exactRes[k]));
 	// VecMinus
 	exactRes = {0., 0.2, 0., 0.6, 0., 1., 0., 1.4, 0., 1.8, 0.};
 	res = vecMinus(array1, array2);
@@ -150,7 +150,7 @@ TEST_CASE("Testing functions in HelperNS namespace","[HelperNS]")
 	REQUIRE(res.size() == array2.size());
 	REQUIRE(res.size() == exactRes.size());
 	for(std::size_t k = 0; k < res.size(); ++k)
-		REQUIRE(res[k] == Approx(exactRes[k]));
+		REQUIRE(res[k] == Catch::Approx(exactRes[k]));
 	// vecScalarMult
 	exactRes = {0., 0.2, 0.4, 0.6, 0.8, 1., 1.2, 1.4, 1.6, 1.8, 2.};
 	res = vecScalarMult(2., array1);
@@ -158,7 +158,7 @@ TEST_CASE("Testing functions in HelperNS namespace","[HelperNS]")
 	REQUIRE(res.size() == array2.size());
 	REQUIRE(res.size() == exactRes.size());
 	for(std::size_t k = 0; k < res.size(); ++k)
-		REQUIRE(res[k] == Approx(exactRes[k]));
+		REQUIRE(res[k] == Catch::Approx(exactRes[k]));
 }
 
 TEST_CASE("Testing TopOptRep::sparseMatrixMultiply","[TopOptRep]")
@@ -180,11 +180,11 @@ TEST_CASE("Testing TopOptRep::sparseMatrixMultiply","[TopOptRep]")
 		std::vector<double> res = testMat*vec;
 		// Test
 		for(auto val : res)
-			REQUIRE(val == Approx(10.));
+			REQUIRE(val == Catch::Approx(10.));
 		// Transpose multiply
 		res = testMat.transposeTimes(vec, 10);
 		for(auto val : res)
-			REQUIRE(val == Approx(10.));
+			REQUIRE(val == Catch::Approx(10.));
 	}
 	SECTION("Diagonal matrix")
 	{
@@ -196,11 +196,11 @@ TEST_CASE("Testing TopOptRep::sparseMatrixMultiply","[TopOptRep]")
 		std::vector<double> res = testMat*vec;
 		// Test
 		for(auto val : res)
-			REQUIRE(val == Approx(3.));
+			REQUIRE(val == Catch::Approx(3.));
 		// Transpose times
 		res = testMat.transposeTimes(vec, 10);
 		for(auto val : res)
-			REQUIRE(val == Approx(3.));
+			REQUIRE(val == Catch::Approx(3.));
 	}
 	SECTION("Differentiation matrix, tridiagonal")
 	{
@@ -233,19 +233,19 @@ TEST_CASE("Testing TopOptRep::sparseMatrixMultiply","[TopOptRep]")
 		std::vector<double> res = testMat*vec;
 		// Test
 		for(std::size_t k = 0; k < 10; ++k)
-			REQUIRE(res[k] == Approx(0.));
+			REQUIRE(res[k] == Catch::Approx(0.));
 		// Transpose multiply
 		res = testMat.transposeTimes(vec, 10);
 		for(std::size_t k = 0; k < 10; ++k)
 		{
 			if(k == 0 || k == 9)
-				REQUIRE(res[k] == Approx(2.));
+				REQUIRE(res[k] == Catch::Approx(2.));
 			else if(k == 1 || k == 8)
-				REQUIRE(res[k] == Approx(-3.));
+				REQUIRE(res[k] == Catch::Approx(-3.));
 			else if(k == 2 || k == 7)
-				REQUIRE(res[k] == Approx(1.));
+				REQUIRE(res[k] == Catch::Approx(1.));
 			else
-				REQUIRE(res[k] == Approx(0.));
+				REQUIRE(res[k] == Catch::Approx(0.));
 		}
 		// Test squared vals
 		for(std::size_t k = 0; k < vec.size(); ++k)
@@ -253,7 +253,7 @@ TEST_CASE("Testing TopOptRep::sparseMatrixMultiply","[TopOptRep]")
 		res = testMat*vec;
 		// Test
 		for(std::size_t k = 0; k < 10; ++k)
-			REQUIRE(res[k] == Approx(2.));
+			REQUIRE(res[k] == Catch::Approx(2.));
 	}
 	SECTION("Non-square matrix: 10x5")
 	{
@@ -269,12 +269,12 @@ TEST_CASE("Testing TopOptRep::sparseMatrixMultiply","[TopOptRep]")
 		std::vector<double> res = testMat.transposeTimes(vec, 5);
 		REQUIRE(res.size() == 5);
 		for(std::size_t k = 0; k < 5; ++k)
-			REQUIRE(res[k] == Approx(10.));
+			REQUIRE(res[k] == Catch::Approx(10.));
 		// Multiply
 		vec = std::vector<double>(5,1.);
 		res = testMat*vec;
 		for(std::size_t k = 0; k < 10; ++k)
-			REQUIRE(res[k] == Approx(5.));
+			REQUIRE(res[k] == Catch::Approx(5.));
 	}
 }
 

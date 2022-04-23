@@ -19,7 +19,7 @@
 
 #include "femproblem.h"
 #include "REP/tomesh.h"
-#include "catch.hpp"
+#include "catch2/catch_all.hpp"
 #include <iostream>
 
 using namespace Topologies;
@@ -62,7 +62,7 @@ TEST_CASE("Testing FEMProblem in 2D","[FEMProblem]")
 		REQUIRE(testFE.validRun());
 		REQUIRE(chkVec.isApprox(testFE.getDisplacement(), 1e-14));
 		std::pair<double,bool> c = testFE.computeCompliance();
-		REQUIRE(c.first == Approx(0.4));
+		REQUIRE(c.first == Catch::Approx(0.4));
 		REQUIRE(c.second);
 		// Test assignment operator
 		
@@ -71,7 +71,7 @@ TEST_CASE("Testing FEMProblem in 2D","[FEMProblem]")
 		REQUIRE(testFE.validRun());
 		REQUIRE(chkVec.isApprox(testFE.getDisplacement(), 1e-14));
 		c = testFE.computeCompliance();
-		REQUIRE(c.first == Approx(0.4));
+		REQUIRE(c.first == Catch::Approx(0.4));
 		REQUIRE(c.second);
 	}
 	SECTION("Tri elements")
@@ -88,14 +88,14 @@ TEST_CASE("Testing FEMProblem in 2D","[FEMProblem]")
 		REQUIRE(testFE.validRun());
 		REQUIRE(chkVec.isApprox(testFE.getDisplacement(), 1e-14));
 		std::pair<double,bool> c = testFE.computeCompliance();
-		REQUIRE(c.first == Approx(0.4));
+		REQUIRE(c.first == Catch::Approx(0.4));
 		REQUIRE(c.second);
 		// Test copy ctor
 		FEMProblem testFE2(testFE);
 		REQUIRE(testFE2.validRun());
 		REQUIRE(chkVec.isApprox(testFE2.getDisplacement(), 1e-14));
 		c = testFE2.computeCompliance();
-		REQUIRE(c.first == Approx(0.4));
+		REQUIRE(c.first == Catch::Approx(0.4));
 		REQUIRE(c.second);
 	}
 }
@@ -164,7 +164,7 @@ TEST_CASE("Testing FEMProblem in 3D", "[FEMProblem]")
 		REQUIRE(testFE.validRun());
 		REQUIRE(chkVec.isApprox(testFE.getDisplacement(), 1e-6));
 		std::pair<double,bool> c = testFE.computeCompliance();
-		REQUIRE(c.first == Approx(0.4));
+		REQUIRE(c.first == Catch::Approx(0.4));
 		REQUIRE(c.second);
 	}
 
@@ -181,7 +181,7 @@ TEST_CASE("Testing FEMProblem in 3D", "[FEMProblem]")
 		REQUIRE(testFE.validRun());
 		REQUIRE(chkVec.isApprox(testFE.getDisplacement(), 1e-6));
 		std::pair<double,bool> c = testFE.computeCompliance();
-		REQUIRE(c.first == Approx(0.4));
+		REQUIRE(c.first == Catch::Approx(0.4));
 		REQUIRE(c.second);
 	}
 }

@@ -26,7 +26,7 @@
 #include "topoptga.h"
 #include "topoptchain.h"
 #include "topoptfactory.h"
-#include "catch.hpp"
+#include "catch2/catch_all.hpp"
 #include "objfuntest2.h"
 #include "reptest.h"
 #include "inputloaderopt.h"
@@ -80,7 +80,7 @@ void testTopOpt(TopOpt& testOpt, const TopOptRep& ig, const std::vector<double>&
 	upRes->getRealRep(resVec);
 	REQUIRE(resVec.size() == checkRes.size());
 	for(std::size_t k = 0; k < resVec.size(); ++k)
-		REQUIRE(resVec[k] == Approx(checkRes[k]).epsilon(chkEps));
+		REQUIRE(resVec[k] == Catch::Approx(checkRes[k]).epsilon(chkEps));
 }
 
 TEST_CASE("Testing gradient descent method","[TopOptGD]")

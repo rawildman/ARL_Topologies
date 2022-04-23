@@ -20,7 +20,7 @@
 #include "elemedge.h"
 #include "point2d.h"
 #include <iostream>
-#include "catch.hpp"
+#include "catch2/catch_all.hpp"
 
 TEST_CASE( "Testing ElemEdge class", "[ElemEdge]" )
 {

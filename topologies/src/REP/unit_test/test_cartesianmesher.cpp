@@ -21,7 +21,7 @@
 #define CATCH_CONFIG_MAIN
 
 #include "cartesianmesher.h"
-#include "catch.hpp"
+#include "catch2/catch_all.hpp"
 #include <algorithm>
 
 using namespace Topologies;

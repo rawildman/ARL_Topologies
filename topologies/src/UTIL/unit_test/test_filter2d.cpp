@@ -23,7 +23,7 @@
 #include "filter2d.h"
 #include "tomesh.h"
 #include "tomeshprocessing.h"
-#include "catch.hpp"
+#include "catch2/catch_all.hpp"
 #include <iostream>
 #include <fstream>
 
@@ -64,26 +64,26 @@ TEST_CASE("Testing Filter2D with uniform mesh input.", "[Filter2D]")
 		std::vector<double> row = {1., 1., 1., 1., 1., 1., 1., 0.9482920597029305, 0.8190363597341801, 0.6194060825994609, 
 			0.3805939174005385, 0.180963640265819, 0.05170794029706944, 0., 0., 0., 0., 0., 0., 0.};
 		for(unsigned kx = 0; kx < nx; ++kx)
-			REQUIRE(res[(ny/2)*nx + kx] == Approx(row[kx]));
+			REQUIRE(res[(ny/2)*nx + kx] == Catch::Approx(row[kx]));
 		// Check symmetry
 		for(unsigned ky = 0; ky < ny; ++ky)
 			for(unsigned kx = 0; kx < nx/2; ++kx)
-				REQUIRE(fabs(res[ky*nx + kx] - 0.5) == Approx(fabs(res[ky*nx + nx - kx - 1] - 0.5)));
+				REQUIRE(fabs(res[ky*nx + kx] - 0.5) == Catch::Approx(fabs(res[ky*nx + nx - kx - 1] - 0.5)));
 		for(unsigned ky = 0; ky < ny/2; ++ky)
 			for(unsigned kx = 0; kx < nx; ++kx)
-				REQUIRE(res[ky*nx + kx] == Approx(res[(ny - ky - 1)*nx + kx]));
+				REQUIRE(res[ky*nx + kx] == Catch::Approx(res[(ny - ky - 1)*nx + kx]));
 		// Test single points
 		std::vector<Point_2_base> ptVec = {Point_2_base(0., 0.5), Point_2_base(0.5, 0.5), Point_2_base(1., 0.5), Point_2_base(2., 2.)};
 		res = testFilt(xVec, ptVec, rad);
 		REQUIRE(res.size() == ptVec.size()); // Check sizes
 		row = {1., 0.5, 0., 0.}; // Check values
 		for(std::size_t k = 0; k < res.size(); ++k)
-			REQUIRE(res[k] == Approx(row[k]));
+			REQUIRE(res[k] == Catch::Approx(row[k]));
 		// Retest with the filter derivative (same results can be computed since it's a linear filter)
 		SparseMatrix diffMat = testFilt.diffFilter(ptVec, rad);
 		res = filterWithDiff(xVec, ptVec.size(), diffMat);
 		for(std::size_t k = 0; k < res.size(); ++k)
-			REQUIRE(res[k] == Approx(row[k]));
+			REQUIRE(res[k] == Catch::Approx(row[k]));
 	}
 	ptsAtCenter = false;
 	SECTION("Testing points at nodes")
@@ -114,25 +114,25 @@ TEST_CASE("Testing Filter2D with uniform mesh input.", "[Filter2D]")
 			0.500000000000000, 0.2807787788331791, 0.1163357902814442, 0.0258539701485347, 0., 0., 0., 0., 0., 0., 0.};
 		std::cout.precision(16);
 		for(unsigned kx = 0; kx < nx; ++kx)
-			REQUIRE(res[(ny/2)*nx + kx] == Approx(row[kx]));
+			REQUIRE(res[(ny/2)*nx + kx] == Catch::Approx(row[kx]));
 		// Check symmetry
 		for(unsigned ky = 0; ky < ny; ++ky)
 			for(unsigned kx = 0; kx < nx/2; ++kx)
-				REQUIRE(fabs(res[ky*nx + kx] - 0.5) == Approx(fabs(res[ky*nx + nx - kx - 1] - 0.5)));
+				REQUIRE(fabs(res[ky*nx + kx] - 0.5) == Catch::Approx(fabs(res[ky*nx + nx - kx - 1] - 0.5)));
 		for(unsigned ky = 0; ky < ny/2; ++ky)
 			for(unsigned kx = 0; kx < nx; ++kx)
-				REQUIRE(res[ky*nx + kx] == Approx(res[(ny - ky - 1)*nx + kx]));
+				REQUIRE(res[ky*nx + kx] == Catch::Approx(res[(ny - ky - 1)*nx + kx]));
 		std::vector<Point_2_base> ptVec = {Point_2_base(0., 0.5), Point_2_base(0.5, 0.5), Point_2_base(1., 0.5), Point_2_base(2., 2.)};
 		res = testFilt(xVec, ptVec, rad);
 		REQUIRE(res.size() == ptVec.size()); // Check sizes
 		row = {1., 0.5, 0., 0.}; // Check values
 		for(std::size_t k = 0; k < res.size(); ++k)
-			REQUIRE(res[k] == Approx(row[k]));
+			REQUIRE(res[k] == Catch::Approx(row[k]));
 		// Retest with the filter derivative (same results can be computed since it's a linear filter)
 		SparseMatrix diffMat = testFilt.diffFilter(ptVec, rad);
 		res = filterWithDiff(xVec, ptVec.size(), diffMat);
 		for(std::size_t k = 0; k < res.size(); ++k)
-			REQUIRE(res[k] == Approx(row[k]));
+			REQUIRE(res[k] == Catch::Approx(row[k]));
 	}
 }
 
@@ -195,19 +195,19 @@ TEST_CASE("Testing Filter2D with TOMesh tri input","[Filter2D]")
 		std::vector<double> res = testFilt(xVec, rad);
 		REQUIRE(res.size() == xVec.size());
 		for(std::size_t k = 0; k < res.size(); ++k)
-			REQUIRE(res[k] == Approx(centroidRes[k]));
+			REQUIRE(res[k] == Catch::Approx(centroidRes[k]));
 		// Test outside region
 		std::vector<Point_2_base> ptVec2 = {Point_2_base(-1., -1.), Point_2_base(-1., 1.), Point_2_base(2., 2.)};
 		res = testFilt(xVec, ptVec2, rad);
 		REQUIRE(res.size() == ptVec2.size()); // Check sizes
 		std::vector<double> row(res.size(), 0.); // Check values
 		for(std::size_t k = 0; k < res.size(); ++k)
-			REQUIRE(res[k] == Approx(row[k]));
+			REQUIRE(res[k] == Catch::Approx(row[k]));
 		// Retest with the filter derivative (same results can be computed since it's a linear filter)
 		SparseMatrix diffMat = testFilt.diffFilter(ptVec2, rad);
 		res = filterWithDiff(xVec, ptVec2.size(), diffMat);
 		for(std::size_t k = 0; k < res.size(); ++k)
-			REQUIRE(res[k] == Approx(row[k]));
+			REQUIRE(res[k] == Catch::Approx(row[k]));
 	}
 	ptsAtCenter = false;
 	SECTION("Testing points at nodes")
@@ -226,19 +226,19 @@ TEST_CASE("Testing Filter2D with TOMesh tri input","[Filter2D]")
 		std::vector<double> res = testFilt(xVec, rad);
 		REQUIRE(res.size() == xVec.size());
 		for(std::size_t k = 0; k < res.size(); ++k)
-			REQUIRE(res[k] == Approx(nodeRes[k]));
+			REQUIRE(res[k] == Catch::Approx(nodeRes[k]));
 		// Test outside region
 		std::vector<Point_2_base> ptVec2 = {Point_2_base(-1., -1.), Point_2_base(-1., 1.), Point_2_base(2., 2.)};
 		res = testFilt(xVec, ptVec2, rad);
 		REQUIRE(res.size() == ptVec2.size()); // Check sizes
 		std::vector<double> row(res.size(), 0.); // Check values
 		for(std::size_t k = 0; k < res.size(); ++k)
-			REQUIRE(res[k] == Approx(row[k]));
+			REQUIRE(res[k] == Catch::Approx(row[k]));
 		// Retest with the filter derivative (same results can be computed since it's a linear filter)
 		SparseMatrix diffMat = testFilt.diffFilter(ptVec2, rad);
 		res = filterWithDiff(xVec, ptVec2.size(), diffMat);
 		for(std::size_t k = 0; k < res.size(); ++k)
-			REQUIRE(res[k] == Approx(row[k]));
+			REQUIRE(res[k] == Catch::Approx(row[k]));
 	}
 }
 

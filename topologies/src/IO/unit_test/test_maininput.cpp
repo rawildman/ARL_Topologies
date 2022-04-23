@@ -21,7 +21,7 @@
 #define CATCH_CONFIG_MAIN
 
 #include "inputloadertopopt.h"
-#include "catch.hpp"
+#include "catch2/catch_all.hpp"
 #include <string>
 
 using namespace Topologies;
@@ -78,24 +78,24 @@ TEST_CASE("Testing initial guess parsing","[InitialGuess]")
 	{
 		testParser.parse(xmldoc);
 		REQUIRE(testParser.getInitialGuessType() == igtConstant);
-		REQUIRE(testParser.getConstant() == Approx(1.));
+		REQUIRE(testParser.getConstant() == Catch::Approx(1.));
 	}
 	pugi::xml_node rootNode = xmldoc.child("initial_guess2");
 	SECTION("Test constant with noise")
 	{
 		testParser.parse(rootNode);
 		REQUIRE(testParser.getInitialGuessType() == igtConstantWithNoise);
-		REQUIRE(testParser.getConstant() == Approx(2.));
-		REQUIRE(testParser.getRandRange().first == Approx(3.));
-		REQUIRE(testParser.getRandRange().second == Approx(4.));
+		REQUIRE(testParser.getConstant() == Catch::Approx(2.));
+		REQUIRE(testParser.getRandRange().first == Catch::Approx(3.));
+		REQUIRE(testParser.getRandRange().second == Catch::Approx(4.));
 	}
 	rootNode = xmldoc.child("initial_guess3");
 	SECTION("Test random")
 	{
 		testParser.parse(rootNode);
 		REQUIRE(testParser.getInitialGuessType() == igtRandom);
-		REQUIRE(testParser.getRandRange().first == Approx(5.));
-		REQUIRE(testParser.getRandRange().second == Approx(6.));
+		REQUIRE(testParser.getRandRange().first == Catch::Approx(5.));
+		REQUIRE(testParser.getRandRange().second == Catch::Approx(6.));
 	}
 	rootNode = xmldoc.child("initial_guess4");
 	SECTION("Test file")
@@ -121,7 +121,7 @@ TEST_CASE("Testing output parsing","[Output]")
 		REQUIRE(testParser.getOutputType() == otVolume);
 		REQUIRE(testParser.getFileName() == "vol");
 		REQUIRE(testParser.getFileFormat() == offVTK);
-		REQUIRE(testParser.getExtrusionLength() == Approx(defaultParser.getExtrusionLength()));
+		REQUIRE(testParser.getExtrusionLength() == Catch::Approx(defaultParser.getExtrusionLength()));
 		REQUIRE(testParser.getOutputPeriod() == 5);
 		REQUIRE(testParser.getOverwrite() == false);
 		REQUIRE(testParser.getOutputFinal() == defaultParser.getOutputFinal());
@@ -161,7 +161,7 @@ TEST_CASE("Testing output parsing","[Output]")
 		REQUIRE(testParser.getOutputType() == otExtrude);
 		REQUIRE(testParser.getFileName() == "extrusion");
 		REQUIRE(testParser.getFileFormat() == offSTL);
-		REQUIRE(testParser.getExtrusionLength() == Approx(0.1));
+		REQUIRE(testParser.getExtrusionLength() == Catch::Approx(0.1));
 		REQUIRE(testParser.getOutputPeriod() == defaultParser.getOutputPeriod());
 		REQUIRE(testParser.getOverwrite() == defaultParser.getOverwrite());
 		REQUIRE(testParser.getOutputFinal() == defaultParser.getOutputFinal());
@@ -175,7 +175,7 @@ TEST_CASE("Testing output parsing","[Output]")
 		REQUIRE(testParser.getOutputType() == otObjFunRes);
 		REQUIRE(testParser.getFileName() == "ofvres");
 		REQUIRE(testParser.getFileFormat() == offDefault);
-		REQUIRE(testParser.getExtrusionLength() == Approx(defaultParser.getExtrusionLength()));
+		REQUIRE(testParser.getExtrusionLength() == Catch::Approx(defaultParser.getExtrusionLength()));
 		REQUIRE(testParser.getOutputPeriod() == defaultParser.getOutputPeriod());
 		REQUIRE(testParser.getOverwrite() == defaultParser.getOverwrite());
 		REQUIRE(testParser.getOutputFinal() == defaultParser.getOutputFinal());

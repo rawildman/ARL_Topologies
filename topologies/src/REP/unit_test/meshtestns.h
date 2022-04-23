@@ -118,7 +118,7 @@ namespace MeshTestNS
 	{
 		double vol = 0.;
 		for(auto cit = mesh.cells_in_complex_begin(); cit != mesh.cells_in_complex_end(); ++cit)
-			vol += CGAL::volume<CGAL::Epick>(cit->vertex(0)->point(), cit->vertex(1)->point(), cit->vertex(2)->point(), cit->vertex(3)->point());
+			vol += CGAL::volume<Mesh_K>(cit->vertex(0)->point().point(), cit->vertex(1)->point().point(), cit->vertex(2)->point().point(), cit->vertex(3)->point().point());
 		return vol;
 	}
 

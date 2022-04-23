@@ -21,7 +21,7 @@
 #define CATCH_CONFIG_MAIN
 
 #include "genericmaterial.h"
-#include "catch.hpp"
+#include "catch2/catch_all.hpp"
 
 using namespace Topologies;
 
@@ -56,7 +56,7 @@ TEST_CASE("Testing GenericMaterial constructor with no limits", "[GenericMateria
 	REQUIRE(testRGB[1] == rgb[1]);
 	REQUIRE(testRGB[2] == rgb[2]);
 	GenericMaterial testGM2({0., 0., 0.});
-	REQUIRE(testGM.dist(testGM2) == Approx(sqrt(5.)));
+	REQUIRE(testGM.dist(testGM2) == Catch::Approx(sqrt(5.)));
 	// Copy constructor and operator==
   GenericMaterial testGM3(testGM);
 	REQUIRE(testGM == testGM3);
@@ -84,7 +84,7 @@ TEST_CASE("Testing GenericMaterial constructor with limits", "[GenericMaterial]"
 	REQUIRE(testRGB[2] == rgb[2]);
 	// dist
 	GenericMaterial testGM2({0., 0., 0.});
-	REQUIRE(testGM.dist(testGM2) == Approx(sqrt(5.)));
+	REQUIRE(testGM.dist(testGM2) == Catch::Approx(sqrt(5.)));
 	// Property scaling
 	testGM.setScaledMaterialParam(0, 0.5);
 	REQUIRE(testGM.getParameter(0) == 0.5);
@@ -132,7 +132,7 @@ TEST_CASE("Testing GenericMaterial constructor with limits given by a second Gen
 	REQUIRE(testRGB[2] == rgb[2]);
 	// dist
 	GenericMaterial testGM2({0., 0., 0.});
-	REQUIRE(testGM.dist(testGM2) == Approx(sqrt(5.)));
+	REQUIRE(testGM.dist(testGM2) == Catch::Approx(sqrt(5.)));
 	// Property scaling
 	testGM.setScaledMaterialParam(0, 0.5);
 	REQUIRE(testGM.getParameter(0) == 0.5);

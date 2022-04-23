@@ -22,7 +22,7 @@
 #include "UTIL/genericmaterial.h"
 #include <iostream>
 #include <fstream>
-#include "catch.hpp"
+#include "catch2/catch_all.hpp"
 
 using namespace Topologies;
 

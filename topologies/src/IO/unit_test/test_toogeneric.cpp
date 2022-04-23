@@ -21,7 +21,7 @@
 #define CATCH_CONFIG_MAIN
 
 #include "inputloaderopt.h"
-#include "catch.hpp"
+#include "catch2/catch_all.hpp"
 #include <string>
 
 using namespace Topologies;
@@ -43,12 +43,12 @@ TEST_CASE("Testing input parsing using TOOGeneric","[TOOGeneric]")
 		testONI.parse(rootNode, "testtoo.xml");
 		TOOGeneric testParser(testONI.getTypeName());
 		testParser.parseNode(testONI);
-		REQUIRE(testParser.getFilterSize() == Approx(1.));
+		REQUIRE(testParser.getFilterSize() == Catch::Approx(1.));
 		REQUIRE(testParser.getConstraintPenalty() == defaultParser.getConstraintPenalty());
 		REQUIRE(testParser.getPenaltyPower() == defaultParser.getPenaltyPower());
 		REQUIRE(testParser.getStepSize() == defaultParser.getStepSize());
 		REQUIRE(testParser.getMaxStep() == defaultParser.getMaxStep());
-		REQUIRE(testParser.getStopTol() == Approx(2.));
+		REQUIRE(testParser.getStopTol() == Catch::Approx(2.));
 		REQUIRE(testParser.getMaxIters() == 3);
 		REQUIRE(testParser.getOptimizerName() == testONI.getTypeName());
 	}
@@ -75,12 +75,12 @@ TEST_CASE("Testing input parsing using TOOGeneric","[TOOGeneric]")
 		testONI.parse(rootNode, "testtoo.xml");
 		TOOGeneric testParser(testONI.getTypeName());
 		testParser.parseNode(testONI);
-		REQUIRE(testParser.getFilterSize() == Approx(1.));
-		REQUIRE(testParser.getConstraintPenalty() == Approx(4.));
-		REQUIRE(testParser.getPenaltyPower() == Approx(5.));
+		REQUIRE(testParser.getFilterSize() == Catch::Approx(1.));
+		REQUIRE(testParser.getConstraintPenalty() == Catch::Approx(4.));
+		REQUIRE(testParser.getPenaltyPower() == Catch::Approx(5.));
 		REQUIRE(testParser.getStepSize() == defaultParser.getStepSize());
 		REQUIRE(testParser.getMaxStep() == defaultParser.getMaxStep());
-		REQUIRE(testParser.getStopTol() == Approx(2.));
+		REQUIRE(testParser.getStopTol() == Catch::Approx(2.));
 		REQUIRE(testParser.getMaxIters() == 3);
 		REQUIRE(testParser.getOptimizerName() == testONI.getTypeName());
 	}
@@ -94,8 +94,8 @@ TEST_CASE("Testing input parsing using TOOGeneric","[TOOGeneric]")
 		REQUIRE(testParser.getFilterSize() == defaultParser.getFilterSize());
 		REQUIRE(testParser.getConstraintPenalty() == defaultParser.getConstraintPenalty());
 		REQUIRE(testParser.getPenaltyPower() == defaultParser.getPenaltyPower());
-		REQUIRE(testParser.getStepSize() == Approx(2.));
-		REQUIRE(testParser.getMaxStep() == Approx(1.));
+		REQUIRE(testParser.getStepSize() == Catch::Approx(2.));
+		REQUIRE(testParser.getMaxStep() == Catch::Approx(1.));
 		REQUIRE(testParser.getStopTol() == defaultParser.getStopTol());
 		REQUIRE(testParser.getMaxIters() == defaultParser.getMaxIters());
 		REQUIRE(testParser.getOptimizerName() == testONI.getTypeName());

@@ -21,7 +21,7 @@
 #define CATCH_CONFIG_MAIN
 
 #include "inputloaderopt.h"
-#include "catch.hpp"
+#include "catch2/catch_all.hpp"
 #include <string>
 
 using namespace Topologies;
@@ -43,18 +43,18 @@ TEST_CASE("Testing input parsing using TOOGA","[TOOGA]")
 		testONI.parse(rootNode, "testga.xml");
 		TOOGA testParser(testONI.getTypeName());
 		testParser.parseNode(testONI);
-		REQUIRE(testParser.getConstraintPenalty() == Approx(9.));
-		REQUIRE(testParser.getPenaltyPower() == Approx(10.));
-		REQUIRE(testParser.getMutationRange() == Approx(5.));
-		REQUIRE(testParser.getCrossoverRate() == Approx(3.));
-		REQUIRE(testParser.getMutationRate() == Approx(4.));
+		REQUIRE(testParser.getConstraintPenalty() == Catch::Approx(9.));
+		REQUIRE(testParser.getPenaltyPower() == Catch::Approx(10.));
+		REQUIRE(testParser.getMutationRange() == Catch::Approx(5.));
+		REQUIRE(testParser.getCrossoverRate() == Catch::Approx(3.));
+		REQUIRE(testParser.getMutationRate() == Catch::Approx(4.));
 		REQUIRE(testParser.getPopSize() == 2);
 		REQUIRE(testParser.getNumGens() == 1);
 		REQUIRE(testParser.getNumTourn() == 6);
 		REQUIRE(testParser.getNumElite() == 7);
 		REQUIRE(testParser.getMutationRadius() == 8);
 		REQUIRE(testParser.getNumGoals() == 1);
-		REQUIRE(testParser.getSharingRadius() == Approx(11.));
+		REQUIRE(testParser.getSharingRadius() == Catch::Approx(11.));
 		REQUIRE_FALSE(testParser.getIsPareto());
 		REQUIRE(testParser.getGoalWeights().empty());
 	}
@@ -65,11 +65,11 @@ TEST_CASE("Testing input parsing using TOOGA","[TOOGA]")
 		testONI.parse(rootNode, "testga.xml");
 		TOOGA testParser(testONI.getTypeName());
 		testParser.parseNode(testONI);
-		REQUIRE(testParser.getConstraintPenalty() == Approx(defaultParser.getConstraintPenalty()));
-		REQUIRE(testParser.getPenaltyPower() == Approx(defaultParser.getPenaltyPower()));
-		REQUIRE(testParser.getMutationRange() == Approx(16.));
-		REQUIRE(testParser.getCrossoverRate() == Approx(14.));
-		REQUIRE(testParser.getMutationRate() == Approx(15.));
+		REQUIRE(testParser.getConstraintPenalty() == Catch::Approx(defaultParser.getConstraintPenalty()));
+		REQUIRE(testParser.getPenaltyPower() == Catch::Approx(defaultParser.getPenaltyPower()));
+		REQUIRE(testParser.getMutationRange() == Catch::Approx(16.));
+		REQUIRE(testParser.getCrossoverRate() == Catch::Approx(14.));
+		REQUIRE(testParser.getMutationRate() == Catch::Approx(15.));
 		REQUIRE(testParser.getPopSize() == 13);
 		REQUIRE(testParser.getNumGens() == 12);
 		REQUIRE(testParser.getNumTourn() == defaultParser.getNumTourn());

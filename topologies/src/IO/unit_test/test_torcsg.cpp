@@ -21,7 +21,7 @@
 #define CATCH_CONFIG_MAIN
 
 #include "inputloaderrep.h"
-#include "catch.hpp"
+#include "catch2/catch_all.hpp"
 #include <string>
 
 using namespace Topologies;
@@ -43,14 +43,14 @@ TEST_CASE("Testing input parsing using TORCSGTree","[TORCSGTree]")
 		testRNI.parse(rootNode, "testcsg.xml");
 		TORCSGTree testParser(testRNI.getTypeName());
 		testParser.parseNode(testRNI);
-		REQUIRE(testParser.getRegionDimensions(0) == Approx(1.));
-		REQUIRE(testParser.getRegionDimensions(1) == Approx(2.));
+		REQUIRE(testParser.getRegionDimensions(0) == Catch::Approx(1.));
+		REQUIRE(testParser.getRegionDimensions(1) == Catch::Approx(2.));
 		REQUIRE(testParser.getMeshSizes(0) == 3);
 		REQUIRE(testParser.getMeshSizes(1) == 4);
 		REQUIRE(testParser.getShapeNums(0) == 5);
 		REQUIRE(testParser.getShapeNums(1) == 6);
 		REQUIRE(testParser.getNumPointsPerShape() == 10);
-		REQUIRE(testParser.getMinDensity() == Approx(1.));
+		REQUIRE(testParser.getMinDensity() == Catch::Approx(1.));
 		REQUIRE(testParser.getUseAffine() == true);
 		REQUIRE(testParser.getShapesAreHoles() == true);
 		REQUIRE(testParser.getRepName() == testRNI.getTypeName());
@@ -62,9 +62,9 @@ TEST_CASE("Testing input parsing using TORCSGTree","[TORCSGTree]")
 		testRNI.parse(rootNode, "testcsg.xml");
 		TORCSGTree testParser(testRNI.getTypeName());
 		testParser.parseNode(testRNI);
-		REQUIRE(testParser.getRegionDimensions(0) == Approx(1.));
-    REQUIRE(testParser.getRegionDimensions(1) == Approx(2.));
-		REQUIRE(testParser.getRegionDimensions(2) == Approx(3.));
+		REQUIRE(testParser.getRegionDimensions(0) == Catch::Approx(1.));
+    REQUIRE(testParser.getRegionDimensions(1) == Catch::Approx(2.));
+		REQUIRE(testParser.getRegionDimensions(2) == Catch::Approx(3.));
     REQUIRE(testParser.getMeshSizes(0) == 4);
     REQUIRE(testParser.getMeshSizes(1) == 5);
 		REQUIRE(testParser.getMeshSizes(2) == 6);

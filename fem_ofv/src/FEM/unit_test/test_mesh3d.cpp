@@ -21,7 +21,7 @@
 #include "lintetra.h"
 #include "trilinhex.h"
 #include <algorithm>
-#include "catch.hpp"
+#include "catch2/catch_all.hpp"
 
 using namespace Topologies;
 

@@ -22,7 +22,7 @@
 #include "point2d.h"
 #include "UTIL/genericmaterial.h"
 #include <iostream>
-#include "catch.hpp"
+#include "catch2/catch_all.hpp"
 
 using namespace Topologies;
 

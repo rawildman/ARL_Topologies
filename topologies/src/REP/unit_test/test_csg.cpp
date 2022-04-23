@@ -23,7 +23,7 @@
 #include "csgtree.h"
 #include "torfactory.h"
 #include "meshtestns.h"
-#include "catch.hpp"
+#include "catch2/catch_all.hpp"
 #include <memory>
 
 using namespace Topologies;
@@ -61,11 +61,11 @@ void testOneCSGAffine(TopOptRep& testPix, double reqVolFrac)
 	REQUIRE(discreteParams[0][6] == (int)true); // Shapes are holes
 	REQUIRE(realParams.size() == 1);
 	REQUIRE(realParams[0].size() == 3);
-	REQUIRE(realParams[0][0] == Approx(1.e-3)); // Min density
-	REQUIRE(realParams[0][1] == Approx(1.)); // width
-	REQUIRE(realParams[0][2] == Approx(2.)); // height
+	REQUIRE(realParams[0][0] == Catch::Approx(1.e-3)); // Min density
+	REQUIRE(realParams[0][1] == Catch::Approx(1.)); // width
+	REQUIRE(realParams[0][2] == Catch::Approx(2.)); // height
 	// Check vol frac
-	REQUIRE(testPix.computeVolumeFraction() == Approx(reqVolFrac));
+	REQUIRE(testPix.computeVolumeFraction() == Catch::Approx(reqVolFrac));
 	// Check mesh
 	std::unique_ptr<TOMesh> chkMesh = testPix.get2DMesh();
 	REQUIRE(chkMesh->getNumNodes() == 259);
@@ -103,11 +103,11 @@ void testOneCSGPoint(TopOptRep& testPix, double reqVolFrac)
 	REQUIRE(discreteParams[0][6] == (int)true); // Shapes are holes
 	REQUIRE(realParams.size() == 1);
 	REQUIRE(realParams[0].size() == 3);
-	REQUIRE(realParams[0][0] == Approx(1.e-3)); // Min density
-	REQUIRE(realParams[0][1] == Approx(1.)); // width
-	REQUIRE(realParams[0][2] == Approx(2.)); // height
+	REQUIRE(realParams[0][0] == Catch::Approx(1.e-3)); // Min density
+	REQUIRE(realParams[0][1] == Catch::Approx(1.)); // width
+	REQUIRE(realParams[0][2] == Catch::Approx(2.)); // height
 	// Check vol frac
-	REQUIRE(testPix.computeVolumeFraction() == Approx(reqVolFrac));
+	REQUIRE(testPix.computeVolumeFraction() == Catch::Approx(reqVolFrac));
 	// Check mesh
 	std::unique_ptr<TOMesh> chkMesh = testPix.get2DMesh();
 	REQUIRE(chkMesh->getNumNodes() == 259);

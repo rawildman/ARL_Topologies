@@ -22,7 +22,7 @@
 
 #include "gmshtxtloader.h"
 #include "tomesh.h"
-#include "catch.hpp"
+#include "catch2/catch_all.hpp"
 #include <string>
 
 using namespace Topologies;
@@ -48,8 +48,8 @@ TEST_CASE("Testing 2d, tri element functions in GMSHTxtMeshLoader namespace","[G
 		REQUIRE(testpe[0].second.size() == 1); // 1 nodes in physical entity 1
 		// Check location, should be at (0.5,-0.5)
 		REQUIRE(testpe[0].second[0].size() == 1);
-		REQUIRE(testMesh->getNode2D(testpe[0].second[0][0]).x() == Approx(0.5));
-		REQUIRE(testMesh->getNode2D(testpe[0].second[0][0]).y() == Approx(-0.5));
+		REQUIRE(testMesh->getNode2D(testpe[0].second[0][0]).x() == Catch::Approx(0.5));
+		REQUIRE(testMesh->getNode2D(testpe[0].second[0][0]).y() == Catch::Approx(-0.5));
 		// Second group
 		REQUIRE(testpe[1].first == 8); // id of 8
 		REQUIRE(testpe[1].second.size() == 10); // 10 edges in pe 8
@@ -58,7 +58,7 @@ TEST_CASE("Testing 2d, tri element functions in GMSHTxtMeshLoader namespace","[G
 		// Check location, should all be on x=-0.5 line
 		for(auto it1 = testpe[1].second.begin(); it1 != testpe[1].second.end(); ++it1)
 			for(auto it2 = it1->begin(); it2 != it1->end(); ++it2)
-				REQUIRE(testMesh->getNode2D(*it2).x() == Approx(-0.5));
+				REQUIRE(testMesh->getNode2D(*it2).x() == Catch::Approx(-0.5));
 	}
 }
 
@@ -105,7 +105,7 @@ TEST_CASE("Testing 3d, tet functions in GMSHTxtMeshLoader namespace","[GMSHTxtMe
 		// Check location, should all be on x=-0.5 plane
 		for(auto it1 = testpe[0].second.begin(); it1 != testpe[0].second.end(); ++it1)
 			for(auto it2 = it1->begin(); it2 != it1->end(); ++it2)
-				REQUIRE(testMesh->getNode3D(*it2).x() == Approx(-0.5));
+				REQUIRE(testMesh->getNode3D(*it2).x() == Catch::Approx(-0.5));
 		// Check next pe
 		REQUIRE(testpe[1].first == 29); // id of 29
 		REQUIRE(testpe[1].second.size() == 68); // 68 faces in side set 1
@@ -114,15 +114,15 @@ TEST_CASE("Testing 3d, tet functions in GMSHTxtMeshLoader namespace","[GMSHTxtMe
 		// Check location, should all be on x=0.5 plane
 		for(auto it1 = testpe[1].second.begin(); it1 != testpe[1].second.end(); ++it1)
 			for(auto it2 = it1->begin(); it2 != it1->end(); ++it2)
-				REQUIRE(testMesh->getNode3D(*it2).x() == Approx(0.5));
+				REQUIRE(testMesh->getNode3D(*it2).x() == Catch::Approx(0.5));
 		// Check last PE
 		REQUIRE(testpe[2].first == 30); // id of 30
 		REQUIRE(testpe[2].second.size() == 1); // 39 nodes in node set 1
 		// Check location, should be at (0.5,0.5,-0.5)
 		REQUIRE(testpe[2].second[0].size() == 1);
-		REQUIRE(testMesh->getNode3D(testpe[2].second[0][0]).x() == Approx(0.5));
-		REQUIRE(testMesh->getNode3D(testpe[2].second[0][0]).y() == Approx(0.5));
-		REQUIRE(testMesh->getNode3D(testpe[2].second[0][0]).z() == Approx(-0.5));
+		REQUIRE(testMesh->getNode3D(testpe[2].second[0][0]).x() == Catch::Approx(0.5));
+		REQUIRE(testMesh->getNode3D(testpe[2].second[0][0]).y() == Catch::Approx(0.5));
+		REQUIRE(testMesh->getNode3D(testpe[2].second[0][0]).z() == Catch::Approx(-0.5));
 	}
 }
 

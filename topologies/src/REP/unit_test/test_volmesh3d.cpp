@@ -24,7 +24,7 @@
 #include "torfactory.h"
 #include "meshtestns.h"
 #include "helper.h"
-#include "catch.hpp"
+#include "catch2/catch_all.hpp"
 #include <memory>
 
 using namespace Topologies;
@@ -68,21 +68,21 @@ void testOneVM3DInit(TopOptRep& testPix, double reqVolFrac)
 	// Continuous
 	REQUIRE(realParams.size() == 4);
 	REQUIRE(realParams[0].size() == 8);
-	REQUIRE(realParams[0][0] == Approx(0.5)); // Threshold
-	REQUIRE(realParams[0][1] == Approx(0.)); // Filter radius, default
-	REQUIRE(realParams[0][2] == Approx(1.)); // Tetra size, default
-	REQUIRE(realParams[0][3] == Approx(1.)); // Edge size, default
-	REQUIRE(realParams[0][4] == Approx(10.)); // Facet angle size, default
-	REQUIRE(realParams[0][5] == Approx(1.)); // Facet size size, default
-	REQUIRE(realParams[0][6] == Approx(1.)); // Facet distance size, default
-	REQUIRE(realParams[0][7] == Approx(1.)); // Cell edge ratio size, default
+	REQUIRE(realParams[0][0] == Catch::Approx(0.5)); // Threshold
+	REQUIRE(realParams[0][1] == Catch::Approx(0.)); // Filter radius, default
+	REQUIRE(realParams[0][2] == Catch::Approx(1.)); // Tetra size, default
+	REQUIRE(realParams[0][3] == Catch::Approx(1.)); // Edge size, default
+	REQUIRE(realParams[0][4] == Catch::Approx(10.)); // Facet angle size, default
+	REQUIRE(realParams[0][5] == Catch::Approx(1.)); // Facet size size, default
+	REQUIRE(realParams[0][6] == Catch::Approx(1.)); // Facet distance size, default
+	REQUIRE(realParams[0][7] == Catch::Approx(1.)); // Cell edge ratio size, default
 	REQUIRE(realParams[1].size() == 2); // Penalization function parameters
-	REQUIRE(realParams[1][0] == Approx(3.)); // Penalty power
-	REQUIRE(realParams[1][1] == Approx(1e-3)); // Minimum density
+	REQUIRE(realParams[1][0] == Catch::Approx(3.)); // Penalty power
+	REQUIRE(realParams[1][1] == Catch::Approx(1e-3)); // Minimum density
 	REQUIRE(realParams[2].size() == 0); // Projection function parameters
 	REQUIRE(realParams[3].size() == 0); // Fixed blocks
 	// Check vol frac
-	REQUIRE(testPix.computeVolumeFraction() == Approx(reqVolFrac));
+	REQUIRE(testPix.computeVolumeFraction() == Catch::Approx(reqVolFrac));
 	// Check mesh
 	std::unique_ptr<TOMesh> chkMesh = testPix.get3DVolumeMesh();
 	REQUIRE(chkMesh->getNumNodes() == 111);
@@ -126,23 +126,23 @@ void testOneHeaviRepInit(TopOptRep& testPix, double reqVolFrac)
 	// Continuous
 	REQUIRE(realParams.size() == 4);
 	REQUIRE(realParams[0].size() == 8);
-	REQUIRE(realParams[0][0] == Approx(0.5)); // Threshold
-	REQUIRE(realParams[0][1] == Approx(1.1)); // Filter radius
-	REQUIRE(realParams[0][2] == Approx(0.5)); // Tetra size
-	REQUIRE(realParams[0][3] == Approx(0.5)); // Edge size
-	REQUIRE(realParams[0][4] == Approx(25.)); // Facet angle size
-	REQUIRE(realParams[0][5] == Approx(0.5)); // Facet size
-	REQUIRE(realParams[0][6] == Approx(0.125)); // Facet distance size
-	REQUIRE(realParams[0][7] == Approx(3.)); // Cell edge ratio size
+	REQUIRE(realParams[0][0] == Catch::Approx(0.5)); // Threshold
+	REQUIRE(realParams[0][1] == Catch::Approx(1.1)); // Filter radius
+	REQUIRE(realParams[0][2] == Catch::Approx(0.5)); // Tetra size
+	REQUIRE(realParams[0][3] == Catch::Approx(0.5)); // Edge size
+	REQUIRE(realParams[0][4] == Catch::Approx(25.)); // Facet angle size
+	REQUIRE(realParams[0][5] == Catch::Approx(0.5)); // Facet size
+	REQUIRE(realParams[0][6] == Catch::Approx(0.125)); // Facet distance size
+	REQUIRE(realParams[0][7] == Catch::Approx(3.)); // Cell edge ratio size
 	REQUIRE(realParams[1].size() == 2); // Penalization function parameters
-	REQUIRE(realParams[1][0] == Approx(3.)); // Penalty power
-	REQUIRE(realParams[1][1] == Approx(1e-3)); // Minimum density
+	REQUIRE(realParams[1][0] == Catch::Approx(3.)); // Penalty power
+	REQUIRE(realParams[1][1] == Catch::Approx(1e-3)); // Minimum density
 	REQUIRE(realParams[2].size() == 2); // Projection parameters
-	REQUIRE(realParams[2][0] == Approx(0.5)); // Threshold
-	REQUIRE(realParams[2][1] == Approx(1.e-12)); // Heaviside exponent (beta)
+	REQUIRE(realParams[2][0] == Catch::Approx(0.5)); // Threshold
+	REQUIRE(realParams[2][1] == Catch::Approx(1.e-12)); // Heaviside exponent (beta)
 	REQUIRE(realParams[3].size() == 0); // Fixed blocks
 	// Check vol frac
-	REQUIRE(testPix.computeVolumeFraction() == Approx(reqVolFrac));
+	REQUIRE(testPix.computeVolumeFraction() == Catch::Approx(reqVolFrac));
 }
 
 double computeEps()
@@ -249,7 +249,7 @@ void testDiff(TopOptRep& testTOR)
 		{
 			double exact = df(k, ke);
 			double fdapprox = (upMeshFD->getOptVal(ke) - upMesh->getOptVal(ke))/step;
-			REQUIRE(exact == Approx(fdapprox));
+			REQUIRE(exact == Catch::Approx(fdapprox));
 		}
 		// Set back to original value
 		realVec[k] = tmpk;
@@ -276,7 +276,7 @@ void testVFDiff(TopOptRep& testTOR)
 		double vf1 = testTOR.computeVolumeFraction();
 		// Compute estimate and compare
 		double fdapprox = (vf1 - vf0)/step;
-		REQUIRE(vfGrad[k] == Approx(fdapprox));
+		REQUIRE(vfGrad[k] == Catch::Approx(fdapprox));
 		// Set back to original value
 		realVec[k] = tmpk;
 		testTOR.setRealRep(realVec.begin(), realVec.end());
@@ -313,7 +313,7 @@ TEST_CASE("Testing VolMesh2D with a fixed block","[VolMesh2D]")
 	InputLoader::RepNodeInfo testRNI = loadRNI("testmesh3d_fixed.xml");
 	std::unique_ptr<TopOptRep> upVM2D = TopOptRepFactory::createTopOptRep(testRNI);
 	upVM2D->initialize(0.1); // Shouldn't change results
-	REQUIRE(upVM2D->computeVolumeFraction() == Approx(1.));
+	REQUIRE(upVM2D->computeVolumeFraction() == Catch::Approx(1.));
 	// Test derivatives
 	testDiff(*upVM2D);
 	testVFDiff(*upVM2D);

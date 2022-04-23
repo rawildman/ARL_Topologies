@@ -21,7 +21,7 @@
 #include "REP/tomesh.h"
 #include "IO/exotxtmeshloader.h"
 #include "IO/gmshtxtloader.h"
-#include "catch.hpp"
+#include "catch2/catch_all.hpp"
 #include <iostream>
 
 using namespace Topologies;

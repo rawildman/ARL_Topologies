@@ -24,7 +24,7 @@
 #include "meshtestns.h"
 #include "tomeshprocessing.h"
 #include "geometrytranslation.h"
-#include "catch.hpp"
+#include "catch2/catch_all.hpp"
 
 #include <CGAL/Surface_mesh_default_triangulation_3.h>
 #include <CGAL/Surface_mesh_default_criteria_3.h>
@@ -122,8 +122,8 @@ TEST_CASE("Testing TOMesh in 2D", "[TOMesh]")
 	REQUIRE(testTOM.dimNum() == 2);
 	REQUIRE(testTOM.getNumNodes() == testCDT.number_of_vertices());
 	REQUIRE(testTOM.getNumElements() == countFaces(testCDT));
-	REQUIRE(getMeshArea(testTOM) == Approx(getMeshArea(testCDT)));
-	REQUIRE(sumOptVals(testTOM) == Approx((double)testTOM.getNumElements()));
+	REQUIRE(getMeshArea(testTOM) == Catch::Approx(getMeshArea(testCDT)));
+	REQUIRE(sumOptVals(testTOM) == Catch::Approx((double)testTOM.getNumElements()));
 	// Remesh
 	mesher.set_criteria(Criteria(0.125, 0.5));
 	mesher.refine_mesh();
@@ -132,16 +132,16 @@ TEST_CASE("Testing TOMesh in 2D", "[TOMesh]")
 	REQUIRE(testTOM.dimNum() == 2);
 	REQUIRE(testTOM.getNumNodes() == testCDT.number_of_vertices());
 	REQUIRE(testTOM.getNumElements() == countFaces(testCDT));
-	REQUIRE(getMeshArea(testTOM) == Approx(getMeshArea(testCDT)));
-	REQUIRE(sumOptVals(testTOM) == Approx((double)testTOM.getNumElements()));
+	REQUIRE(getMeshArea(testTOM) == Catch::Approx(getMeshArea(testCDT)));
+	REQUIRE(sumOptVals(testTOM) == Catch::Approx((double)testTOM.getNumElements()));
 	// Test other constructors
 	// Copy ctor
 	TOMesh2D copyTOM(testTOM);
 	REQUIRE(copyTOM.dimNum() == 2);
 	REQUIRE(copyTOM.getNumNodes() == testCDT.number_of_vertices());
   REQUIRE(copyTOM.getNumElements() == countFaces(testCDT));
-	REQUIRE(getMeshArea(copyTOM) == Approx(getMeshArea(testCDT)));
-	REQUIRE(sumOptVals(copyTOM) == Approx((double)copyTOM.getNumElements()));
+	REQUIRE(getMeshArea(copyTOM) == Catch::Approx(getMeshArea(testCDT)));
+	REQUIRE(sumOptVals(copyTOM) == Catch::Approx((double)copyTOM.getNumElements()));
 }
 
 TEST_CASE("Testing TOMesh in 3D, volume", "[TOMesh]")
@@ -157,7 +157,7 @@ TEST_CASE("Testing TOMesh in 3D, volume", "[TOMesh]")
                                                       {0, 5, 4}, {0, 1, 5}, {2, 6, 7}, {2, 7, 3},
                                                       {1, 7, 5}, {1, 3, 7}, {0, 4, 6}, {0, 6, 2}});
   TOMesh3DSurface tom3s(ptVec, connectivity);
-	REQUIRE(computeSurfaceArea(tom3s) == Approx(6.));
+	REQUIRE(computeSurfaceArea(tom3s) == Catch::Approx(6.));
   // Create a Mesh_polyhedron_3
   Mesh_polyhedron_3 MP3;
   GeometryTranslation::PolyhedronBuilderFromTOMesh builder(tom3s);
@@ -176,26 +176,26 @@ TEST_CASE("Testing TOMesh in 3D, volume", "[TOMesh]")
 	REQUIRE(testTOM.dimNum() == 3);
 	REQUIRE(testTOM.getNumElements() == mesh.number_of_cells_in_complex());
 	REQUIRE(testTOM.getNumNodes() == mesh.triangulation().number_of_vertices());
-	REQUIRE(getMeshArea(testTOM) == Approx(getMeshVolume(mesh)));
-	REQUIRE(sumOptVals(testTOM) == Approx(0.));
+	REQUIRE(getMeshArea(testTOM) == Catch::Approx(getMeshVolume(mesh)));
+	REQUIRE(sumOptVals(testTOM) == Catch::Approx(0.));
 	testTOM.setOptVals(std::vector<double>(testTOM.getNumElements(), 1.)); // Set optvals
-	REQUIRE(sumOptVals(testTOM) == Approx((double)testTOM.getNumElements()));
+	REQUIRE(sumOptVals(testTOM) == Catch::Approx((double)testTOM.getNumElements()));
 	// Assignment operator
 	testTOM = TOMesh3D(mesh);
 	REQUIRE(testTOM.dimNum() == 3);
 	REQUIRE(testTOM.getNumElements() == mesh.number_of_cells_in_complex());
 	REQUIRE(testTOM.getNumNodes() == mesh.triangulation().number_of_vertices());
-	REQUIRE(getMeshArea(testTOM) == Approx(getMeshVolume(mesh)));
-	REQUIRE(sumOptVals(testTOM) == Approx(0.));
+	REQUIRE(getMeshArea(testTOM) == Catch::Approx(getMeshVolume(mesh)));
+	REQUIRE(sumOptVals(testTOM) == Catch::Approx(0.));
 	testTOM.setOptVals(std::vector<double>(testTOM.getNumElements(), 1.)); // Set optvals
-	REQUIRE(sumOptVals(testTOM) == Approx((double)testTOM.getNumElements()));
+	REQUIRE(sumOptVals(testTOM) == Catch::Approx((double)testTOM.getNumElements()));
 	// Copy ctor
 	TOMesh3D copyTOM(testTOM);
 	REQUIRE(copyTOM.dimNum() == 3);
 	REQUIRE(copyTOM.getNumElements() == mesh.number_of_cells_in_complex());
 	REQUIRE(copyTOM.getNumNodes() == mesh.triangulation().number_of_vertices());
-	REQUIRE(getMeshArea(copyTOM) == Approx(getMeshVolume(mesh)));
-	REQUIRE(sumOptVals(copyTOM) == Approx((double)testTOM.getNumElements()));
+	REQUIRE(getMeshArea(copyTOM) == Catch::Approx(getMeshVolume(mesh)));
+	REQUIRE(sumOptVals(copyTOM) == Catch::Approx((double)testTOM.getNumElements()));
 }
 
 TEST_CASE("Testing TOMesh in 3D, surface mesh", "[TOMesh]")
@@ -210,18 +210,18 @@ TEST_CASE("Testing TOMesh in 3D, surface mesh", "[TOMesh]")
 	REQUIRE(testTOM.dimNum() == 3);
 	REQUIRE(testTOM.getNumElements() == countFaces(c2t3));
 	REQUIRE(testTOM.getNumNodes() == countVertices(c2t3));
-	REQUIRE(sumOptVals(testTOM) == Approx(0.));
+	REQUIRE(sumOptVals(testTOM) == Catch::Approx(0.));
 	// Test assignment operator
 	testTOM = TOMesh3DSurface(c2t3);
 	REQUIRE(testTOM.dimNum() == 3);
 	REQUIRE(testTOM.getNumElements() == countFaces(c2t3));
 	REQUIRE(testTOM.getNumNodes() == countVertices(c2t3));
-	REQUIRE(sumOptVals(testTOM) == Approx(0.));
+	REQUIRE(sumOptVals(testTOM) == Catch::Approx(0.));
 	// Test copy ctor
 	TOMesh3DSurface copyTOM(testTOM);
 	REQUIRE(copyTOM.dimNum() == 3);
 	REQUIRE(copyTOM.getNumElements() == countFaces(c2t3));
 	REQUIRE(copyTOM.getNumNodes() == countVertices(c2t3));
-	REQUIRE(sumOptVals(copyTOM) == Approx(0.));
+	REQUIRE(sumOptVals(copyTOM) == Catch::Approx(0.));
 }
 

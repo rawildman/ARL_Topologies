@@ -22,7 +22,7 @@
 
 #include "geometrytranslation.h"
 #include "meshtestns.h"
-#include "catch.hpp"
+#include "catch2/catch_all.hpp"
 #include <algorithm>
 #include <iostream>
 
@@ -54,21 +54,21 @@ TEST_CASE("Testing GeometryTranslation namespace, 2d mesh functions", "[Geometry
 	REQUIRE(testMesh.is_valid());
 	std::pair<double,double> xrange = getXRange(testMesh);
 	std::pair<double,double> yrange = getYRange(testMesh);
-	REQUIRE(xrange.first == Approx(0.));
-	REQUIRE(xrange.second == Approx(1.));
-	REQUIRE(yrange.first == Approx(0.));
-	REQUIRE(yrange.second == Approx(2.));
-	REQUIRE(getMeshArea(testMesh) == Approx(2.));
+	REQUIRE(xrange.first == Catch::Approx(0.));
+	REQUIRE(xrange.second == Catch::Approx(1.));
+	REQUIRE(yrange.first == Catch::Approx(0.));
+	REQUIRE(yrange.second == Catch::Approx(2.));
+	REQUIRE(getMeshArea(testMesh) == Catch::Approx(2.));
 	// With matvec
 	testMesh = mesh2D(segVec, matVec1, md);
 	REQUIRE(testMesh.is_valid());
 	xrange = getXRange(testMesh);
 	yrange = getYRange(testMesh);
-	REQUIRE(xrange.first == Approx(0.));
-	REQUIRE(xrange.second == Approx(1.));
-	REQUIRE(yrange.first == Approx(0.));
-	REQUIRE(yrange.second == Approx(2.));
-	REQUIRE(getMeshArea(testMesh) == Approx(2.));
+	REQUIRE(xrange.first == Catch::Approx(0.));
+	REQUIRE(xrange.second == Catch::Approx(1.));
+	REQUIRE(yrange.first == Catch::Approx(0.));
+	REQUIRE(yrange.second == Catch::Approx(2.));
+	REQUIRE(getMeshArea(testMesh) == Catch::Approx(2.));
 	REQUIRE(computeMaterialPropertyTotal(testMesh, 0, 2) == 0.);
 	REQUIRE(computeMaterialPropertyTotal(testMesh, 1, 2) == 2.);
 	// With matvec holding 2 properties
@@ -76,11 +76,11 @@ TEST_CASE("Testing GeometryTranslation namespace, 2d mesh functions", "[Geometry
 	REQUIRE(testMesh.is_valid());
 	xrange = getXRange(testMesh);
 	yrange = getYRange(testMesh);
-	REQUIRE(xrange.first == Approx(0.));
-	REQUIRE(xrange.second == Approx(1.));
-	REQUIRE(yrange.first == Approx(0.));
-	REQUIRE(yrange.second == Approx(2.));
-	REQUIRE(getMeshArea(testMesh) == Approx(2.));
+	REQUIRE(xrange.first == Catch::Approx(0.));
+	REQUIRE(xrange.second == Catch::Approx(1.));
+	REQUIRE(yrange.first == Catch::Approx(0.));
+	REQUIRE(yrange.second == Catch::Approx(2.));
+	REQUIRE(getMeshArea(testMesh) == Catch::Approx(2.));
 	REQUIRE(computeMaterialPropertyTotal(testMesh, 0, 2) == 0.);
 	REQUIRE(computeMaterialPropertyTotal(testMesh, 1, 2) == 2.);
 	// Two polygons
@@ -94,46 +94,46 @@ TEST_CASE("Testing GeometryTranslation namespace, 2d mesh functions", "[Geometry
 	REQUIRE(testMesh.is_valid());
 	xrange = getXRange(testMesh);
 	yrange = getYRange(testMesh);
-	REQUIRE(xrange.first == Approx(0.));
-	REQUIRE(xrange.second == Approx(1.));
-	REQUIRE(yrange.first == Approx(0.));
-	REQUIRE(yrange.second == Approx(2.));
-	REQUIRE(getMeshArea(testMesh) == Approx(1.96));
+	REQUIRE(xrange.first == Catch::Approx(0.));
+	REQUIRE(xrange.second == Catch::Approx(1.));
+	REQUIRE(yrange.first == Catch::Approx(0.));
+	REQUIRE(yrange.second == Catch::Approx(2.));
+	REQUIRE(getMeshArea(testMesh) == Catch::Approx(1.96));
 	// One material property
 	testMesh = mesh2D(segVec, matVec1, md);
 	REQUIRE(testMesh.is_valid());
 	xrange = getXRange(testMesh);
 	yrange = getYRange(testMesh);
-	REQUIRE(xrange.first == Approx(0.));
-	REQUIRE(xrange.second == Approx(1.));
-	REQUIRE(yrange.first == Approx(0.));
-	REQUIRE(yrange.second == Approx(2.));
-	REQUIRE(getMeshArea(testMesh) == Approx(2.));
-	REQUIRE(computeMaterialPropertyTotal(testMesh, 0, 2) == Approx(0.));
-	REQUIRE(computeMaterialPropertyTotal(testMesh, 1, 2) == Approx(2.));
+	REQUIRE(xrange.first == Catch::Approx(0.));
+	REQUIRE(xrange.second == Catch::Approx(1.));
+	REQUIRE(yrange.first == Catch::Approx(0.));
+	REQUIRE(yrange.second == Catch::Approx(2.));
+	REQUIRE(getMeshArea(testMesh) == Catch::Approx(2.));
+	REQUIRE(computeMaterialPropertyTotal(testMesh, 0, 2) == Catch::Approx(0.));
+	REQUIRE(computeMaterialPropertyTotal(testMesh, 1, 2) == Catch::Approx(2.));
 	// 2 material properties (should be the same as above)
 	testMesh = mesh2D(segVV, matVec2, md);
 	REQUIRE(testMesh.is_valid());
 	xrange = getXRange(testMesh);
 	yrange = getYRange(testMesh);
-	REQUIRE(xrange.first == Approx(0.));
-	REQUIRE(xrange.second == Approx(1.));
-	REQUIRE(yrange.first == Approx(0.));
-	REQUIRE(yrange.second == Approx(2.));
-	REQUIRE(getMeshArea(testMesh) == Approx(1.96));
-	REQUIRE(computeMaterialPropertyTotal(testMesh, 0, 2) == Approx(0.));
-	REQUIRE(computeMaterialPropertyTotal(testMesh, 1, 2) == Approx(1.96));
+	REQUIRE(xrange.first == Catch::Approx(0.));
+	REQUIRE(xrange.second == Catch::Approx(1.));
+	REQUIRE(yrange.first == Catch::Approx(0.));
+	REQUIRE(yrange.second == Catch::Approx(2.));
+	REQUIRE(getMeshArea(testMesh) == Catch::Approx(1.96));
+	REQUIRE(computeMaterialPropertyTotal(testMesh, 0, 2) == Catch::Approx(0.));
+	REQUIRE(computeMaterialPropertyTotal(testMesh, 1, 2) == Catch::Approx(1.96));
 	// pixel mesh functions
 	// First, no material properties
 	testMesh = mesh2Dpixel(3, 2, 1., 2., md);
 	REQUIRE(testMesh.is_valid());
 	xrange = getXRange(testMesh);
 	yrange = getYRange(testMesh);
-	REQUIRE(xrange.first == Approx(0.));
-	REQUIRE(xrange.second == Approx(1.));
-	REQUIRE(yrange.first == Approx(0.));
-	REQUIRE(yrange.second == Approx(2.));
-	REQUIRE(getMeshArea(testMesh) == Approx(2.));
+	REQUIRE(xrange.first == Catch::Approx(0.));
+	REQUIRE(xrange.second == Catch::Approx(1.));
+	REQUIRE(yrange.first == Catch::Approx(0.));
+	REQUIRE(yrange.second == Catch::Approx(2.));
+	REQUIRE(getMeshArea(testMesh) == Catch::Approx(2.));
 	// With material vector
 	std::vector<GenericMaterial> matVec3 = {GenericMaterial({1.}), GenericMaterial({2.}), 
 		GenericMaterial({3.}), GenericMaterial({4.}), GenericMaterial({5.}), GenericMaterial({6.})};
@@ -141,24 +141,24 @@ TEST_CASE("Testing GeometryTranslation namespace, 2d mesh functions", "[Geometry
 	REQUIRE(testMesh.is_valid());
 	xrange = getXRange(testMesh);
 	yrange = getYRange(testMesh);
-	REQUIRE(xrange.first == Approx(0.));
-	REQUIRE(xrange.second == Approx(2.));
-	REQUIRE(yrange.first == Approx(0.));
-	REQUIRE(yrange.second == Approx(1.));
-	REQUIRE(getMeshArea(testMesh) == Approx(2.));
-	REQUIRE(computeMaterialPropertyTotal(testMesh, 0, 1) == Approx(7.));
+	REQUIRE(xrange.first == Catch::Approx(0.));
+	REQUIRE(xrange.second == Catch::Approx(2.));
+	REQUIRE(yrange.first == Catch::Approx(0.));
+	REQUIRE(yrange.second == Catch::Approx(1.));
+	REQUIRE(getMeshArea(testMesh) == Catch::Approx(2.));
+	REQUIRE(computeMaterialPropertyTotal(testMesh, 0, 1) == Catch::Approx(7.));
 	// with opt val vector
 	std::vector<double> optValVec = {0., 1., 2., 3., 4., 5.};
 	testMesh = mesh2Dpixel(3, 2, 1., 2., optValVec, md);
 	REQUIRE(testMesh.is_valid());
 	xrange = getXRange(testMesh);
 	yrange = getYRange(testMesh);
-	REQUIRE(xrange.first == Approx(0.));
-	REQUIRE(xrange.second == Approx(1.));
-	REQUIRE(yrange.first == Approx(0.));
-	REQUIRE(yrange.second == Approx(2.));
-	REQUIRE(getMeshArea(testMesh) == Approx(2.));
-	REQUIRE(computeOptValTotal(testMesh) == Approx(5.));
+	REQUIRE(xrange.first == Catch::Approx(0.));
+	REQUIRE(xrange.second == Catch::Approx(1.));
+	REQUIRE(yrange.first == Catch::Approx(0.));
+	REQUIRE(yrange.second == Catch::Approx(2.));
+	REQUIRE(getMeshArea(testMesh) == Catch::Approx(2.));
+	REQUIRE(computeOptValTotal(testMesh) == Catch::Approx(5.));
 }
 
 TEST_CASE("Testing GeometryTranslation namespace, 3d mesh functions", "[GeometryTranslation]")
@@ -183,14 +183,14 @@ TEST_CASE("Testing GeometryTranslation namespace, 3d mesh functions", "[Geometry
 	C3t3 mesh = mesh3D(MP3, md);
 	// Get point ranges
 	std::vector<double> bbox = getBoundBox(mesh);
-	REQUIRE(bbox[0] == Approx(0.));
-	REQUIRE(bbox[1] == Approx(1.));
-	REQUIRE(bbox[2] == Approx(0.));
-	REQUIRE(bbox[3] == Approx(1.));
-	REQUIRE(bbox[4] == Approx(0.));
-	REQUIRE(bbox[5] == Approx(1.));
+	REQUIRE(bbox[0] == Catch::Approx(0.));
+	REQUIRE(bbox[1] == Catch::Approx(1.));
+	REQUIRE(bbox[2] == Catch::Approx(0.));
+	REQUIRE(bbox[3] == Catch::Approx(1.));
+	REQUIRE(bbox[4] == Catch::Approx(0.));
+	REQUIRE(bbox[5] == Catch::Approx(1.));
 	// Check volume
-	REQUIRE(getMeshVolume(mesh) == Approx(1.));
+	REQUIRE(getMeshVolume(mesh) == Catch::Approx(1.));
 }
 
 TEST_CASE("Boundary mesh functions", "[GeometryTranslation]")
@@ -206,7 +206,7 @@ TEST_CASE("Boundary mesh functions", "[GeometryTranslation]")
 		Mesh_Segment_2(Point_2_base(0.1, 0.1), Point_2_base(0., 0.1)),
 		Mesh_Segment_2(Point_2_base(0., 0.1), Point_2_base(0., 0.))};
 	std::vector<std::vector<Mesh_Segment_2>> segVV;
-	REQUIRE(computeSignedArea(segVec) == Approx(2.));
+	REQUIRE(computeSignedArea(segVec) == Catch::Approx(2.));
 	SECTION("Segments from points")
 	{
 		// Test mesh segment formation
@@ -215,21 +215,21 @@ TEST_CASE("Boundary mesh functions", "[GeometryTranslation]")
 		segVec.clear();
 		addPointsToSegments(ptVec, segVec);
 		REQUIRE(segVec.size() == 4);
-		REQUIRE(computeSignedArea(segVec) == Approx(2.));
+		REQUIRE(computeSignedArea(segVec) == Catch::Approx(2.));
 		addPointsToSegments(ptVec, segVV);
 		REQUIRE(segVV.size() == 1);
 		REQUIRE(segVV[0].size() == 4);
-		REQUIRE(computeSignedArea(segVV[0]) == Approx(2.));
+		REQUIRE(computeSignedArea(segVV[0]) == Catch::Approx(2.));
 		// Similar function, but wipes segVec first
 		generateSegment2FromPoints(ptVec, segVec);
 		REQUIRE(segVec.size() == 4);
-		REQUIRE(computeSignedArea(segVec) == Approx(2.));
+		REQUIRE(computeSignedArea(segVec) == Catch::Approx(2.));
 		// Get points from segments
 		generatePointsFromSegment2(segVec, ptVec);
 		REQUIRE(ptVec.size() == 4);
 		generateSegment2FromPoints(ptVec, segVec);
 		REQUIRE(segVec.size() == 4);
-		REQUIRE(computeSignedArea(segVec) == Approx(2.));
+		REQUIRE(computeSignedArea(segVec) == Catch::Approx(2.));
 	}
 	SECTION("Segment ordering")
 	{
@@ -241,7 +241,7 @@ TEST_CASE("Boundary mesh functions", "[GeometryTranslation]")
 			orderMeshSegments(curVec, segVV);
 			REQUIRE(segVV.size() == 1);
 			REQUIRE(segVV[0].size() == 4);
-			REQUIRE(computeSignedArea(segVV[0]) == Approx(2.));
+			REQUIRE(computeSignedArea(segVV[0]) == Catch::Approx(2.));
 		} while(std::next_permutation(kvec.begin(), kvec.end()));
 		// Add a hole polygon
 		segVec.insert(segVec.end(), segVec2.begin(), segVec2.end());
@@ -259,8 +259,8 @@ TEST_CASE("Boundary mesh functions", "[GeometryTranslation]")
 			double area0 = computeSignedArea(segVV[0]), area1 = computeSignedArea(segVV[1]);
 			if(area0 > area1)
 				std::swap(area0, area1);
-			REQUIRE(area0 == Approx(-0.01));
-			REQUIRE(area1 == Approx(2.));
+			REQUIRE(area0 == Catch::Approx(-0.01));
+			REQUIRE(area1 == Catch::Approx(2.));
 			// Test flatten
 			flattenMeshSegments(segVV, curVec);
 			REQUIRE(curVec.size() == 8);
@@ -282,35 +282,35 @@ TEST_CASE("Boundary mesh functions", "[GeometryTranslation]")
 		// Segs to polygon
 		CGAL::Polygon_2<Mesh_K> poly;
 		meshSegs2Polygon(segVec, poly);
-		REQUIRE(poly.area() == Approx(2.));
+		REQUIRE(poly.area() == Catch::Approx(2.));
 		// Polygon to segs
 		polygon2MeshSegs(poly, segVec);
-		REQUIRE(computeSignedArea(segVec) == Approx(2.));
+		REQUIRE(computeSignedArea(segVec) == Catch::Approx(2.));
 		// Nested polygon
 		segVec.insert(segVec.end(), segVec2.begin(), segVec2.end());
 		std::vector<CGAL::Polygon_2<Mesh_K>> polyVec;
 		meshSegs2PolygonWithHoles(segVec, poly, polyVec);
 		REQUIRE(polyVec.size() == 1);
-		REQUIRE(poly.area() == Approx(2.));
-		REQUIRE(polyVec[0].area() == Approx(-0.01));
+		REQUIRE(poly.area() == Catch::Approx(2.));
+		REQUIRE(polyVec[0].area() == Catch::Approx(-0.01));
 		// Point projection
 		segVec.erase(segVec.begin() + 4, segVec.end());
 		Point_2_base testP(0., 2.);
 		projectPointToPolygon(testP, poly, 1e-14);
-		REQUIRE(testP.x() == Approx(0.));
-		REQUIRE(testP.y() == Approx(1.));
+		REQUIRE(testP.x() == Catch::Approx(0.));
+		REQUIRE(testP.y() == Catch::Approx(1.));
 		testP = Point_2_base(1., 0.);
 		projectPointToPolygon(testP, poly, 1e-14);
-		REQUIRE(testP.x() == Approx(0.5));
-		REQUIRE(testP.y() == Approx(0.0));
+		REQUIRE(testP.x() == Catch::Approx(0.5));
+		REQUIRE(testP.y() == Catch::Approx(0.0));
 		testP = Point_2_base(-1., -2.);
 		projectPointToPolygon(testP, poly, 1e-14);
-		REQUIRE(testP.x() == Approx(-0.5));
-		REQUIRE(testP.y() == Approx(-1.0));
+		REQUIRE(testP.x() == Catch::Approx(-0.5));
+		REQUIRE(testP.y() == Catch::Approx(-1.0));
 		// Component vector
 		std::vector<double> compVec = {-0.5, -1., 0.5, -1., 0.5, 1., -0.5, 1.};
 		componentVec2Polygon(compVec, poly);
-		REQUIRE(poly.area() == Approx(2.));
+		REQUIRE(poly.area() == Catch::Approx(2.));
 		std::vector<double> compVec2;
 		polygon2ComponentVec(poly, compVec2);
 		REQUIRE(compVec == compVec2);
@@ -322,7 +322,7 @@ TEST_CASE("Boundary mesh functions", "[GeometryTranslation]")
 		partitionMeshSegPolys(segVec, segVV);
 		double area = 0.;
 		REQUIRE(segVV.size() == 2);
-		REQUIRE((computeSignedArea(segVV[0]) + computeSignedArea(segVV[1])) == Approx(1.5));
+		REQUIRE((computeSignedArea(segVV[0]) + computeSignedArea(segVV[1])) == Catch::Approx(1.5));
 	}
 }
 
@@ -343,6 +343,6 @@ TEST_CASE("Testing GeometryTranslation namespace, extrusion", "[GeometryTranslat
 	REQUIRE(2*testMesh.number_of_vertices() == tom3s.getNumNodes());
 	REQUIRE(2*testMesh.number_of_faces() < tom3s.getNumElements());
 	// Check surface area
-	REQUIRE(computeSurfaceArea(tom3s) == Approx(4.6));
+	REQUIRE(computeSurfaceArea(tom3s) == Catch::Approx(4.6));
 }
 

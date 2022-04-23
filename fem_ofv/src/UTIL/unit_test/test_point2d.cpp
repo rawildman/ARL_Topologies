@@ -16,7 +16,7 @@
  */
 
 #define CATCH_CONFIG_MAIN
-#include "catch.hpp"
+#include "catch2/catch_all.hpp"
 #include "point2d.h"
 
 TEST_CASE( "Testing Point2D class", "[Point2D]" )

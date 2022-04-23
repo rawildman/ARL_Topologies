@@ -23,7 +23,7 @@
 #include "pixelrep.h"
 #include "torfactory.h"
 #include "meshtestns.h"
-#include "catch.hpp"
+#include "catch2/catch_all.hpp"
 #include <memory>
 
 using namespace Topologies;
@@ -66,16 +66,16 @@ void testOnePixelRepInit(TopOptRep& testPix, double reqVolFrac, bool refined = f
 	REQUIRE((ProjectionType)discreteParams[1][5] == ptNone); // Projection method
 	REQUIRE(realParams.size() == 3);
 	REQUIRE(realParams[0].size() == 4);
-	REQUIRE(realParams[0][0] == Approx(0.5)); // Threshold
-	REQUIRE(realParams[0][1] == Approx(0.)); // Filter radius
-	REQUIRE(realParams[0][2] == Approx(1.)); // width
-	REQUIRE(realParams[0][3] == Approx(2.)); // height
+	REQUIRE(realParams[0][0] == Catch::Approx(0.5)); // Threshold
+	REQUIRE(realParams[0][1] == Catch::Approx(0.)); // Filter radius
+	REQUIRE(realParams[0][2] == Catch::Approx(1.)); // width
+	REQUIRE(realParams[0][3] == Catch::Approx(2.)); // height
 	REQUIRE(realParams[1].size() == 2); // Penalization function parameters
-	REQUIRE(realParams[1][0] == Approx(3.)); // Penalty power
-	REQUIRE(realParams[1][1] == Approx(1e-3)); // Minimum density
+	REQUIRE(realParams[1][0] == Catch::Approx(3.)); // Penalty power
+	REQUIRE(realParams[1][1] == Catch::Approx(1e-3)); // Minimum density
 	REQUIRE(realParams[2].size() == 0); // Projection function params
 	// Check vol frac
-	REQUIRE(testPix.computeVolumeFraction() == Approx(reqVolFrac));
+	REQUIRE(testPix.computeVolumeFraction() == Catch::Approx(reqVolFrac));
 	// Check mesh
 	std::unique_ptr<TOMesh> chkMesh = testPix.get2DMesh();
 	REQUIRE(chkMesh->getNumNodes() == (rf*15 + 1)*(rf*30 + 1));
@@ -118,18 +118,18 @@ void testOneHeaviRepInit(TopOptRep& testPix, double reqVolFrac, bool refined = f
   REQUIRE((ProjectionType)discreteParams[1][5] == ptThresholdHeavi); // Projection method
 	REQUIRE(realParams.size() == 3);
 	REQUIRE(realParams[0].size() == 4);
-	REQUIRE(realParams[0][0] == Approx(0.5)); // Threshold
-	REQUIRE(realParams[0][1] == Approx(1.1)); // Filter radius
-	REQUIRE(realParams[0][2] == Approx(1.)); // width
-	REQUIRE(realParams[0][3] == Approx(2.)); // height
+	REQUIRE(realParams[0][0] == Catch::Approx(0.5)); // Threshold
+	REQUIRE(realParams[0][1] == Catch::Approx(1.1)); // Filter radius
+	REQUIRE(realParams[0][2] == Catch::Approx(1.)); // width
+	REQUIRE(realParams[0][3] == Catch::Approx(2.)); // height
 	REQUIRE(realParams[1].size() == 2); // Penalization function parameters
-	REQUIRE(realParams[1][0] == Approx(3.)); // Penalty power
-	REQUIRE(realParams[1][1] == Approx(1e-3)); // Minimum density
+	REQUIRE(realParams[1][0] == Catch::Approx(3.)); // Penalty power
+	REQUIRE(realParams[1][1] == Catch::Approx(1e-3)); // Minimum density
 	REQUIRE(realParams[2].size() == 2); // Projection function params
-	REQUIRE(realParams[2][0] == Approx(0.5)); // Threshold
-	REQUIRE(realParams[2][1] == Approx(1.e-12)); // Heaviside exponent
+	REQUIRE(realParams[2][0] == Catch::Approx(0.5)); // Threshold
+	REQUIRE(realParams[2][1] == Catch::Approx(1.e-12)); // Heaviside exponent
 	// Check vol frac
-	REQUIRE(testPix.computeVolumeFraction() == Approx(reqVolFrac));
+	REQUIRE(testPix.computeVolumeFraction() == Catch::Approx(reqVolFrac));
 	// Check mesh
 	std::unique_ptr<TOMesh> chkMesh = testPix.get2DMesh();
 	REQUIRE(chkMesh->getNumNodes() == (rf*15 + 1)*(rf*30 + 1));

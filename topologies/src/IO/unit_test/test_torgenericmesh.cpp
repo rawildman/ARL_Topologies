@@ -21,7 +21,7 @@
 #define CATCH_CONFIG_MAIN
 
 #include "inputloaderrep.h"
-#include "catch.hpp"
+#include "catch2/catch_all.hpp"
 #include <string>
 
 using namespace Topologies;
@@ -43,9 +43,9 @@ TEST_CASE("Testing input parsing using TORGenericMesh","[TORGenericMesh]")
 		testRNI.parse(rootNode, "testmesh2d.xml");
 		TORGenericMesh testParser(testRNI.getTypeName());
 		testParser.parseNode(testRNI);
-		REQUIRE(testParser.getMinDensity() == Approx(1.));
-		REQUIRE(testParser.getPenalPower() == Approx(2.));
-		REQUIRE(testParser.getThreshold() == Approx(3.));
+		REQUIRE(testParser.getMinDensity() == Catch::Approx(1.));
+		REQUIRE(testParser.getPenalPower() == Catch::Approx(2.));
+		REQUIRE(testParser.getThreshold() == Catch::Approx(3.));
 		REQUIRE(testParser.getFiltRad() == defaultParser.getFiltRad());
 		REQUIRE(testParser.getBetaHeavi() == defaultParser.getBetaHeavi());
 		REQUIRE(testParser.getRepName() == testRNI.getTypeName());
@@ -56,24 +56,24 @@ TEST_CASE("Testing input parsing using TORGenericMesh","[TORGenericMesh]")
 		REQUIRE(polyVec.size() == 2);
 		REQUIRE(polyVec[0].size() == 3);
 		REQUIRE(polyVec[1].size() == 4);
-		REQUIRE(polyVec[0][0].x() == Approx(0.));
-		REQUIRE(polyVec[0][0].y() == Approx(0.));
-		REQUIRE(polyVec[0][1].x() == Approx(1.));
-		REQUIRE(polyVec[0][1].y() == Approx(0.));
-		REQUIRE(polyVec[0][2].x() == Approx(0.));
-		REQUIRE(polyVec[0][2].y() == Approx(1.));
-		REQUIRE(polyVec[1][0].x() == Approx(0.1));
-		REQUIRE(polyVec[1][0].y() == Approx(0.1));
-		REQUIRE(polyVec[1][1].x() == Approx(0.2));
-		REQUIRE(polyVec[1][1].y() == Approx(0.1));
-		REQUIRE(polyVec[1][2].x() == Approx(0.2));
-		REQUIRE(polyVec[1][2].y() == Approx(0.2));
-		REQUIRE(polyVec[1][3].x() == Approx(0.1));
-		REQUIRE(polyVec[1][3].y() == Approx(0.2));
+		REQUIRE(polyVec[0][0].x() == Catch::Approx(0.));
+		REQUIRE(polyVec[0][0].y() == Catch::Approx(0.));
+		REQUIRE(polyVec[0][1].x() == Catch::Approx(1.));
+		REQUIRE(polyVec[0][1].y() == Catch::Approx(0.));
+		REQUIRE(polyVec[0][2].x() == Catch::Approx(0.));
+		REQUIRE(polyVec[0][2].y() == Catch::Approx(1.));
+		REQUIRE(polyVec[1][0].x() == Catch::Approx(0.1));
+		REQUIRE(polyVec[1][0].y() == Catch::Approx(0.1));
+		REQUIRE(polyVec[1][1].x() == Catch::Approx(0.2));
+		REQUIRE(polyVec[1][1].y() == Catch::Approx(0.1));
+		REQUIRE(polyVec[1][2].x() == Catch::Approx(0.2));
+		REQUIRE(polyVec[1][2].y() == Catch::Approx(0.2));
+		REQUIRE(polyVec[1][3].x() == Catch::Approx(0.1));
+		REQUIRE(polyVec[1][3].y() == Catch::Approx(0.2));
 		// Check mesh params
 		const GeometryTranslation::MesherData& meshParams = testParser.getMeshParams();
-		REQUIRE(meshParams.triMeshEdgeAngle == Approx(10.));
-		REQUIRE(meshParams.triMeshEdgeSize == Approx(0.1));
+		REQUIRE(meshParams.triMeshEdgeAngle == Catch::Approx(10.));
+		REQUIRE(meshParams.triMeshEdgeSize == Catch::Approx(0.1));
 	}
 	rootNode = rootNode.next_sibling("representation");
 	REQUIRE(rootNode);
@@ -85,17 +85,17 @@ TEST_CASE("Testing input parsing using TORGenericMesh","[TORGenericMesh]")
 		REQUIRE(testParser.getMinDensity() == defaultParser.getMinDensity());
 		REQUIRE(testParser.getThreshold() == defaultParser.getThreshold());
 		REQUIRE(testParser.getPenalPower() == defaultParser.getPenalPower());
-		REQUIRE(testParser.getBetaHeavi() == Approx(1.));
-		REQUIRE(testParser.getFiltRad() == Approx(2.));
+		REQUIRE(testParser.getBetaHeavi() == Catch::Approx(1.));
+		REQUIRE(testParser.getFiltRad() == Catch::Approx(2.));
 		REQUIRE(testParser.getRepName() == testRNI.getTypeName());
 		REQUIRE(testParser.getVMTORS().torMeshType == mffExodus);
 		REQUIRE(testParser.getFileName() == "testquad.txt");
 		std::vector<std::pair<unsigned, double>> blockVec = testParser.getFixedBlockVec();
 		REQUIRE(blockVec.size() == 2);
 		REQUIRE(blockVec[0].first == 2);
-		REQUIRE(blockVec[0].second == Approx(1.));
+		REQUIRE(blockVec[0].second == Catch::Approx(1.));
 		REQUIRE(blockVec[1].first == 3);
-		REQUIRE(blockVec[1].second == Approx(0.5));
+		REQUIRE(blockVec[1].second == Catch::Approx(0.5));
 	}
 	rootNode = rootNode.next_sibling("representation");
 	REQUIRE(rootNode);
@@ -114,13 +114,13 @@ TEST_CASE("Testing input parsing using TORGenericMesh","[TORGenericMesh]")
 		REQUIRE(testParser.getFileName() == "cube.stl");
 		// Check mesh params
 		const GeometryTranslation::MesherData& meshParams = testParser.getMeshParams();
-		REQUIRE(meshParams.tetMeshEdgeSize == Approx(1.));
-		REQUIRE(meshParams.tetMeshEdgeSize == Approx(1.));
-		REQUIRE(meshParams.tetMeshFacetAngle == Approx(2.));
-		REQUIRE(meshParams.tetMeshFacetSize == Approx(3.));
-		REQUIRE(meshParams.tetMeshFacetDistance == Approx(4.));
-		REQUIRE(meshParams.tetMeshCellRadiusEdgeRatio == Approx(5.));
-		REQUIRE(meshParams.tetMeshCellSize == Approx(6.));
+		REQUIRE(meshParams.tetMeshEdgeSize == Catch::Approx(1.));
+		REQUIRE(meshParams.tetMeshEdgeSize == Catch::Approx(1.));
+		REQUIRE(meshParams.tetMeshFacetAngle == Catch::Approx(2.));
+		REQUIRE(meshParams.tetMeshFacetSize == Catch::Approx(3.));
+		REQUIRE(meshParams.tetMeshFacetDistance == Catch::Approx(4.));
+		REQUIRE(meshParams.tetMeshCellRadiusEdgeRatio == Catch::Approx(5.));
+		REQUIRE(meshParams.tetMeshCellSize == Catch::Approx(6.));
 	}
 	rootNode = rootNode.next_sibling("representation");
 	REQUIRE(rootNode);

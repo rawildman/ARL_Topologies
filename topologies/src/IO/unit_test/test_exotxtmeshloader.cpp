@@ -22,7 +22,7 @@
 
 #include "exotxtmeshloader.h"
 #include "tomesh.h"
-#include "catch.hpp"
+#include "catch2/catch_all.hpp"
 #include <string>
 
 using namespace Topologies;
@@ -50,7 +50,7 @@ TEST_CASE("Testing 2d, tri element functions in ExoTxtMeshLoader namespace","[Ex
 		REQUIRE(testns[0].second.size() == 6); // 6 nodes in node set 1
 		// Check location, should all be on x=-0.5 plane
 		for(auto it = testns[0].second.begin(); it != testns[0].second.end(); ++it)
-			REQUIRE(testMesh->getNode2D(*it).x() == Approx(-0.5));
+			REQUIRE(testMesh->getNode2D(*it).x() == Catch::Approx(-0.5));
 	}
 	SECTION("Test side set")
 	{
@@ -63,7 +63,7 @@ TEST_CASE("Testing 2d, tri element functions in ExoTxtMeshLoader namespace","[Ex
 		// Check location, should all be on x=0.5 line
 		for(auto it1 = testss[0].second.begin(); it1 != testss[0].second.end(); ++it1)
 			for(auto it2 = it1->begin(); it2 != it1->end(); ++it2)
-				REQUIRE(testMesh->getNode2D(*it2).x() == Approx(0.5));
+				REQUIRE(testMesh->getNode2D(*it2).x() == Catch::Approx(0.5));
 	}
 }
 
@@ -87,7 +87,7 @@ TEST_CASE("Testing 2d, quad element functions in ExoTxtMeshLoader namespace","[E
 		REQUIRE(testns[0].second.size() == 6); // 6 nodes in node set 1
 		// Check location, should all be on x=-0.5 plane
 		for(auto it = testns[0].second.begin(); it != testns[0].second.end(); ++it)
-			REQUIRE(testMesh->getNode2D(*it).x() == Approx(-0.5));
+			REQUIRE(testMesh->getNode2D(*it).x() == Catch::Approx(-0.5));
 	}
 	SECTION("Test side set")
 	{
@@ -100,7 +100,7 @@ TEST_CASE("Testing 2d, quad element functions in ExoTxtMeshLoader namespace","[E
 		// Check location, should all be on x=0.5 line
 		for(auto it1 = testss[0].second.begin(); it1 != testss[0].second.end(); ++it1)
 			for(auto it2 = it1->begin(); it2 != it1->end(); ++it2)
-				REQUIRE(testMesh->getNode2D(*it2).x() == Approx(0.5));
+				REQUIRE(testMesh->getNode2D(*it2).x() == Catch::Approx(0.5));
 	}
 }
 
@@ -145,7 +145,7 @@ TEST_CASE("Testing 3d, tet functions in ExoTxtMeshLoader namespace","[ExoTxtMesh
 		REQUIRE(testns[0].second.size() == 39); // 39 nodes in node set 1
 		// Check location, should all be on x=-0.5 plane
 		for(auto it = testns[0].second.begin(); it != testns[0].second.end(); ++it)
-			REQUIRE(testMesh->getNode3D(*it).x() == Approx(-0.5));
+			REQUIRE(testMesh->getNode3D(*it).x() == Catch::Approx(-0.5));
 	}
 	SECTION("Test side set")
 	{
@@ -158,7 +158,7 @@ TEST_CASE("Testing 3d, tet functions in ExoTxtMeshLoader namespace","[ExoTxtMesh
 		// Check location, should all be on x=0.5 plane
 		for(auto it1 = testss[0].second.begin(); it1 != testss[0].second.end(); ++it1)
 			for(auto it2 = it1->begin(); it2 != it1->end(); ++it2)
-				REQUIRE(testMesh->getNode3D(*it2).x() == Approx(0.5));
+				REQUIRE(testMesh->getNode3D(*it2).x() == Catch::Approx(0.5));
 	}
 }
 
@@ -182,7 +182,7 @@ TEST_CASE("Testing 3d, hex element functions in ExoTxtMeshLoader namespace","[Ex
 		REQUIRE(testns[0].second.size() == 36); // 36 nodes in node set 1
 		// Check location, should all be on x=-0.5 plane
 		for(auto it = testns[0].second.begin(); it != testns[0].second.end(); ++it)
-			REQUIRE(testMesh->getNode3D(*it).x() == Approx(-0.5));
+			REQUIRE(testMesh->getNode3D(*it).x() == Catch::Approx(-0.5));
 	}
 	SECTION("Test side set")
 	{
@@ -195,7 +195,7 @@ TEST_CASE("Testing 3d, hex element functions in ExoTxtMeshLoader namespace","[Ex
 		// Check location, should all be on x=0.5 plane
 		for(auto it1 = testss[0].second.begin(); it1 != testss[0].second.end(); ++it1)
 			for(auto it2 = it1->begin(); it2 != it1->end(); ++it2)
-				REQUIRE(testMesh->getNode3D(*it2).x() == Approx(0.5));
+				REQUIRE(testMesh->getNode3D(*it2).x() == Catch::Approx(0.5));
 	}
 }
 
