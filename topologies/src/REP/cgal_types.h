@@ -116,28 +116,24 @@ typedef CGAL::Delaunay_mesher_2<CDT_2, Criteria>                        Mesher_2
 }
 
 // 2D alpha shapes
-#include <CGAL/Weighted_point.h>
-#include <CGAL/Weighted_alpha_shape_euclidean_traits_2.h>
+#include <CGAL/Weighted_point_2.h>
 #include <CGAL/Regular_triangulation_2.h>
 #include <CGAL/Alpha_shape_2.h>
 
 namespace Topologies{
-typedef Mesh_K::FT                            Mesh_FT;
+typedef Mesh_K::FT                              Mesh_FT;
 typedef Mesh_K::Point_2                         Point_2_base;
-typedef Mesh_K::Point_3							Point_3_base;
-typedef CGAL::Weighted_point<Point_2_base, Mesh_FT>           W_Point_2;
+typedef Mesh_K::Point_3                         Point_3_base;
+typedef Mesh_K::Weighted_point_2                W_Point_2;
 typedef Mesh_K::Segment_2                       Mesh_Segment_2;
 typedef Mesh_K::Vector_2                        Mesh_Vector_2;
 
-typedef CGAL::Weighted_alpha_shape_euclidean_traits_2<Mesh_K>     Gt;
-typedef CGAL::Regular_triangulation_vertex_base_2<Gt>           Rvb;
-typedef CGAL::Alpha_shape_vertex_base_2<Gt,Rvb>             aVb;
-typedef CGAL::Regular_triangulation_face_base_2<Gt>           Rf;
-typedef CGAL::Alpha_shape_face_base_2<Gt, Rf>               aFb;
-
-typedef CGAL::Triangulation_data_structure_2<aVb,aFb>           aTds;
-typedef CGAL::Regular_triangulation_2<Gt,aTds>              Triangulation_2;
-
+typedef CGAL::Regular_triangulation_vertex_base_2<Mesh_K>   aRvb;
+typedef CGAL::Alpha_shape_vertex_base_2<Mesh_K, aRvb>       aVb;
+typedef CGAL::Regular_triangulation_face_base_2<Mesh_K>     aRf;
+typedef CGAL::Alpha_shape_face_base_2<Mesh_K, aRf>          aFb;
+typedef CGAL::Triangulation_data_structure_2<aVb,aFb>       aTds;
+typedef CGAL::Regular_triangulation_2<Mesh_K,aTds>          Triangulation_2;
 typedef CGAL::Alpha_shape_2<Triangulation_2>                Alpha_shape_2;
 
 typedef Alpha_shape_2::Face                       Face;

@@ -403,7 +403,7 @@ void CSGTerminalNode::rotatePoints(const Real theta)
 	std::list<W_Point_2>::iterator plist;
 	for(plist = geneList.begin(); plist != geneList.end(); ++plist)
 	{
-		Point_2_base tmp = *plist;
+		Point_2_base tmp(plist->x(), plist->y());
 		Real x = costheta*(tmp.x() - cg.x().to_double());
 		x += sintheta*(tmp.y() - cg.y().to_double());
 		x += cg.x().to_double();

@@ -44,7 +44,6 @@ public:
 	virtual ~TopOptRep(){}
 	explicit TopOptRep(TORType inTORT) : myTORT(inTORT) {}
 	TopOptRep(const TopOptRep& copyFrom) : realOptVals(copyFrom.realOptVals), myTORT(copyFrom.myTORT) {}
-	TopOptRep& operator=(TopOptRep copy) {swap(copy); return *this;}
 	TopOptRep(TopOptRep && rhs) {swap(rhs);}
 	void swap(TopOptRep& rhs) {std::swap(myTORT, rhs.myTORT); realOptVals.swap(rhs.realOptVals);}
 	virtual std::unique_ptr<TopOptRep> clone() const = 0;

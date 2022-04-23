@@ -310,7 +310,7 @@ namespace PostProcess
 			terrainPtVec[k] = Point_3_base(ptVec[k].x(), ptVec[k].y(), valVec[k]);
 		Delaunay dt(terrainPtVec.begin(), terrainPtVec.end());
 		// Now find intersections of triangles with threshold plane
-		CGAL::Plane_3<Mesh_K>::Plane_3 threshPlane(0., 0., 1., -threshold);
+		CGAL::Plane_3<Mesh_K> threshPlane(0., 0., 1., -threshold);
 		std::vector<Mesh_Segment_2> outVec;
 		for(Delaunay::Finite_faces_iterator fit = dt.finite_faces_begin(); fit != dt.finite_faces_end(); ++fit)
 		{

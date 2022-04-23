@@ -233,7 +233,7 @@ std::vector<double> VolMesh3D<PenaltyFunc, ProjectionFunc>::getNodalDensities() 
 	}
 	// Elem-based
 	std::vector<double> res = VM::getProjElemDensities();
-	setFixedVals(res);
+	VM::setFixedVals(res);
 	std::vector<double> nodalVec = getElemAvgNodalDensities(res);	
 	return nodalVec;
 }

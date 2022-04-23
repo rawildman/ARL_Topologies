@@ -201,7 +201,7 @@ void TOMesh3D::setupFromC3t3(const C3t3& inMesh)
 	// Copy points and get node ids
 	for(auto vit = tr.finite_vertices_begin(); vit != tr.finite_vertices_end(); ++vit)
 	{
-		ptVec.push_back(vit->point());
+		ptVec.push_back(vit->point().point());
 		handleIdMap[vit] = count++;
 	}
 	// Set up tetrahedra
