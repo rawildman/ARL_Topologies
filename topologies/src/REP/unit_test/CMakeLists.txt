@@ -3,35 +3,35 @@
 include_directories (BEFORE "REP/unit_test")
 # CartesianMesherTest
 add_executable(CartesianMesherTest test_cartesianmesher.cpp)
-target_link_libraries(CartesianMesherTest ${REQ_LIBS})
+target_link_libraries(CartesianMesherTest PRIVATE ${REQ_LIBS} Catch2::Catch2WithMain)
 add_test(CartesianMesherTest CartesianMesherTest)
 # GeometryTranslationTest
 add_executable(GeometryTranslationTest test_geometrytranslation.cpp)
-target_link_libraries(GeometryTranslationTest ${REQ_LIBS})
+target_link_libraries(GeometryTranslationTest PRIVATE ${REQ_LIBS} Catch2::Catch2WithMain)
 add_test(GeometryTranslationTest GeometryTranslationTest)
 # TOMeshTest
 add_executable(TOMeshTest test_tomesh.cpp)
-target_link_libraries(TOMeshTest ${REQ_LIBS})
+target_link_libraries(TOMeshTest PRIVATE ${REQ_LIBS} Catch2::Catch2WithMain)
 add_test(TOMeshTest TOMeshTest)
 # PixelRepTest
 add_executable(PixelRepTest test_pixel.cpp)
-target_link_libraries(PixelRepTest ${REQ_LIBS})
+target_link_libraries(PixelRepTest PRIVATE ${REQ_LIBS} Catch2::Catch2WithMain)
 add_test(PixelRepTest PixelRepTest)
 # VolMesh2DTest
 add_executable(VolMesh2DTest test_volmesh2d.cpp)
-target_link_libraries(VolMesh2DTest ${REQ_LIBS})
+target_link_libraries(VolMesh2DTest PRIVATE ${REQ_LIBS} Catch2::Catch2WithMain)
 add_test(VolMesh2DTest VolMesh2DTest)
 # VoxelRepTest
 add_executable(VoxelRepTest test_voxel.cpp)
-target_link_libraries(VoxelRepTest ${REQ_LIBS})
+target_link_libraries(VoxelRepTest PRIVATE ${REQ_LIBS} Catch2::Catch2WithMain)
 add_test(VoxelRepTest VoxelRepTest)
 # VolMesh3DTest
 add_executable(VolMesh3DTest test_volmesh3d.cpp)
-target_link_libraries(VolMesh3DTest ${REQ_LIBS})
+target_link_libraries(VolMesh3DTest PRIVATE ${REQ_LIBS} Catch2::Catch2WithMain)
 add_test(VolMesh3DTest VolMesh3DTest)
 # CSGTest
 add_executable(CSGTest test_csg.cpp)
-target_link_libraries(CSGTest ${REQ_LIBS})
+target_link_libraries(CSGTest PRIVATE ${REQ_LIBS} Catch2::Catch2WithMain)
 add_test(CSGTest CSGTest)
 # Copy files
 configure_file(./inputfiles/testpix.xml ${CMAKE_CURRENT_BINARY_DIR}/testpix.xml COPYONLY)

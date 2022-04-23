@@ -1,11 +1,11 @@
 # Regression tests
 # Test2D
 add_executable(Test2D test2d.cpp)
-target_link_libraries(Test2D ${REQ_LIBS})
+target_link_libraries(Test2D PRIVATE ${REQ_LIBS} Catch2::Catch2WithMain)
 add_test(Test2D Test2D)
 # Test3D
 add_executable(Test3D test3d.cpp)
-target_link_libraries(Test3D ${REQ_LIBS})
+target_link_libraries(Test3D PRIVATE ${REQ_LIBS} Catch2::Catch2WithMain)
 add_test(Test3D Test3D)
 # Copy and configure files
 # Pixel files

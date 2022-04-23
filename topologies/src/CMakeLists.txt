@@ -16,21 +16,14 @@ endif()
 add_definitions(-DCGAL_MESH_3_NO_DEPRECATED_SURFACE_INDEX
                 -DCGAL_MESH_3_NO_DEPRECATED_C3T3_ITERATORS)
 find_package(CGAL QUIET COMPONENTS Core )
+find_package(NLopt)
+find_package(pugixml)
 
 if ( CGAL_FOUND )
 # Compiler flags
-if(DEFINE_USE_MPI)
-	add_definitions(-DUSE_MPI)
-endif(DEFINE_USE_MPI)
-if(NOT DEFINED BOOST_ROOT)
-	set(BOOST_ROOT $ENV{BOOST_ROOT})
-endif(NOT DEFINED BOOST_ROOT)
-# Directory definitions for libraries and headers
-	set (NLOPT_INC_DIR ${NLOPT_ROOT}/include/)
-	set (NLOPT_LIB_DIR ${NLOPT_ROOT}/lib/ )
-	set (BOOST_LIB_DIR ${BOOST_ROOT}/lib)
-	set (PUGIXML_INC_DIR ${PUGIXML_ROOT}/include)
-	set (PUGIXML_LIB_DIR ${PUGIXML_ROOT}/lib64)
+  if(DEFINE_USE_MPI)
+	  add_definitions(-DUSE_MPI)
+  endif(DEFINE_USE_MPI)
 # Set include directories
 	include( ${CGAL_USE_FILE} )
 	include_directories (BEFORE ${CMAKE_CURRENT_BINARY_DIR})
@@ -39,8 +32,6 @@ endif(NOT DEFINED BOOST_ROOT)
 	include_directories (BEFORE "OPT/")
 	include_directories (BEFORE "REP/")
 	include_directories (BEFORE "UTIL/")
-	include_directories (BEFORE ${NLOPT_INC_DIR})
-	include_directories (BEFORE ${PUGIXML_INC_DIR})
 # Set source files
 	add_subdirectory (IO)
 	add_subdirectory (OBJFUN)
@@ -48,24 +39,20 @@ endif(NOT DEFINED BOOST_ROOT)
 	add_subdirectory (REP)
 	add_subdirectory (UTIL)
 # Required libraries
-	set (BOOST_REQ_LIBS ${BOOST_LIB_DIR}/libboost_thread.so ${BOOST_LIB_DIR}/libboost_chrono.so ${BOOST_LIB_DIR}/libboost_system.so)
-	set (NLOPT_LIB ${NLOPT_LIB_DIR}/libnlopt.so)
-	set (PUGIXML_LIB ${PUGIXML_LIB_DIR}/libpugixml.so)
 	set (DL_LIB libdl.so)
 # RPATH for install
 	set (CMAKE_INSTALL_RPATH "${CMAKE_INSTALL_PREFIX}/lib")
 # Set library
-	link_directories(${NLOPT_LIB_DIR})
-	link_directories(${BOOST_LIB_DIR})
-	link_directories(${PUGIXML_LIB_DIR})
 	# TO library
 	add_library(topologiescore SHARED ${TOLIB_SOURCE})
+	target_link_libraries(topologiescore PRIVATE pugixml::pugixml ${CGAL_LIBRARIES} ${CGAL_3RD_PARTY_LIBRARIES} ${DL_LIB})
 	set_property(TARGET topologiescore PROPERTY CXX_STANDARD 11)
 	set_property(TARGET topologiescore PROPERTY CXX_STANDARD_REQUIRED ON)
 	set_property(TARGET topologiescore PROPERTY INSTALL_RPATH_USE_LINK_PATH TRUE)
 	set(topologies_LIB topologiescore)
 	# Opt library
 	add_library(topologiesopt SHARED ${OPTLIB_SOURCE})
+	target_link_libraries(topologiesopt PRIVATE topologiescore NLopt::nlopt ${DL_LIB})
 	set_property(TARGET topologiesopt PROPERTY CXX_STANDARD 11)
 	set_property(TARGET topologiesopt PROPERTY CXX_STANDARD_REQUIRED ON)
 	set_property(TARGET topologiesopt PROPERTY INSTALL_RPATH_USE_LINK_PATH TRUE)
@@ -79,13 +66,12 @@ endif(NOT DEFINED BOOST_ROOT)
 	set_property(TARGET topologies PROPERTY INSTALL_RPATH_USE_LINK_PATH TRUE)
 	add_to_cached_list( CGAL_EXECUTABLE_TARGETS topologies )
 # Link the executable to CGAL and third-party libraries
-	set (REQ_LIBS ${topologies_LIB} ${topologiesopt_LIB} ${NLOPT_LIB} ${PUGIXML_LIB} ${CGAL_LIBRARIES} ${CGAL_3RD_PARTY_LIBRARIES} ${BOOST_REQ_LIBS} ${DL_LIB})
-	target_link_libraries(topologies ${REQ_LIBS})
+	set (REQ_LIBS ${topologies_LIB} ${topologiesopt_LIB} pugixml::pugixml)
+	target_link_libraries(topologies ${REQ_LIBS} ${DL_LIB})
 # Set up unit and regression testing
 if(COMPILE_TESTS)
 	enable_testing()
-	set (CATCH_INC_DIR ${CATCH_ROOT}/single_include)
-	include_directories (BEFORE ${CATCH_INC_DIR})
+	find_package(Catch2 3 REQUIRED)
 	add_subdirectory (IO/unit_test)
 	add_subdirectory (OBJFUN/unit_test)
 	add_subdirectory (OPT/unit_test)
@@ -101,8 +87,6 @@ endif(COMPILE_TESTS)
 # Install example files
 	add_subdirectory (EX_INPUT)
 else()
-  
     message(STATUS "NOTICE: The CGAL library is required and will not be compiled.")
-  
 endif()
 

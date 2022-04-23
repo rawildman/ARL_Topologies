@@ -1,6 +1,6 @@
 # TopOpt
 add_executable(TopOptTest test_topopt.cpp)
-target_link_libraries(TopOptTest ${REQ_LIBS})
+target_link_libraries(TopOptTest PRIVATE ${REQ_LIBS} Catch2::Catch2WithMain)
 add_test(TopOptTest TopOptTest)
 # Copy files
 configure_file(./inputfiles/gdinput.xml ${CMAKE_CURRENT_BINARY_DIR}/gdinput.xml COPYONLY)

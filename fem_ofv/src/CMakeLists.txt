@@ -15,7 +15,11 @@ endif()
 
 add_definitions(-DCGAL_MESH_3_NO_DEPRECATED_SURFACE_INDEX
                 -DCGAL_MESH_3_NO_DEPRECATED_C3T3_ITERATORS)
+
 find_package(CGAL QUIET COMPONENTS Core )
+find_package(Eigen3 3.3 REQUIRED NO_MODULE)
+find_package(NLopt)
+find_package(pugixml)
 
 if ( CGAL_FOUND )
 # Definitions
@@ -31,10 +35,6 @@ if ( CGAL_FOUND )
 		set(TOPOLOGIES_SRC ${TOPOLOGIES_ROOT}/topologies/src)
 		set(TOPOLOGIESCORE_LIB ${TOPOLOGIES_ROOT}/lib/libtopologiescore.so)
 	endif(NOT DEFINED TOPOLOGIES_ROOT)
-# Library locations
-	set(CATCH_INC_DIR ${CATCH_ROOT}/single_include)
-	set (PUGIXML_INC_DIR ${PUGIXML_ROOT}/include)
-	set (PUGIXML_LIB_DIR ${PUGIXML_ROOT}/lib64)
 # Set include directories
 	include( ${CGAL_USE_FILE} )
 	include_directories (BEFORE ${CMAKE_CURRENT_BINARY_DIR})
@@ -46,25 +46,22 @@ if ( CGAL_FOUND )
 	include_directories (BEFORE ${TOPOLOGIES_SRC}/UTIL)
 	include_directories (BEFORE "UTIL/")
 	include_directories (BEFORE "FEM/")
-	include_directories (BEFORE ${EIGEN_ROOT})
-	include_directories (BEFORE ${PUGIXML_INC_DIR})
+	#include_directories (BEFORE ${PUGIXML_INC_DIR})
 # Set source files
 	file (GLOB FEMSOURCE "FEM/*.cpp")
 	file (GLOB UTILSOURCE "UTIL/*.cpp")
 	set (FULL_SOURCE ${FEMSOURCE} ${UTILSOURCE})
 # Libraries
-	set (PUGIXML_LIB ${PUGIXML_LIB_DIR}/libpugixml.so)
-	link_directories(${PUGIXML_LIB_DIR})
 # Set executable
 	add_library (femofv SHARED ${FULL_SOURCE})
 	set_property(TARGET femofv PROPERTY INSTALL_RPATH_USE_LINK_PATH TRUE)
 	set(FEM_LIB femofv)
 	add_to_cached_list( CGAL_EXECUTABLE_TARGETS femofv )
 # Link the executable to CGAL and third-party libraries
-	target_link_libraries(femofv ${PUGIXML_LIB} ${CGAL_LIBRARIES} ${CGAL_3RD_PARTY_LIBRARIES} )
+	target_link_libraries(femofv Eigen3::Eigen pugixml::pugixml ${CGAL_LIBRARIES} ${CGAL_3RD_PARTY_LIBRARIES} )
 # Set subdirectories, contain unit tests
-	include_directories (BEFORE ${CATCH_INC_DIR})
 if(COMPILE_TESTS)
+  find_package(Catch2 3 REQUIRED)
 	enable_testing()
 	add_subdirectory (FEM)
 	add_subdirectory (UTIL)
@@ -72,8 +69,6 @@ endif(COMPILE_TESTS)
 # Install
 	install (TARGETS femofv LIBRARY DESTINATION ${CMAKE_INSTALL_PREFIX}/lib)
 else()
-  
-    message(STATUS "NOTICE: This demo requires the CGAL library, and will not be compiled.")
-  
+    message(STATUS "NOTICE: This library requires the CGAL library, and will not be compiled.")
 endif()
 

@@ -1,54 +1,54 @@
 # ExoTxtMeshLoader
 add_executable(ExoTxtMeshLoaderTest test_exotxtmeshloader.cpp)
-target_link_libraries(ExoTxtMeshLoaderTest ${REQ_LIBS})
+target_link_libraries(ExoTxtMeshLoaderTest PRIVATE ${REQ_LIBS} Catch2::Catch2WithMain)
 add_test(ExoTxtMeshLoaderTest ExoTxtMeshLoaderTest)
 # GMSHTxtMeshLoader
 add_executable(GMSHTxtMeshLoaderTest test_gmshtxtloader.cpp)
-target_link_libraries(GMSHTxtMeshLoaderTest ${REQ_LIBS})
+target_link_libraries(GMSHTxtMeshLoaderTest PRIVATE ${REQ_LIBS} Catch2::Catch2WithMain)
 add_test(GMSHTxtMeshLoaderTest GMSHTxtMeshLoaderTest)
 # STLTxtLoader
 add_executable(STLTxtLoaderTest test_stltxtloader.cpp)
-target_link_libraries(STLTxtLoaderTest ${REQ_LIBS})
+target_link_libraries(STLTxtLoaderTest PRIVATE ${REQ_LIBS} Catch2::Catch2WithMain)
 add_test(STLTxtLoaderTest STLTxtLoaderTest)
 # PostProcess
 add_executable(PostProcessTest test_postprocess.cpp)
-target_link_libraries(PostProcessTest ${REQ_LIBS})
+target_link_libraries(PostProcessTest PRIVATE ${REQ_LIBS} Catch2::Catch2WithMain)
 add_test(PostProcessTest PostProcessTest)
 # TORGenericVolume
 add_executable(TORGenericVolumeTest test_torgenericvolume.cpp)
-target_link_libraries(TORGenericVolumeTest ${REQ_LIBS})
+target_link_libraries(TORGenericVolumeTest PRIVATE ${REQ_LIBS} Catch2::Catch2WithMain)
 add_test(TORGenericVolumeTest TORGenericVolumeTest)
 # TORGenericMesh
 add_executable(TORGenericMeshTest test_torgenericmesh.cpp)
-target_link_libraries(TORGenericMeshTest ${REQ_LIBS})
+target_link_libraries(TORGenericMeshTest PRIVATE ${REQ_LIBS} Catch2::Catch2WithMain)
 add_test(TORGenericMeshTest TORGenericMeshTest)
 # TORCSG
 add_executable(TORCSGTest test_torcsg.cpp)
-target_link_libraries(TORCSGTest ${REQ_LIBS})
+target_link_libraries(TORCSGTest PRIVATE ${REQ_LIBS} Catch2::Catch2WithMain)
 add_test(TORCSGTest TORCSGTest)
 # TOOGeneric
 add_executable(TOOGenericTest test_toogeneric.cpp)
-target_link_libraries(TOOGenericTest ${REQ_LIBS})
+target_link_libraries(TOOGenericTest PRIVATE ${REQ_LIBS} Catch2::Catch2WithMain)
 add_test(TOOGenericTest TOOGenericTest)
 # TOOGA
 add_executable(TOOGATest test_tooga.cpp)
-target_link_libraries(TOOGATest ${REQ_LIBS})
+target_link_libraries(TOOGATest PRIVATE ${REQ_LIBS} Catch2::Catch2WithMain)
 add_test(TOOGATest TOOGATest)
 # TOOChain
 add_executable(TOOChainTest test_toochain.cpp)
-target_link_libraries(TOOChainTest ${REQ_LIBS})
+target_link_libraries(TOOChainTest PRIVATE ${REQ_LIBS} Catch2::Catch2WithMain)
 add_test(TOOChainTest TOOChainTest)
 # NodeInfo
 add_executable(NodeInfoTest test_nodeinfo.cpp)
-target_link_libraries(NodeInfoTest ${REQ_LIBS})
+target_link_libraries(NodeInfoTest PRIVATE ${REQ_LIBS} Catch2::Catch2WithMain)
 add_test(NodeInfoTest NodeInfoTest)
 # PugiXMLWrapper
 add_executable(PugiXMLWrapperTest test_pugixmlwrapper.cpp)
-target_link_libraries(PugiXMLWrapperTest ${REQ_LIBS})
+target_link_libraries(PugiXMLWrapperTest PRIVATE ${REQ_LIBS} Catch2::Catch2WithMain)
 add_test(PugiXMLWrapperTest PugiXMLWrapperTest)
 # MainInput
 add_executable(MainInputTest test_maininput.cpp)
-target_link_libraries(MainInputTest ${REQ_LIBS})
+target_link_libraries(MainInputTest PRIVATE ${REQ_LIBS} Catch2::Catch2WithMain)
 add_test(MainInputTest MainInputTest)
 # copy input files
 configure_file(./inputfiles/testtri.txt ${CMAKE_CURRENT_BINARY_DIR}/testtri.txt COPYONLY)
