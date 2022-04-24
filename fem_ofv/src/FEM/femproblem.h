@@ -18,14 +18,6 @@
 #ifndef FEMPROBLEM_H
 #define FEMPROBLEM_H
 
-#include <iostream>
-#include <fstream>
-#include <vector>
-#include <memory>
-#include <string>
-#include <map>
-#include <Eigen/Dense>
-#include <Eigen/Sparse>
 #include "UTIL/topologiesdefs.h"
 #include "femmesh.h"
 #include "element.h"
@@ -33,6 +25,13 @@
 #include "coordinatesystem.h"
 #include "point3d.h"
 #include "helper.h"
+
+#include <Eigen/Dense>
+#include <Eigen/Sparse>
+
+#include <vector>
+#include <memory>
+#include <map>
 
 namespace Topologies{
 class TOMesh;
@@ -58,52 +57,38 @@ struct ExoBC
 };
 
 //! A class that sets up and solves a static, linear elastic finite element problem
-/*! This class takes a mesh and a base material, and sets up its own finite element mesh, which can compute element matrices and other values needed to solve an FEM problem.  The base material baseMat is modified by the optVal parameters in TOMesh.
+/*! This class takes a mesh and a base material, and sets up its own finite element mesh, 
+ *  which can compute element matrices and other values needed to solve an FEM problem.  
+ *  The base material baseMat is modified by the optVal parameters in TOMesh.
 */
 class FEMProblem
 {
 public:
-	typedef std::vector<std::vector<std::pair<std::size_t, double>>> SparseMatrix;
-public:
 	//! @name Constructors and destructor
 	//@{
 	//! Constructor that sets up a FEMProblem using a TOMesh
-	explicit FEMProblem(const Topologies::TOMesh* const inMesh, const Topologies::GenericMaterial& baseMat);
-	~FEMProblem();
-	FEMProblem(const FEMProblem&);
-	FEMProblem(FEMProblem&&);
-	FEMProblem operator=(FEMProblem);
-	void swap(FEMProblem&);
+	FEMProblem(const Topologies::TOMesh& inMesh, const Topologies::GenericMaterial& baseMat);
+	virtual ~FEMProblem() = default;
+
 	//@}
 	//! Change problem to boundary conditions specified in bcVec
 	/*! This function is the main way to interact with FEMProblem.  Calling this will cause the FEMProblem objecto to recompute the FEM matrix and resolve it.
 	*/
-	void changeBoundaryConditionsTo(const std::vector<ExoBC>& bcVec);
+	virtual void changeBoundaryConditionsTo(const std::vector<ExoBC>& bcVec) = 0;
 	//! Returns the compliance (dot product of displacement and force) and whether or not an error occured during the solve
-	std::pair<double, bool> computeCompliance();
+	virtual std::pair<double, bool> computeCompliance() = 0;
 	//! Returns a vector containing the solution
-	const Eigen::VectorXd& getDisplacement() const {return *pVVec;}
-	//! Returns constant access to the stiffness matrix
-	const Eigen::SparseMatrix<double>& getFEMMatrix() const {return *pFEMMatrix;}
+	virtual const Eigen::VectorXd& getDisplacement() const = 0;
 	//! Returns whether or not the last problem ran successfully
 	bool validRun() const {return !invalid;}
 	//! Returns the gradient of the compliance
-	std::vector<double> gradCompliance(const Topologies::TOMesh* const inMesh) const;
-private:
+	virtual std::vector<double> gradCompliance(const Topologies::TOMesh& inMesh) const = 0;
+protected:
 	typedef Eigen::MatrixXd EigenDenseMat;
 	typedef Eigen::VectorXd EigenVector;
 	typedef Eigen::SparseMatrix<double> EigenSparseMat;
 	typedef Eigen::Triplet<double> EigenT;
 
-	void solveProblem();
-	void setMatrix();
-	void setVector();
-	void assembleMatrix(std::vector<EigenT>& rseMat, const std::size_t kelem, const EigenDenseMat& elemMat, std::size_t numUnk) const;
-	void assembleMatrix2D(std::vector<EigenT>& rseMat, const std::size_t kelem, const EigenDenseMat& elemMat, std::size_t numUnk) const;
-	void assembleMatrix3D(std::vector<EigenT>& rseMat, const std::size_t kelem, const EigenDenseMat& elemMat, std::size_t numUnk) const;
-	double elementCompliance(const std::size_t kelem, const EigenDenseMat& elemMat, std::size_t numUnk) const;
-	double elementCompliance2D(const std::size_t kelem, const EigenDenseMat& elemMat, std::size_t numUnk) const;
-	double elementCompliance3D(const std::size_t kelem, const EigenDenseMat& elemMat, std::size_t numUnk) const;
 	bool checkForSimplex() const;
 	Point3D getMeshPoint(std::size_t kn) const;
 

@@ -26,9 +26,9 @@
 #include "trilinhex.h"
 #include "tomesh.h"
 
-Mesh3D::Mesh3D(const Topologies::TOMesh* const inMesh, const Topologies::GenericMaterial& baseMat) :
-	itsNumNodes(inMesh->getNumNodes()),
-	itsNumCells(inMesh->getNumElements()),
+Mesh3D::Mesh3D(const Topologies::TOMesh& inMesh, const Topologies::GenericMaterial& baseMat) :
+	itsNumNodes(inMesh.getNumNodes()),
+	itsNumCells(inMesh.getNumElements()),
 	itsOffset(0)
 {
 	nodeVec.reserve(itsNumNodes);
@@ -36,7 +36,7 @@ Mesh3D::Mesh3D(const Topologies::TOMesh* const inMesh, const Topologies::Generic
 	// Generate list of all grid points
 	for(std::size_t k = 0; k < itsNumNodes; ++k)
 	{
-		nodeVec.push_back(std::unique_ptr<Point3D>(new Point3D(inMesh->getNode3D(k))));
+		nodeVec.push_back(std::unique_ptr<Point3D>(new Point3D(inMesh.getNode3D(k))));
 		basisNodeMap[nodeVec.back().get()] = k;
 	}
 	// Set up FEM mesh
@@ -45,13 +45,13 @@ Mesh3D::Mesh3D(const Topologies::TOMesh* const inMesh, const Topologies::Generic
 		matparams[k] = baseMat.getParameter(k);
 	for(std::size_t k = 0; k < itsNumCells; ++k)
 	{
-		const std::vector<std::size_t>& tmpEV = inMesh->getElementConnectivity(k);
+		const std::vector<std::size_t>& tmpEV = inMesh.getElementConnectivity(k);
 		std::vector<Point3D*> curElemVec(tmpEV.size());
 		for(std::size_t kp = 0; kp < tmpEV.size(); ++kp)
 			curElemVec[kp] = nodeVec[tmpEV[kp]].get();
 		std::vector<double> curparams = matparams;
-		curparams[1] *= inMesh->getOptVal(k);
-		curparams[2] *= inMesh->getOptVal(k);
+		curparams[1] *= inMesh.getOptVal(k);
+		curparams[2] *= inMesh.getOptVal(k);
 		Topologies::GenericMaterial curMat(curparams);
 		if(tmpEV.size() == 4)
 			cellVec.push_back(std::unique_ptr<Cell>(new LinTetra(curElemVec, curMat)));

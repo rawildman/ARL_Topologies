@@ -51,7 +51,7 @@ public:
 	//! @name Constructors and destructor
 	//@{
 	//! Constructor which takes a TOMesh and copies the nodes and connectivity from it
-	Mesh3D(const Topologies::TOMesh* const inMesh, const Topologies::GenericMaterial& baseMat);
+	Mesh3D(const Topologies::TOMesh& inMesh, const Topologies::GenericMaterial& baseMat);
 	//! Constructor which takes in a vector of Point3D pointers and a vector of Cell objects. err is returned with any error conditions
 	/*! This constructor generates a 3D mesh from a set of nodes (inNodeVec) and elements (inElemVec).  These objects will be copied into for internal use and the mesh will be processed to generate and store topological information such as cell edges and faces.  err indicates whether an error has occured on return during the mesh processing.
 	*/

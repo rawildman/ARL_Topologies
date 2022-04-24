@@ -17,14 +17,14 @@
 
 #define CATCH_CONFIG_MAIN
 
-#include "femproblem.h"
+#include "linearelasticproblem.h"
 #include "REP/tomesh.h"
 #include "catch2/catch_all.hpp"
 #include <iostream>
 
 using namespace Topologies;
 
-TEST_CASE("Testing FEMProblem in 2D","[FEMProblem]")
+TEST_CASE("Testing LinearElasticProblem in 2D","[LinearElasticProblem]")
 {
 	Point_2_base p0(0.,0.), p1(1.,0.), p2(1.,1.), p3(0.,1.);
 	std::vector<Point_2_base> nodeVec = {p0, p1, p2, p3};
@@ -57,20 +57,11 @@ TEST_CASE("Testing FEMProblem in 2D","[FEMProblem]")
 		std::vector<double> optVals(1,1.);
 		TOMesh2D mesh(nodeVec, connVec, optVals);
 		// Set up & solve FE problem
-		FEMProblem testFE(&mesh, gm);
+		LinearElasticProblem testFE(mesh, gm);
 		testFE.changeBoundaryConditionsTo(bcVec);
 		REQUIRE(testFE.validRun());
 		REQUIRE(chkVec.isApprox(testFE.getDisplacement(), 1e-14));
 		std::pair<double,bool> c = testFE.computeCompliance();
-		REQUIRE(c.first == Catch::Approx(0.4));
-		REQUIRE(c.second);
-		// Test assignment operator
-		
-		testFE = FEMProblem(&mesh, gm);
-		testFE.changeBoundaryConditionsTo(bcVec);
-		REQUIRE(testFE.validRun());
-		REQUIRE(chkVec.isApprox(testFE.getDisplacement(), 1e-14));
-		c = testFE.computeCompliance();
 		REQUIRE(c.first == Catch::Approx(0.4));
 		REQUIRE(c.second);
 	}
@@ -83,24 +74,17 @@ TEST_CASE("Testing FEMProblem in 2D","[FEMProblem]")
 		std::vector<double> optVals(2,1.);
 		TOMesh2D mesh(nodeVec, connVec, optVals);
 		// Set up & solve FE problem
-		FEMProblem testFE(&mesh, gm);
+		LinearElasticProblem testFE(mesh, gm);
 		testFE.changeBoundaryConditionsTo(bcVec);
 		REQUIRE(testFE.validRun());
 		REQUIRE(chkVec.isApprox(testFE.getDisplacement(), 1e-14));
 		std::pair<double,bool> c = testFE.computeCompliance();
 		REQUIRE(c.first == Catch::Approx(0.4));
 		REQUIRE(c.second);
-		// Test copy ctor
-		FEMProblem testFE2(testFE);
-		REQUIRE(testFE2.validRun());
-		REQUIRE(chkVec.isApprox(testFE2.getDisplacement(), 1e-14));
-		c = testFE2.computeCompliance();
-		REQUIRE(c.first == Catch::Approx(0.4));
-		REQUIRE(c.second);
 	}
 }
 
-TEST_CASE("Testing FEMProblem in 3D", "[FEMProblem]")
+TEST_CASE("Testing LinearElasticProblem in 3D", "[LinearElasticProblem]")
 {
 	Point_3_base p0(0.,0.,0.), p1(1.,0.,0.), p2(0.,1.,0), p3(1.,1.,0.);
 	Point_3_base p4(0.,0.,1.), p5(1.,0.,1.), p6(0.,1.,1), p7(1.,1.,1.);
@@ -157,7 +141,7 @@ TEST_CASE("Testing FEMProblem in 3D", "[FEMProblem]")
 		connVec[5] = {6, 7, 5, 3};
 		std::vector<double> optVals(6,1.);
 		TOMesh3D mesh(nodeVec, connVec, optVals);
-		FEMProblem testFE(&mesh, gm);
+		LinearElasticProblem testFE(mesh, gm);
 		bcVec.push_back(load1);
 		bcVec.push_back(load2);
 		testFE.changeBoundaryConditionsTo(bcVec);
@@ -174,7 +158,7 @@ TEST_CASE("Testing FEMProblem in 3D", "[FEMProblem]")
 		connVec[0] = {0, 1, 3, 2, 4, 5, 7, 6};
 		std::vector<double> optVals(1,1.);
 		TOMesh3D mesh(nodeVec, connVec, optVals);
-		FEMProblem testFE(&mesh, gm);
+		LinearElasticProblem testFE(mesh, gm);
 		bcVec.push_back(load3);
 		testFE.changeBoundaryConditionsTo(bcVec);
 		const Eigen::VectorXd& sol = testFE.getDisplacement();
@@ -185,5 +169,3 @@ TEST_CASE("Testing FEMProblem in 3D", "[FEMProblem]")
 		REQUIRE(c.second);
 	}
 }
-
-

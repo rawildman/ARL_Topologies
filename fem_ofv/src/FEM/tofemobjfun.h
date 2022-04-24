@@ -22,16 +22,19 @@
 #include <memory>
 #include "OBJFUN/topoptobjfun.h"
 #include "REP/cgal_types.h"
-#include "femproblem.h"
 #include "IO/inputloader.h"
 #include "boundarycondition.h"
 #include "loadcondition.h"
+#include "femproblem.h"
 
 namespace Topologies{class TopOptRep;}
 
 //! Interface between finite element solver and TopOptObjFun base class
 /*!
- * This class is derived from TopOptObjFun and interfaces between it and FEMProblem.  FEMProblem is a static, linear elastic solver with various element types.  This class will construct an FEMProblem object, solve a given problem, and return the compliance which is the dot product of the displacement and load vectors.
+ * This class is derived from TopOptObjFun and interfaces between it and FEMProblem.  
+ * FEMProblem is a static, linear elastic solver with various element types.  
+ * This class will construct an FEMProblem object, solve a given problem, and return 
+ * the compliance which is the dot product of the displacement and load vectors.
  */
 class TOFEMObjFun : public Topologies::TopOptObjFun
 {
@@ -49,7 +52,7 @@ public:
 	//! Function c evaluates the constraints on a given TopOptRep, here the constraint is volume fraction
 	virtual void c(const Topologies::TopOptRep& inTOR, std::pair<std::vector<double>, bool>& outRes) const;
 	//! Function g computes the gradient of the objective function
-  virtual void g(const Topologies::TopOptRep& inTOR, std::pair<std::vector<double>, bool>& outRes) const;
+    virtual void g(const Topologies::TopOptRep& inTOR, std::pair<std::vector<double>, bool>& outRes) const;
 	//! Computes the gradient of the constraints
 	virtual void gc(const Topologies::TopOptRep& inTOR, std::pair<std::vector<double>, bool>& outRes) const;
 	//! Computes the gradient and the objective function value
@@ -84,10 +87,8 @@ extern "C" void destroy(Topologies::TopOptObjFun* p)
 class FEMInputLoader : public Topologies::InputLoader::InputParser
 {
 public:
-	FEMInputLoader() : dim(2), rho(1.), E(1.), nu(0.25), maxDisplacement(1e16), volfrac(0.5), inputMFF(Topologies::mffUnknown) {}
-	virtual ~FEMInputLoader() {}
-	virtual void parse(const pugi::xml_document& xmldoc);
-	virtual void parse(const pugi::xml_node& rootNode);
+	void parse(const pugi::xml_document& xmldoc) override;
+	void parse(const pugi::xml_node& rootNode) override;
 	
 	//! Returns Young's modulus
 	double getYoungsMod() const {return E;}
@@ -119,10 +120,13 @@ private:
 	void parseGeoLC(const pugi::xml_node& rootNode);
 	CoordinateSystem::Type readCoordinateSystemAttribute(const pugi::xml_node& rootNode) const;
 
-	unsigned dim;
-	double rho, E, nu, maxDisplacement;
-	double volfrac;
-	Topologies::MeshFileFormat inputMFF;
+	unsigned dim = 2;
+	double rho = 1.0;
+	double E = 1.0;
+	double nu = 0.25;
+	double maxDisplacement = 1e16;
+	double volfrac = 0.5;
+	Topologies::MeshFileFormat inputMFF = Topologies::mffUnknown;
 	std::string meshFilename;
 	std::vector<BoundaryCondition> bcVec;
 	std::vector<std::vector<LoadCondition<double>>> lcVV;

@@ -19,9 +19,10 @@
 #include <memory>
 #include <fstream>
 #include <string>
+
 #include "tofemobjfun.h"
+#include "linearelasticproblem.h"
 #include "REP/topoptrep.h"
-#include "femproblem.h"
 #include "REP/tomesh.h"
 #include "IO/exotxtmeshloader.h"
 #include "UTIL/helper.h"
@@ -60,7 +61,7 @@ std::unique_ptr<FEMProblem> TOFEMObjFun::setupAndSolveFEM(const TopOptRep& inTOR
 	// Set up mesh and fem problem
 	std::unique_ptr<TOMesh> resMesh = inTOR.getAnalysisMesh();
 	assert(resMesh);
-	std::unique_ptr<FEMProblem> upProb(new FEMProblem(resMesh.get(), baseMat));
+	std::unique_ptr<FEMProblem> upProb(new LinearElasticProblem(*resMesh, baseMat));
 	// Convert boundary conditions
 	std::vector<ExoBC> exoBCVec = generateExoBCVec(resMesh.get(), kLoad);
 	// Solve problem and get compliance
@@ -108,7 +109,7 @@ void TOFEMObjFun::g(const TopOptRep& inTOR, std::pair<std::vector<double>, bool>
 		{
 			std::unique_ptr<FEMProblem> upFEM = setupAndSolveFEM(inTOR, k);
 			outRes.second &= upFEM->validRun();
-			outRes.first = HelperNS::vecSum(outRes.first, inTOR.applyDiffRep(upFEM->gradCompliance(resMesh.get())));
+			outRes.first = HelperNS::vecSum(outRes.first, inTOR.applyDiffRep(upFEM->gradCompliance(*resMesh)));
 		}
 	}
 }
@@ -139,7 +140,7 @@ void TOFEMObjFun::fAndG(const TopOptRep& inTOR, std::pair<std::vector<double>, b
 			std::pair<double, bool> complianceRes = upFEM->computeCompliance();
 			fval += complianceRes.first;
 			// g: gradient of obj. fun 
-			gRes.first = HelperNS::vecSum(gRes.first, inTOR.applyDiffRep(upFEM->gradCompliance(resMesh.get())));
+			gRes.first = HelperNS::vecSum(gRes.first, inTOR.applyDiffRep(upFEM->gradCompliance(*resMesh)));
 		}
 		valid &= fval < maxDisplacement;
 		// Finish f, add volume fraction as second goal

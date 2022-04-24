@@ -48,7 +48,7 @@ public:
 	//! @name Constructors and destructor
 	//@{
 	//! Constructor which takes a TOMesh and copies the nodes and connectivity from it
-	Mesh2D(const Topologies::TOMesh* const inMesh, const Topologies::GenericMaterial& baseMat);
+	Mesh2D(const Topologies::TOMesh& inMesh, const Topologies::GenericMaterial& baseMat);
 	//! Constructor which takes in a vector of Point2D pointers and a vector of Element objects. err is returned with any error conditions
 	/*! This constructor generates a 2D mesh from a set of nodes (inNodeVec) and elements (inElemVec).  These objects will be copied into for internal use and the mesh will be processed to generate and store topological information such as element edges.  err indicates whether an error has occured on return during the mesh processing.
 	*/

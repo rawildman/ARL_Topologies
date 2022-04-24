@@ -27,10 +27,10 @@
 
 using std::vector;
 
-Mesh2D::Mesh2D(const Topologies::TOMesh* const inMesh, const Topologies::GenericMaterial& baseMat):
-	numElements(inMesh->getNumElements()),
+Mesh2D::Mesh2D(const Topologies::TOMesh& inMesh, const Topologies::GenericMaterial& baseMat):
+  numElements(inMesh.getNumElements()),
   numEdges(0),
-  numNodes(inMesh->getNumNodes()),
+  numNodes(inMesh.getNumNodes()),
   numInternalEdges(0),
   numBoundaryEdges(0),
   numUnk(0)
@@ -39,7 +39,7 @@ Mesh2D::Mesh2D(const Topologies::TOMesh* const inMesh, const Topologies::Generic
 	elemVec.reserve(numElements);
 	for(std::size_t k = 0; k < numNodes; ++k)
 	{
-		nodeVec.push_back(std::unique_ptr<Point2D>(new Point2D(inMesh->getNode2D(k))));
+		nodeVec.push_back(std::unique_ptr<Point2D>(new Point2D(inMesh.getNode2D(k))));
 		basisNodeMap[nodeVec.back().get()] = k;
 	}
 	std::vector<double> matparams(baseMat.getNumParameters());
@@ -47,13 +47,13 @@ Mesh2D::Mesh2D(const Topologies::TOMesh* const inMesh, const Topologies::Generic
 		matparams[k] = baseMat.getParameter(k);
 	for(std::size_t k = 0; k < numElements; ++k)
 	{
-		const std::vector<std::size_t>& tmpEV = inMesh->getElementConnectivity(k);
+		const std::vector<std::size_t>& tmpEV = inMesh.getElementConnectivity(k);
 		std::vector<Point2D*> curPtVec(tmpEV.size());
 		for(std::size_t kp = 0; kp < tmpEV.size(); ++kp)
 			curPtVec[kp] = nodeVec[tmpEV[kp]].get();
 		std::vector<double> curparams = matparams;
-		curparams[1] *= inMesh->getOptVal(k);
-		curparams[2] *= inMesh->getOptVal(k);
+		curparams[1] *= inMesh.getOptVal(k);
+		curparams[2] *= inMesh.getOptVal(k);
 		Topologies::GenericMaterial curMat(curparams);
 		if(tmpEV.size() == 3)
 			elemVec.push_back(std::unique_ptr<Element<Point2D>>(new LinearTriangle<Point2D>(curPtVec, curMat)));
