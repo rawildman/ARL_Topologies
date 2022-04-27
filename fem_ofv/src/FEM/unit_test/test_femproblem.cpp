@@ -18,8 +18,10 @@
 #define CATCH_CONFIG_MAIN
 
 #include "linearelasticproblem.h"
+#include "laplaceproblem.h"
 #include "REP/tomesh.h"
 #include "catch2/catch_all.hpp"
+
 #include <iostream>
 
 using namespace Topologies;
@@ -166,6 +168,64 @@ TEST_CASE("Testing LinearElasticProblem in 3D", "[LinearElasticProblem]")
 		REQUIRE(chkVec.isApprox(testFE.getDisplacement(), 1e-6));
 		std::pair<double,bool> c = testFE.computeCompliance();
 		REQUIRE(c.first == Catch::Approx(0.4));
+		REQUIRE(c.second);
+	}
+}
+
+TEST_CASE("Testing LaplaceProblem in 2D","[LaplaceProblem]")
+{
+	const Point_2_base p00(0., 0.), p10(1., 0.), p20(2., 0.);
+	const Point_2_base p01(0., 1.), p11(1., 1.), p21(2., 1.);
+	const Point_2_base p02(0., 2.), p12(1., 2.), p22(2., 2.);
+	const std::vector<Point_2_base> nodeVec = {p00, p10, p20, p01, p11, p21, p02, p12, p22};
+	const std::vector<double> mats(3, 1.0);
+	const GenericMaterial gm(mats);
+	// Set up boundary conditions
+	ExoBC supp(2);
+	supp.isSupport = true;
+	supp.xsup = supp.ysup = supp.zsup = true;
+	supp.nodeIDVec = {0, 1, 2};
+	ExoBC load(2);
+	load.isSupport = false;
+	load.loadVec = Point_3_base(1.0, 0., 0.);
+	load.nodeIDVec = {6, 7, 8};
+	const std::vector<ExoBC> bcVec = {supp, load};
+	// Solution
+	Eigen::VectorXd chkVec(3);
+	chkVec << 0.5, 0.5, 0.5;
+	SECTION("Quad elements")
+	{
+		// Set up mesh
+		const std::vector<std::vector<std::size_t>> connVec = 
+			{{0, 1, 4, 3}, {1, 2, 5, 4}, {3, 4, 7, 6}, {4, 5, 8, 7}};
+		const std::vector<double> optVals(4, 1.0);
+		const TOMesh2D mesh(nodeVec, connVec, optVals);
+		// Set up & solve FE problem
+		LaplaceProblem testFE(mesh, gm);
+		testFE.changeBoundaryConditionsTo(bcVec);
+		REQUIRE(testFE.validRun());
+		REQUIRE(chkVec.isApprox(testFE.getDisplacement(), 1e-14));
+		
+		const std::pair<double,bool> c = testFE.computeCompliance();
+		REQUIRE(c.first == Catch::Approx(1.0));
+		REQUIRE(c.second);
+	}
+	SECTION("Tri elements")
+	{
+		// Set up mesh
+		const std::vector<std::vector<std::size_t>> connVec = 
+			{{0, 1, 4}, {0, 4, 3}, {1, 2, 5}, {1, 5, 4}, 
+			 {3, 4, 7}, {3, 7, 6}, {4, 5, 8}, {4, 8, 7}};
+		const std::vector<double> optVals(8, 1.0);
+		const TOMesh2D mesh(nodeVec, connVec, optVals);
+		// Set up & solve FE problem
+		LaplaceProblem testFE(mesh, gm);
+		testFE.changeBoundaryConditionsTo(bcVec);
+		REQUIRE(testFE.validRun());
+		REQUIRE(chkVec.isApprox(testFE.getDisplacement(), 1e-14));
+		
+		const std::pair<double,bool> c = testFE.computeCompliance();
+		REQUIRE(c.first == Catch::Approx(1.0));
 		REQUIRE(c.second);
 	}
 }
