@@ -31,7 +31,7 @@
 
 #include <vector>
 #include <memory>
-#include <map>
+#include <unordered_map>
 
 namespace Topologies{
 class TOMesh;
@@ -78,7 +78,7 @@ public:
 	//! Returns the compliance (dot product of displacement and force) and whether or not an error occured during the solve
 	virtual std::pair<double, bool> computeCompliance() = 0;
 	//! Returns a vector containing the solution
-	virtual const Eigen::VectorXd& getDisplacement() const = 0;
+	const Eigen::VectorXd& getDisplacement() const {return *pVVec;}
 	//! Returns whether or not the last problem ran successfully
 	bool validRun() const {return !invalid;}
 	//! Returns the gradient of the compliance
@@ -97,7 +97,7 @@ protected:
 	std::unique_ptr<EigenVector> pVVec, pForce;
 	std::vector<bool> fixedDOFs;
 	std::vector<std::size_t> bfRemapVec;
-	std::map<std::size_t,double> loadVec;
+	std::unordered_map<std::size_t,double> loadVec;
 	unsigned dim;
 	std::size_t numFreeDOFs;
 	bool invalid;

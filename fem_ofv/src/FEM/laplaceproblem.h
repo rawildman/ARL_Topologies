@@ -12,8 +12,8 @@
  * 
  */
 
-#ifndef LINEAR_ELASTIC_PROBLEM_H
-#define LINEAR_ELASTIC_PROBLEM_H
+#ifndef LAPLACE_PROBLEM_H
+#define LAPLACE_PROBLEM_H
 
 #include "femproblem.h"
 
@@ -22,10 +22,10 @@
  *  which can compute element matrices and other values needed to solve an FEM problem.  
  *  The base material baseMat is modified by the optVal parameters in TOMesh.
 */
-class LinearElasticProblem : public FEMProblem
+class LaplaceProblem : public FEMProblem
 {
 public:
-	LinearElasticProblem(const Topologies::TOMesh& inMesh, const Topologies::GenericMaterial& baseMat);
+	LaplaceProblem(const Topologies::TOMesh& inMesh, const Topologies::GenericMaterial& baseMat);
 
 	void changeBoundaryConditionsTo(const std::vector<ExoBC>& bcVec) override;
 	std::pair<double, bool> computeCompliance() override;
@@ -39,12 +39,10 @@ private:
 	void solveProblem();
 	void setMatrix();
 	void setVector();
-	void assembleMatrix(std::vector<EigenT>& rseMat, const std::size_t kelem, const EigenDenseMat& elemMat, std::size_t numUnk) const;
-	void assembleMatrix2D(std::vector<EigenT>& rseMat, const std::size_t kelem, const EigenDenseMat& elemMat, std::size_t numUnk) const;
-	void assembleMatrix3D(std::vector<EigenT>& rseMat, const std::size_t kelem, const EigenDenseMat& elemMat, std::size_t numUnk) const;
-	double elementCompliance(const std::size_t kelem, const EigenDenseMat& elemMat, std::size_t numUnk) const;
-	double elementCompliance2D(const std::size_t kelem, const EigenDenseMat& elemMat, std::size_t numUnk) const;
-	double elementCompliance3D(const std::size_t kelem, const EigenDenseMat& elemMat, std::size_t numUnk) const;
+	void assembleMatrix(std::vector<EigenT>& rseMat, const std::size_t kelem, const EigenDenseMat& elemMat) const;
+    void assembleVector(const std::size_t kelem, const EigenDenseMat& elemMat) const;
+	double elementCompliance(const std::size_t kelem, const EigenDenseMat& elemMat) const;
 };
+
 
 #endif

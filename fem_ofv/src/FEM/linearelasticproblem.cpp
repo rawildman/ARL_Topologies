@@ -68,19 +68,12 @@ void LinearElasticProblem::solveProblem()
 	pForce = std::unique_ptr<EigenVector>(new EigenVector(*pVVec));
 	invalid = false;
 	// Solve
-	Eigen::ConjugateGradient<EigenSparseMat,Eigen::Lower|Eigen::Upper> solver;
+	Eigen::ConjugateGradient<EigenSparseMat, Eigen::Lower | Eigen::Upper> solver;
 	solver.compute(*pFEMMatrix);
 	solver.setTolerance(itTol);
 	unsigned niters = 10000;
 	solver.setMaxIterations(niters);
 	*pVVec = solver.solve(*pForce);
-/* Direct solver
-	Eigen::SparseLU<EigenSparseMat> solver;
-	pFEMMatrix->makeCompressed();
-	solver.analyzePattern(*pFEMMatrix);
-	solver.factorize(*pFEMMatrix);
-	*pVVec = solver.solve(*pForce);*/
-
 	if(solver.iterations() >= niters)
 		invalid = true;
 }
@@ -165,7 +158,7 @@ void LinearElasticProblem::setVector()
   pVVec = std::unique_ptr<EigenVector>(new EigenVector(numFreeDOFs));
 	pVVec->setZero();
 	EigenVector& rVVec = *pVVec;
-	for(std::map<std::size_t,double>::const_iterator cit = loadVec.begin(); cit != loadVec.end(); ++cit)
+	for(auto cit = loadVec.begin(); cit != loadVec.end(); ++cit)
 		rVVec(bfRemapVec[cit->first]) = cit->second;
 }
 
