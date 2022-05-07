@@ -40,7 +40,7 @@ TEST_CASE("Testing BoundaryCondition on a 2 element tri mesh", "[BoundaryConditi
 	SECTION("Vertical line at 1")
 	{
 		// Geometry of boundary condition
-		std::unique_ptr<GeometricEntity> upGE(new InfiniteLine(1., false));
+		auto upGE = std::make_unique<InfiniteLine>(1., false);
 		BoundaryCondition testBC(bctVLine, true, true, std::move(upGE));
 		REQUIRE(testBC.checkValidity(&testMesh));
 		std::vector<std::size_t> bcPts = testBC.applyBC(&testMesh);
@@ -51,7 +51,7 @@ TEST_CASE("Testing BoundaryCondition on a 2 element tri mesh", "[BoundaryConditi
 	SECTION("Vertical line at 2")
 	{
 		// Geometry of boundary condition
-		std::unique_ptr<GeometricEntity> upGE(new InfiniteLine(2., false));
+		auto  upGE = std::make_unique<InfiniteLine>(2., false);
 		BoundaryCondition testBC(bctVLine, true, true, std::move(upGE));
 		REQUIRE(!testBC.checkValidity(&testMesh));
 		std::vector<std::size_t> bcPts = testBC.applyBC(&testMesh);
@@ -102,7 +102,7 @@ TEST_CASE("Testing BoundaryCondition on a 1 element quad mesh", "[BoundaryCondit
 	SECTION("Vertical line at 1")
 	{
 		// Geometry of boundary condition
-		std::unique_ptr<GeometricEntity> upGE(new InfiniteLine(1., false));
+		auto upGE = std::make_unique<InfiniteLine>(1., false);
 		BoundaryCondition testBC(bctVLine, true, true, std::move(upGE));
 		REQUIRE(testBC.checkValidity(&testMesh));
 		std::vector<std::size_t> bcPts = testBC.applyBC(&testMesh);
@@ -113,7 +113,7 @@ TEST_CASE("Testing BoundaryCondition on a 1 element quad mesh", "[BoundaryCondit
 	SECTION("Vertical line at 2")
 	{
 		// Geometry of boundary condition
-		std::unique_ptr<GeometricEntity> upGE(new InfiniteLine(2., false));
+		auto upGE = std::make_unique<InfiniteLine>(2., false);
 		BoundaryCondition testBC(bctVLine, true, true, std::move(upGE));
 		REQUIRE(!testBC.checkValidity(&testMesh));
 		std::vector<std::size_t> bcPts = testBC.applyBC(&testMesh);
@@ -134,8 +134,7 @@ TEST_CASE("Testing BoundaryCondition on a 1 element tet mesh", "[BoundaryConditi
   SECTION("Infinite xy plane at z=0")
   {
     // Geometry of boundary condition
-		std::unique_ptr<GeometricEntity> upGE(new InfinitePlane(0., GeometryEntityFactory::poXY));
-//    std::unique_ptr<GeometricEntity> upGE(new InfinitePlane(p0, p3));
+		auto upGE = std::make_unique<InfinitePlane>(0., GeometryEntityFactory::poXY);
     BoundaryCondition testBC(bctInfinitePlane, true, true, true, std::move(upGE));
     REQUIRE(testBC.checkValidity(&testMesh));
     std::vector<std::size_t> bcPts = testBC.applyBC(&testMesh);
@@ -148,7 +147,7 @@ TEST_CASE("Testing BoundaryCondition on a 1 element tet mesh", "[BoundaryConditi
   {
     // Geometry of boundary condition
 		Point_3_base q(0.,0.,2.);
-    std::unique_ptr<GeometricEntity> upGE(new InfinitePlane(q, p3));
+    auto upGE = std::make_unique<InfinitePlane>(q, p3);
     BoundaryCondition testBC(bctInfinitePlane, true, true, true, std::move(upGE));
     REQUIRE(!testBC.checkValidity(&testMesh));
     std::vector<std::size_t> bcPts = testBC.applyBC(&testMesh);

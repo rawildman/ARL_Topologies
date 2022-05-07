@@ -39,7 +39,7 @@ TEST_CASE("Testing LoadCondition on a 2 element tri mesh", "[LoadCondition]")
 	std::vector<double> loadVec = {1., 0.};
 	SECTION("Point at (1., 0)")
 	{
-		std::unique_ptr<GeometricEntity> upGE(new Point(p1));
+		auto upGE = std::make_unique<Point>(p1);
 		LoadCondition<double> testLC(bctPoint2D, loadVec, std::move(upGE));
 		REQUIRE(testLC.checkValidity(&testMesh));
 		std::vector<std::size_t> lcPts;
@@ -50,7 +50,7 @@ TEST_CASE("Testing LoadCondition on a 2 element tri mesh", "[LoadCondition]")
 	SECTION("Vertical line at 1")
 	{
 		// Geometry of boundary condition
-		std::unique_ptr<GeometricEntity> upGE(new InfiniteLine(1., false));
+		auto upGE = std::make_unique<InfiniteLine>(1., false);
 		LoadCondition<double> testLC(bctVLine, loadVec, std::move(upGE));
 		REQUIRE(testLC.checkValidity(&testMesh));
 		std::vector<std::size_t> lcPts;
@@ -62,7 +62,7 @@ TEST_CASE("Testing LoadCondition on a 2 element tri mesh", "[LoadCondition]")
 	SECTION("Vertical line at 2")
 	{
 		// Geometry of boundary condition
-		std::unique_ptr<GeometricEntity> upGE(new InfiniteLine(2., false));
+		auto upGE = std::make_unique<InfiniteLine>(2., false);
 		LoadCondition<double> testLC(bctVLine, loadVec, std::move(upGE));
 		REQUIRE(!testLC.checkValidity(&testMesh));
 		std::vector<std::size_t> lcPts;
@@ -82,7 +82,7 @@ TEST_CASE("Testing LoadCondition on a 1 element quad mesh", "[LoadCondition]")
 	TOMesh2D testMesh(nodeVec, connVec);
 	std::vector<double> loadVec = {1., 0.};
 	// Geometry of boundary condition
-	std::unique_ptr<GeometricEntity> upGE(new InfiniteLine(1., false));
+	auto upGE = std::make_unique<InfiniteLine>(1., false);
 	LoadCondition<double> testLC(bctVLine, loadVec, std::move(upGE));
 	REQUIRE(testLC.checkValidity(&testMesh));
 	std::vector<std::size_t> lcPts;
@@ -130,7 +130,7 @@ TEST_CASE("Testing LoadCondition on a 1 element tet mesh", "[LoadCondition]")
   SECTION("Infinite xy plane at z=0")
   {
     // Geometry of boundary condition
-    std::unique_ptr<GeometricEntity> upGE(new InfinitePlane(p0, p3));
+    auto upGE = std::make_unique<InfinitePlane>(p0, p3);
     LoadCondition<double> testLC(bctInfinitePlane, loadVec, std::move(upGE));
     REQUIRE(testLC.checkValidity(&testMesh));
     std::vector<std::size_t> lcPts;
@@ -144,7 +144,7 @@ TEST_CASE("Testing LoadCondition on a 1 element tet mesh", "[LoadCondition]")
   {
     // Geometry of boundary condition
 		Point_3_base q(0.,0.,2.);
-    std::unique_ptr<GeometricEntity> upGE(new InfinitePlane(q, p3));
+    auto upGE = std::make_unique<InfinitePlane>(q, p3);
     LoadCondition<double> testLC(bctInfinitePlane, loadVec, std::move(upGE));
     REQUIRE(!testLC.checkValidity(&testMesh));
     std::vector<std::size_t> lcPts;
