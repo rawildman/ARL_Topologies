@@ -91,7 +91,7 @@ public:
 	virtual Topologies::Point_3_base getNormal(const Topologies::Point_3_base& inP, const double tol) const {return Topologies::Point_3_base(0.,0.,0.);}
 	virtual bool doesLineSegmentIntersect(const Topologies::Point_2_base& inP1, const Topologies::Point_2_base& inP2) const;
 	virtual bool doesLineSegmentIntersect(const Topologies::Point_3_base& inP1, const Topologies::Point_3_base& inP2) const;
-	virtual std::unique_ptr<GeometricEntity> clone() const {return std::unique_ptr<GeometricEntity>(new Point(*this));}
+	virtual std::unique_ptr<GeometricEntity> clone() const {return std::make_unique<Point>(*this);}
 private:
 	Topologies::Point_3_base p;
 };
@@ -109,7 +109,7 @@ public:
 	virtual bool isPointCoincident(const Topologies::Point_2_base& testP, const double tol) const;
 	virtual Topologies::Point_2_base getNormal(const Topologies::Point_2_base& inP, const double tol) const;
 	virtual bool doesLineSegmentIntersect(const Topologies::Point_2_base& inP1, const Topologies::Point_2_base& inP2) const;
-	virtual std::unique_ptr<GeometricEntity> clone() const {return std::unique_ptr<GeometricEntity>(new InfiniteLine(*this));}
+	virtual std::unique_ptr<GeometricEntity> clone() const {return std::make_unique<InfiniteLine>(*this);}
 private:
 	Topologies::Point_2_base origin;
 	double angle;
@@ -129,7 +129,7 @@ public:
 	virtual bool isPointCoincident(const Topologies::Point_2_base& testP, const double tol) const;
 	virtual Topologies::Point_2_base getNormal(const Topologies::Point_2_base& inP, const double tol) const;
 	virtual bool doesLineSegmentIntersect(const Topologies::Point_2_base& inP1, const Topologies::Point_2_base& inP2) const;
-	virtual std::unique_ptr<GeometricEntity> clone() const {return std::unique_ptr<GeometricEntity>(new LineSegment(*this));}
+	virtual std::unique_ptr<GeometricEntity> clone() const {return std::make_unique<LineSegment>(*this);}
 
 	std::vector<Topologies::Point_2_base> getDefiningPoints() const;
 private:
@@ -155,7 +155,7 @@ public:
 	virtual bool isPointCoincident(const Topologies::Point_2_base& testP, const double tol) const;
 	virtual Topologies::Point_2_base getNormal(const Topologies::Point_2_base& inP, const double tol) const;
 	virtual bool doesLineSegmentIntersect(const Topologies::Point_2_base& inP1, const Topologies::Point_2_base& inP2) const;
-	virtual std::unique_ptr<GeometricEntity> clone() const {return std::unique_ptr<GeometricEntity>(new Polygon2D(*this));}
+	virtual std::unique_ptr<GeometricEntity> clone() const {return std::make_unique<Polygon2D>(*this);}
 
 	std::vector<Topologies::Point_2_base> getDefiningPoints() const;
 private:
@@ -178,7 +178,7 @@ public:
 	virtual bool isPointCoincident(const Topologies::Point_3_base& testP, const double tol) const;
 	virtual Topologies::Point_3_base getNormal(const Topologies::Point_3_base& inP, const double tol) const;
 	virtual bool doesLineSegmentIntersect(const Topologies::Point_3_base& inP1, const Topologies::Point_3_base& inP2) const;
-	virtual std::unique_ptr<GeometricEntity> clone() const {return std::unique_ptr<GeometricEntity>(new LineSegment3D(*this));}
+	virtual std::unique_ptr<GeometricEntity> clone() const {return std::make_unique<LineSegment3D>(*this);}
 
 private:
 	Topologies::Point_3_base p1, p2;
@@ -204,7 +204,7 @@ public:
 	virtual bool isPointCoincident(const Topologies::Point_3_base& testP, const double tol) const;
 	virtual Topologies::Point_3_base getNormal(const Topologies::Point_3_base& inP, const double tol) const;
 	virtual bool doesLineSegmentIntersect(const Topologies::Point_3_base& inP1, const Topologies::Point_3_base& inP2) const;
-	virtual std::unique_ptr<GeometricEntity> clone() const {return std::unique_ptr<GeometricEntity>(new InfinitePlane(*this));}
+	virtual std::unique_ptr<GeometricEntity> clone() const {return std::make_unique<InfinitePlane>(*this);}
 
 	Topologies::Point_3_base getIntercept() const {return p1;};
 private:

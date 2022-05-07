@@ -20,10 +20,16 @@
 
 #include <string>
 #include <memory>
+#include <functional>
+
 #include <Eigen/Dense>
+
 #include "UTIL/topologiesdefs.h"
 #include "UTIL/genericmaterial.h"
 #include "globaldefs.h"
+
+/// Function producing a material property from a base property and an optimization value	
+using MaterialFunction = std::function<double(double,double)>;
 
 //! Abstract base class for finite element meshes.  
 /*!
@@ -32,8 +38,8 @@ This class basically contains all necessary geometric, topological, and numerica
 class FEMMesh
 {
 public:
-	FEMMesh(){};
-	virtual ~FEMMesh(){};
+	FEMMesh() = default;
+	virtual ~FEMMesh() = default;
 	//! @name Data accessors
 	//@{
 	//! Returns the number of elements (Cell objects) in the mesh
@@ -51,6 +57,8 @@ public:
 	virtual Eigen::MatrixXd getElementMatrix(std::size_t k) const = 0;
 	//! Returns either the plane strain or plane stress, linear elastic element matrix for element k
 	virtual Eigen::MatrixXd getElementMatrix(std::size_t k, const ElasticProblemType theEPT) const = 0;
+	//! Returns the Laplacian element matrix for given material value matVal
+	virtual Eigen::MatrixXd getLaplacianElemMat(std::size_t k) const = 0;
 	//! Returns the Laplacian element matrix for given material value matVal
 	virtual Eigen::MatrixXd getLaplacianElemMat(std::size_t k, double matVal) const = 0;
 	//! Returns the Laplacian element matrix for given anisotropic material value matVal

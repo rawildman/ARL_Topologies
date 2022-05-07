@@ -63,7 +63,7 @@ std::unique_ptr<Element<Point3D>> Tetrahedron::createPatch(unsigned short int pa
 	facePtVec[0] = nodeVec[patchNum];
 	facePtVec[1] = nodeVec[(patchNum + 1) % 4];
 	facePtVec[2] = nodeVec[(patchNum + 2) % 4];
-	return std::unique_ptr<Element<Point3D>>(new LinearTriangle<Point3D>(facePtVec, itsMaterial));
+	return std::make_unique<LinearTriangle<Point3D>>(facePtVec, itsMaterial);
 }
 
 void Tetrahedron::addPatch(Element<Point3D>* thePatch)

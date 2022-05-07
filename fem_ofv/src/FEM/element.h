@@ -54,6 +54,11 @@ public:
 	virtual T eval(double xi, double eta) const = 0;
 	//! Computes and returns the linear elastic element matrix
 	virtual Eigen::MatrixXd getElemMat(const ElasticProblemType inEPT) const = 0;
+	//! Computes and returns the Laplacian element matrix using a parameter from the material properties passed on construction
+	virtual Eigen::MatrixXd getLaplacianElemMat() const
+	{
+		return getLaplacianElemMat(material.getParameter(cEpsilon));
+	}
 	//! Computes and returns the Laplacian element matrix for given material value matVal
 	virtual Eigen::MatrixXd getLaplacianElemMat(double matVal) const = 0;
 	//! Computes and returns the Laplacian element matrix for given anisotropic material value matVal
@@ -163,7 +168,7 @@ protected:
 	Cell *pCell0, *pCell1;
 	bool reordered;
 
-	static const unsigned cRho = 0, cLambda = 1, cMu = 2;
+	static const unsigned cRho = 0, cLambda = 1, cMu = 2, cEpsilon = 3;
 };
 
 //! Hash function for testing Element equality, used in std::unordered_set

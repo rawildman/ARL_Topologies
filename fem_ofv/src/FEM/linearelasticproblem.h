@@ -25,7 +25,9 @@
 class LinearElasticProblem : public FEMProblem
 {
 public:
-	LinearElasticProblem(const Topologies::TOMesh& inMesh, const Topologies::GenericMaterial& baseMat);
+	LinearElasticProblem(const Topologies::TOMesh& inMesh, 
+		const Topologies::GenericMaterial& baseMat, 
+		const std::vector<MaterialFunction>& optimizationToMaterialFuns);
 
 	void changeBoundaryConditionsTo(const std::vector<ExoBC>& bcVec) override;
 	std::pair<double, bool> computeCompliance() override;

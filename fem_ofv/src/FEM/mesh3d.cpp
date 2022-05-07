@@ -26,7 +26,9 @@
 #include "trilinhex.h"
 #include "tomesh.h"
 
-Mesh3D::Mesh3D(const Topologies::TOMesh& inMesh, const Topologies::GenericMaterial& baseMat) :
+Mesh3D::Mesh3D(const Topologies::TOMesh& inMesh, 
+	const Topologies::GenericMaterial& baseMat, 
+	const std::vector<MaterialFunction>& optimizationToMaterialFuns) :
 	itsNumNodes(inMesh.getNumNodes()),
 	itsNumCells(inMesh.getNumElements()),
 	itsOffset(0)
@@ -36,7 +38,7 @@ Mesh3D::Mesh3D(const Topologies::TOMesh& inMesh, const Topologies::GenericMateri
 	// Generate list of all grid points
 	for(std::size_t k = 0; k < itsNumNodes; ++k)
 	{
-		nodeVec.push_back(std::unique_ptr<Point3D>(new Point3D(inMesh.getNode3D(k))));
+		nodeVec.push_back(std::make_unique<Point3D>(inMesh.getNode3D(k)));
 		basisNodeMap[nodeVec.back().get()] = k;
 	}
 	// Set up FEM mesh
@@ -50,13 +52,15 @@ Mesh3D::Mesh3D(const Topologies::TOMesh& inMesh, const Topologies::GenericMateri
 		for(std::size_t kp = 0; kp < tmpEV.size(); ++kp)
 			curElemVec[kp] = nodeVec[tmpEV[kp]].get();
 		std::vector<double> curparams = matparams;
-		curparams[1] *= inMesh.getOptVal(k);
-		curparams[2] *= inMesh.getOptVal(k);
+		for(int kmat = 0; kmat < curparams.size(); ++kmat)
+		{
+			curparams[kmat] = optimizationToMaterialFuns[kmat](curparams[kmat], inMesh.getOptVal(k));
+		}
 		Topologies::GenericMaterial curMat(curparams);
 		if(tmpEV.size() == 4)
-			cellVec.push_back(std::unique_ptr<Cell>(new LinTetra(curElemVec, curMat)));
+			cellVec.push_back(std::make_unique<LinTetra>(curElemVec, curMat));
 		else
-			cellVec.push_back(std::unique_ptr<Cell>(new TriLinHex(curElemVec, curMat)));
+			cellVec.push_back(std::make_unique<TriLinHex>(curElemVec, curMat));
 	}
 	double area, volume;
 	// Sets up the cell connectivity, patch list, basis function mapping
@@ -79,7 +83,7 @@ void Mesh3D::finishSetup(bool& err, const std::vector<Point3D*>& inNodeVec, cons
 	std::unordered_map<Point3D*, std::size_t> pointPtrMap; // Used for fast searching
 	for(std::size_t k = 0; k < itsNumNodes; k++)
 	{
-		nodeVec.push_back(std::unique_ptr<Point3D>(new Point3D(*(inNodeVec[k]))));
+		nodeVec.push_back(std::make_unique<Point3D>(*(inNodeVec[k])));
 		pointPtrMap[inNodeVec[k]] = k;
 		basisNodeMap[nodeVec[nodeVec.size() - 1].get()] = k;
 	}
@@ -167,7 +171,7 @@ std::unique_ptr<Cell> Mesh3D::copyCell(const Cell* const inCell, const std::vect
 		elemConnVec[1] = nodeVec[ptIDVec[1]].get();
 		elemConnVec[2] = nodeVec[ptIDVec[2]].get();
 		elemConnVec[3] = nodeVec[ptIDVec[3]].get();
-		return std::unique_ptr<Cell>(new LinTetra(elemConnVec, mat));
+		return std::make_unique<LinTetra>(elemConnVec, mat);
 	}
 	else if(cellCT == ctTriLinHex)
 	{
@@ -181,7 +185,7 @@ std::unique_ptr<Cell> Mesh3D::copyCell(const Cell* const inCell, const std::vect
 		elemConnVec[5] = nodeVec[ptIDVec[5]].get();
 		elemConnVec[6] = nodeVec[ptIDVec[6]].get();
 		elemConnVec[7] = nodeVec[ptIDVec[7]].get();
-		return std::unique_ptr<Cell>(new TriLinHex(elemConnVec, mat));
+		return std::make_unique<TriLinHex>(elemConnVec, mat);
 	}
 	std::cout << "Error: Unrecognized element type, aborting" << std::endl;
 	assert(false);

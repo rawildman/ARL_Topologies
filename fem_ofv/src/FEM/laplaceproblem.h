@@ -21,27 +21,33 @@
 /*! This class takes a mesh and a base material, and sets up its own finite element mesh, 
  *  which can compute element matrices and other values needed to solve an FEM problem.  
  *  The base material baseMat is modified by the optVal parameters in TOMesh.
-*/
+ */
 class LaplaceProblem : public FEMProblem
 {
-public:
-	LaplaceProblem(const Topologies::TOMesh& inMesh, const Topologies::GenericMaterial& baseMat);
+	public:
+		LaplaceProblem(const Topologies::TOMesh& inMesh, 
+				const Topologies::GenericMaterial& baseMat, 
+				const std::vector<MaterialFunction>& optimizationToMaterialFuns);
 
-	void changeBoundaryConditionsTo(const std::vector<ExoBC>& bcVec) override;
-	std::pair<double, bool> computeCompliance() override;
-	std::vector<double> gradCompliance(const Topologies::TOMesh& inMesh) const override;
-private:
-	typedef Eigen::MatrixXd EigenDenseMat;
-	typedef Eigen::VectorXd EigenVector;
-	typedef Eigen::SparseMatrix<double> EigenSparseMat;
-	typedef Eigen::Triplet<double> EigenT;
+		void changeBoundaryConditionsTo(const std::vector<ExoBC>& bcVec) override;
+		std::pair<double, bool> computeCompliance() override;
+		std::vector<double> gradCompliance(const Topologies::TOMesh& inMesh) const override;
+	private:
+		typedef Eigen::MatrixXd EigenDenseMat;
+		typedef Eigen::VectorXd EigenVector;
+		typedef Eigen::SparseMatrix<double> EigenSparseMat;
+		typedef Eigen::Triplet<double> EigenT;
 
-	void solveProblem();
-	void setMatrix();
-	void setVector();
-	void assembleMatrix(std::vector<EigenT>& rseMat, const std::size_t kelem, const EigenDenseMat& elemMat) const;
-    void assembleVector(const std::size_t kelem, const EigenDenseMat& elemMat) const;
-	double elementCompliance(const std::size_t kelem, const EigenDenseMat& elemMat) const;
+		void solveProblem();
+		void setMatrix();
+		void setVector();
+		void assembleMatrix(std::vector<EigenT>& rseMat, const std::size_t kelem, 
+				const EigenDenseMat& elemMat) const;
+		void assembleVector(const std::size_t kelem, const EigenDenseMat& elemMat) const;
+		double elementCompliance(const std::size_t kelem, const EigenDenseMat& elemMat) const;
+		double rhsCompliance(const std::size_t kelem, const EigenDenseMat& elemMat) const;
+		double dirichletCompliance(const std::size_t kelem, const EigenDenseMat& elemMat) const;
+		Topologies::GenericMaterial baseMat;
 };
 
 

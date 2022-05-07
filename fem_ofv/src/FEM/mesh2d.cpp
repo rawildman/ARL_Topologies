@@ -17,7 +17,7 @@
 
 #include <algorithm>
 #include <iostream>
-#include <unordered_set>
+
 #include "mesh2d.h"
 #include "element.h"
 #include "elemedge.h"
@@ -27,7 +27,9 @@
 
 using std::vector;
 
-Mesh2D::Mesh2D(const Topologies::TOMesh& inMesh, const Topologies::GenericMaterial& baseMat):
+Mesh2D::Mesh2D(const Topologies::TOMesh& inMesh, 
+	const Topologies::GenericMaterial& baseMat, 
+	const std::vector<MaterialFunction>& optimizationToMaterialFuns):
   numElements(inMesh.getNumElements()),
   numEdges(0),
   numNodes(inMesh.getNumNodes()),
@@ -35,30 +37,31 @@ Mesh2D::Mesh2D(const Topologies::TOMesh& inMesh, const Topologies::GenericMateri
   numBoundaryEdges(0),
   numUnk(0)
 {
+	assert(applyOptimizationToMaterials.size() == baseMat.getNumParameters());
 	nodeVec.reserve(numNodes);
 	elemVec.reserve(numElements);
 	for(std::size_t k = 0; k < numNodes; ++k)
 	{
-		nodeVec.push_back(std::unique_ptr<Point2D>(new Point2D(inMesh.getNode2D(k))));
+		nodeVec.push_back(std::make_unique<Point2D>(inMesh.getNode2D(k)));
 		basisNodeMap[nodeVec.back().get()] = k;
 	}
-	std::vector<double> matparams(baseMat.getNumParameters());
-	for(std::size_t k = 0; k < matparams.size(); ++k)
-		matparams[k] = baseMat.getParameter(k);
 	for(std::size_t k = 0; k < numElements; ++k)
 	{
 		const std::vector<std::size_t>& tmpEV = inMesh.getElementConnectivity(k);
 		std::vector<Point2D*> curPtVec(tmpEV.size());
 		for(std::size_t kp = 0; kp < tmpEV.size(); ++kp)
 			curPtVec[kp] = nodeVec[tmpEV[kp]].get();
-		std::vector<double> curparams = matparams;
-		curparams[1] *= inMesh.getOptVal(k);
-		curparams[2] *= inMesh.getOptVal(k);
+		std::vector<double> curparams;
+		for(int kmat = 0; kmat < baseMat.getNumParameters(); ++kmat)
+		{
+			curparams.push_back(optimizationToMaterialFuns[kmat](
+						baseMat.getParameter(kmat), inMesh.getOptVal(k)));
+		}
 		Topologies::GenericMaterial curMat(curparams);
 		if(tmpEV.size() == 3)
-			elemVec.push_back(std::unique_ptr<Element<Point2D>>(new LinearTriangle<Point2D>(curPtVec, curMat)));
+			elemVec.push_back(std::make_unique<LinearTriangle<Point2D>>(curPtVec, curMat));
 		else
-			elemVec.push_back(std::unique_ptr<Element<Point2D>>(new LinearQuadrilateral<Point2D>(curPtVec, curMat)));
+			elemVec.push_back(std::make_unique<LinearQuadrilateral<Point2D>>(curPtVec, curMat));
 	}
 	double area;
 	bool err = cleanSurfaceDefinition(area);
@@ -85,7 +88,7 @@ void Mesh2D::finishSetup(bool& err, const vector<Point2D*>& inNodeVec, const vec
 //	std::cout << "Copying points" << std::endl;
 	for(std::size_t k = 0; k < numNodes; k++)
 	{
-		nodeVec.push_back(std::unique_ptr<Point2D>(new Point2D(*(inNodeVec[k]))));
+		nodeVec.push_back(std::make_unique<Point2D>(*(inNodeVec[k])));
 		basisNodeMap[nodeVec[nodeVec.size() - 1].get()] = k;
 	}
 //	std::cout << "Copying elements" << std::endl;
@@ -116,7 +119,7 @@ std::unique_ptr<Element<Point2D>> Mesh2D::copyElement(const Element<Point2D>* co
 		elemConnVec[0] = nodeVec[ptIDVec[0]].get();
 		elemConnVec[1] = nodeVec[ptIDVec[1]].get();
 		elemConnVec[2] = nodeVec[ptIDVec[2]].get();
-		return std::unique_ptr<Element<Point2D>>(new LinearTriangle<Point2D>(elemConnVec, mat));
+		return std::make_unique<LinearTriangle<Point2D>>(elemConnVec, mat);
 	}
 	else if(elemPT == ptLinQuad)
 	{
@@ -126,7 +129,7 @@ std::unique_ptr<Element<Point2D>> Mesh2D::copyElement(const Element<Point2D>* co
 		elemConnVec[1] = nodeVec[ptIDVec[1]].get();
 		elemConnVec[2] = nodeVec[ptIDVec[2]].get();
 		elemConnVec[3] = nodeVec[ptIDVec[3]].get();
-		return std::unique_ptr<Element<Point2D>>(new LinearQuadrilateral<Point2D>(elemConnVec, mat));
+		return std::make_unique<LinearQuadrilateral<Point2D>>(elemConnVec, mat);
 	}
 	else
 	{
@@ -432,11 +435,9 @@ std::size_t Mesh2D::findNode(const Point2D* theNode) const
 void Mesh2D::reorderRCM()
 {
 	// Apply reverse Cuthill-McKee reordering to ensure a banded matrix
-	bool *nodeMarkList = new bool[numNodes];
-	int *permIDList = new int[numNodes];
+  std::vector<bool> nodeMarkList(numNodes, false);
+  std::vector<int> permIDList(numNodes);
 	std::size_t kount = 0;
-	for(std::size_t k = 0; k < numNodes; k++)
-		nodeMarkList[k] = false;
 	// put all boundary nodes first:
 	std::list<Point2D*> curLevelSet;
 	std::list<int> curLevelSetDegrees;
@@ -533,9 +534,6 @@ void Mesh2D::reorderRCM()
 		nodeVec[k] = std::move(oldNodeList[permIDList[numNodes - k - 1]]);
 	// remap bf ids:
 	setNodeBFMap();
-	// Clean up
-	delete [] nodeMarkList;
-	delete [] permIDList;
 }
 
 int Mesh2D::getNodeDegree(Point2D* tstPt)

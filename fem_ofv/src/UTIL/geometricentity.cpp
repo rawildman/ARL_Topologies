@@ -182,7 +182,7 @@ Polygon2D::Polygon2D(const std::vector<Point_2_base>& inVerts) :
 	for(unsigned k = 0; k < inVerts.size(); ++k)
 	{
 		unsigned kp1 = (k + 1) % inVerts.size();
-		lineSegVec.push_back(std::unique_ptr<LineSegment>(new LineSegment(inVerts[k], inVerts[kp1])));
+		lineSegVec.push_back(std::make_unique<LineSegment>(inVerts[k], inVerts[kp1]));
 	}
 }
 
@@ -190,7 +190,7 @@ Polygon2D::Polygon2D(const Polygon2D& rhsP) :
 	GeometricEntity(rhsP)
 {
 	for(unsigned k = 0; k < rhsP.lineSegVec.size(); ++k)
-		lineSegVec.push_back(std::unique_ptr<LineSegment>(new LineSegment(*rhsP.lineSegVec[k])));
+		lineSegVec.push_back(std::make_unique<LineSegment>(*rhsP.lineSegVec[k]));
 }
 
 Polygon2D::Polygon2D(Polygon2D&& other) :
@@ -461,44 +461,44 @@ std::unique_ptr<GeometricEntity> createGeometricEntity(const BCType inBCT, const
 	if(inBCT == bctPoint2D)
 	{
 		Point_2_base p = readPoint2(rootNode);
-		outGE = std::unique_ptr<GeometricEntity>(new Point(p));
+		outGE = std::make_unique<Point>(p);
 	}
 	else if(inBCT == bctVLine || inBCT == bctHLine)
 	{
 		double intercept = readDoubleAttribute(rootNode, "intercept");
-		outGE = std::unique_ptr<GeometricEntity>(new InfiniteLine(intercept, inBCT == bctHLine));
+		outGE = std::make_unique<InfiniteLine>(intercept, inBCT == bctHLine);
 	}
 	else if(inBCT == bctLineSeg)
 	{
 		std::pair<Point_2_base, Point_2_base> ls = readLineSegment2(rootNode);
-		outGE = std::unique_ptr<GeometricEntity>(new LineSegment(ls.first, ls.second));
+		outGE = std::make_unique<LineSegment>(ls.first, ls.second);
 	}
 	else if(inBCT == bctLineSeg3D)
 	{
 		std::pair<Point_3_base, Point_3_base> ls = readLineSegment3(rootNode);
-		outGE = std::unique_ptr<GeometricEntity>(new LineSegment3D(ls.first, ls.second));
+		outGE = std::make_unique<LineSegment3D>(ls.first, ls.second);
 	}
 	else if(inBCT == bctPolygon2D)
 	{
 		std::vector<Point_2_base> vertices = readPolygon2(rootNode);
-		outGE = std::unique_ptr<GeometricEntity>(new Polygon2D(vertices));
+		outGE = std::make_unique<Polygon2D>(vertices);
 	}
 	else if(inBCT == bctPoint3D)
 	{
 		Point_3_base p = readPoint3(rootNode);
-		outGE = std::unique_ptr<GeometricEntity>(new Point(p));
+		outGE = std::make_unique<Point>(p);
 	}
 	else if(inBCT == bctXYPlane || inBCT == bctYZPlane || inBCT == bctXZPlane)
 	{
 		double intercept = readDoubleAttribute(rootNode, "intercept");
 		PlaneOrientation curPO = inBCT == bctXYPlane ? poXY : (inBCT == bctYZPlane ? poYZ : poXZ);
-		outGE = std::unique_ptr<GeometricEntity>(new InfinitePlane(intercept, curPO));
+		outGE = std::make_unique<InfinitePlane>(intercept, curPO);
 	}
 	else if(inBCT == bctInfinitePlane)
 	{
 		Point_3_base p = readPoint3(rootNode.child("point"));
 		Point_3_base n = readPoint3(rootNode.child("normal"));;
-		outGE = std::unique_ptr<GeometricEntity>(new InfinitePlane(p, n));
+		outGE = std::make_unique<InfinitePlane>(p, n);
 	}
 	return outGE;
 }

@@ -26,7 +26,10 @@
 #include <vector>
 #include <list>
 #include <memory>
+#include <functional>
+
 #include <Eigen/Dense>
+
 #include "UTIL/topologiesdefs.h"
 #include "point2d.h"
 #include "UTIL/genericmaterial.h"
@@ -48,7 +51,9 @@ public:
 	//! @name Constructors and destructor
 	//@{
 	//! Constructor which takes a TOMesh and copies the nodes and connectivity from it
-	Mesh2D(const Topologies::TOMesh& inMesh, const Topologies::GenericMaterial& baseMat);
+	Mesh2D(const Topologies::TOMesh& inMesh, 
+		const Topologies::GenericMaterial& baseMat, 
+		const std::vector<MaterialFunction>& optimizationToMaterialFuns);
 	//! Constructor which takes in a vector of Point2D pointers and a vector of Element objects. err is returned with any error conditions
 	/*! This constructor generates a 2D mesh from a set of nodes (inNodeVec) and elements (inElemVec).  These objects will be copied into for internal use and the mesh will be processed to generate and store topological information such as element edges.  err indicates whether an error has occured on return during the mesh processing.
 	*/
@@ -65,6 +70,7 @@ public:
 	virtual Eigen::MatrixXd getElementMatrix(std::size_t k) const {return getElement(k)->getElemMat(eptPlaneStress);}
 	//! Returns either the plane strain or plane stress, linear elastic element matrix for element k
 	virtual Eigen::MatrixXd getElementMatrix(std::size_t k, const ElasticProblemType theEPT) const {return getElement(k)->getElemMat(theEPT);}
+	Eigen::MatrixXd getLaplacianElemMat(std::size_t k) const override {return getElement(k)->getLaplacianElemMat();}
 	//! Returns the Laplacian element matrix for given material value matVal
 	virtual Eigen::MatrixXd getLaplacianElemMat(std::size_t k, double matVal) const {return getElement(k)->getLaplacianElemMat(matVal);}
 	//! Returns the Laplacian element matrix for given anisotropic material value matVal
@@ -89,7 +95,7 @@ public:
 	//! Outputs the mesh to file fileName using a Matlab-like format
 	virtual void printMesh(const std::string& fileName) const;
 	//! Copies the mesh 
-	virtual std::unique_ptr<FEMMesh> clone() const {return std::unique_ptr<FEMMesh>(new Mesh2D(*this));}
+	virtual std::unique_ptr<FEMMesh> clone() const {return std::make_unique<Mesh2D>(*this);}
 	//! Returns the dimension of the mesn (2)
 	virtual unsigned getDim() const {return 2;}
 	//! Returns the material properties at element k

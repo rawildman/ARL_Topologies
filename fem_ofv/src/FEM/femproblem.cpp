@@ -15,19 +15,15 @@
  * 
  */
 
-#include <Eigen/IterativeLinearSolvers>
-//#include <Eigen/SparseLU>
 #include "femproblem.h"
-#include "element.h"
-#include "lintri.h"
-#include "linquad.h"
-#include "lintetra.h"
-#include "trilinhex.h"
+
 #include "mesh2d.h"
 #include "mesh3d.h"
 #include "REP/tomesh.h"
 
-FEMProblem::FEMProblem(const Topologies::TOMesh& inMesh, const Topologies::GenericMaterial& baseMat) :
+FEMProblem::FEMProblem(const Topologies::TOMesh& inMesh, 
+	const Topologies::GenericMaterial& baseMat, 
+	const std::vector<MaterialFunction>& optimizationToMaterialFuns) :
 	numFreeDOFs(0),
 	invalid(false),
 	itTol(1e-6)
@@ -35,9 +31,9 @@ FEMProblem::FEMProblem(const Topologies::TOMesh& inMesh, const Topologies::Gener
 	assert(baseMat.getNumParameters() > 2); // Assumes 3 material properties: density and 2 Lame parameters
 	dim = inMesh.dimNum();
 	if(dim == 2)
-		probMesh = std::unique_ptr<FEMMesh>(new Mesh2D(inMesh, baseMat));
+		probMesh = std::make_unique<Mesh2D>(inMesh, baseMat, optimizationToMaterialFuns);
 	else if(dim == 3)
-		probMesh = std::unique_ptr<FEMMesh>(new Mesh3D(inMesh, baseMat));
+		probMesh = std::make_unique<Mesh3D>(inMesh, baseMat, optimizationToMaterialFuns);
 	// Check element types (tris and tets need lower tolerance on iterative solver)
 	if(checkForSimplex())
 		itTol = 1e-12;

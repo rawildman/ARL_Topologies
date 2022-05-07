@@ -14,8 +14,10 @@
 
 #include "linearelasticproblem.h"
 
-LinearElasticProblem::LinearElasticProblem(const Topologies::TOMesh& inMesh, const Topologies::GenericMaterial& baseMat) :
-    FEMProblem(inMesh, baseMat)
+LinearElasticProblem::LinearElasticProblem(const Topologies::TOMesh &inMesh,
+	const Topologies::GenericMaterial &baseMat,
+	const std::vector<MaterialFunction>& optimizationToMaterialFuns) 
+	: FEMProblem(inMesh, baseMat, optimizationToMaterialFuns)
 {
 }
 
@@ -65,7 +67,7 @@ void LinearElasticProblem::solveProblem()
 	setVector();
 	// Matrix stuff:
 	// Save RHS to use for computation of compliance
-	pForce = std::unique_ptr<EigenVector>(new EigenVector(*pVVec));
+	pForce = std::make_unique<EigenVector>(*pVVec);
 	invalid = false;
 	// Solve
 	Eigen::ConjugateGradient<EigenSparseMat, Eigen::Lower | Eigen::Upper> solver;
@@ -75,7 +77,10 @@ void LinearElasticProblem::solveProblem()
 	solver.setMaxIterations(niters);
 	*pVVec = solver.solve(*pForce);
 	if(solver.iterations() >= niters)
+  {
+    std::cout << "Warning: Solver didn't converge" << std::endl;
 		invalid = true;
+  }
 }
 
 void LinearElasticProblem::setMatrix()
@@ -89,7 +94,7 @@ void LinearElasticProblem::setMatrix()
     Eigen::MatrixXd elemMat = probMesh->getElementMatrix(ielem);
     assembleMatrix(sparseVec, ielem, elemMat, numNodes);
   }
-	pFEMMatrix = std::unique_ptr<EigenSparseMat>(new EigenSparseMat(numFreeDOFs,numFreeDOFs));
+	pFEMMatrix = std::make_unique<EigenSparseMat>(numFreeDOFs,numFreeDOFs);
 	pFEMMatrix->setFromTriplets(sparseVec.begin(), sparseVec.end());
 }
 
@@ -155,7 +160,7 @@ void LinearElasticProblem::assembleMatrix3D(std::vector<EigenT>& rseMat, const s
 
 void LinearElasticProblem::setVector()
 {
-  pVVec = std::unique_ptr<EigenVector>(new EigenVector(numFreeDOFs));
+  pVVec = std::make_unique<EigenVector>(numFreeDOFs);
 	pVVec->setZero();
 	EigenVector& rVVec = *pVVec;
 	for(auto cit = loadVec.begin(); cit != loadVec.end(); ++cit)

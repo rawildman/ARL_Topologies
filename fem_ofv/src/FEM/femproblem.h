@@ -67,9 +67,10 @@ public:
 	//! @name Constructors and destructor
 	//@{
 	//! Constructor that sets up a FEMProblem using a TOMesh
-	FEMProblem(const Topologies::TOMesh& inMesh, const Topologies::GenericMaterial& baseMat);
+	FEMProblem(const Topologies::TOMesh& inMesh, 
+		const Topologies::GenericMaterial& baseMat, 
+		const std::vector<MaterialFunction>& optimizationToMaterialFuns);
 	virtual ~FEMProblem() = default;
-
 	//@}
 	//! Change problem to boundary conditions specified in bcVec
 	/*! This function is the main way to interact with FEMProblem.  Calling this will cause the FEMProblem objecto to recompute the FEM matrix and resolve it.
@@ -79,6 +80,7 @@ public:
 	virtual std::pair<double, bool> computeCompliance() = 0;
 	//! Returns a vector containing the solution
 	const Eigen::VectorXd& getDisplacement() const {return *pVVec;}
+	const Eigen::VectorXd& getForce() const {return *pForce;}
 	//! Returns whether or not the last problem ran successfully
 	bool validRun() const {return !invalid;}
 	//! Returns the gradient of the compliance

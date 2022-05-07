@@ -211,7 +211,7 @@ std::unique_ptr<Element<Point3D>> Hexahedron::createPatch(unsigned short int pat
 		facePtVec[3] = nodeVec[5];
 		break;
 	}
-	return std::unique_ptr<Element<Point3D>>(new LinearQuadrilateral<Point3D>(facePtVec, itsMaterial));
+	return std::make_unique<LinearQuadrilateral<Point3D>>(facePtVec, itsMaterial);
 }
 
 void Hexahedron::addPatch(Element<Point3D>* thePatch)

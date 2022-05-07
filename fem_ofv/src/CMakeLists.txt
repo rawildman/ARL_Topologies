@@ -58,7 +58,7 @@ if ( CGAL_FOUND )
 	set(FEM_LIB femofv)
 	add_to_cached_list( CGAL_EXECUTABLE_TARGETS femofv )
 # Link the executable to CGAL and third-party libraries
-	target_link_libraries(femofv Eigen3::Eigen pugixml::pugixml ${CGAL_LIBRARIES} ${CGAL_3RD_PARTY_LIBRARIES} )
+	target_link_libraries(femofv pugixml::pugixml Eigen3::Eigen ${CGAL_LIBRARIES} ${CGAL_3RD_PARTY_LIBRARIES} )
 # Set subdirectories, contain unit tests
 if(COMPILE_TESTS)
   find_package(Catch2 3 REQUIRED)
@@ -72,3 +72,5 @@ else()
     message(STATUS "NOTICE: This library requires the CGAL library, and will not be compiled.")
 endif()
 
+add_subdirectory(OPTFUN_LE)
+add_subdirectory(OPTFUN_SC)

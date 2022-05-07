@@ -75,6 +75,11 @@ public:
 	//@{
 	//! Computes and returns the linear elastic element matrix
 	virtual Eigen::MatrixXd getElemMat() const = 0;
+	//! Computes and returns the Laplacian element matrix using a parameter from the material properties passed on construction
+	virtual Eigen::MatrixXd getLaplacianElemMat() const
+	{
+		return getLaplacianElemMat(itsMaterial.getParameter(3));
+	}
 	//! Computes and returns the Laplacian element matrix for given material value matVal
 	virtual Eigen::MatrixXd getLaplacianElemMat(double matVal) const = 0;
 	//! Computes and returns the Laplacian element matrix for given anisotropic material value matVal

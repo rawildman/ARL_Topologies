@@ -51,7 +51,9 @@ public:
 	//! @name Constructors and destructor
 	//@{
 	//! Constructor which takes a TOMesh and copies the nodes and connectivity from it
-	Mesh3D(const Topologies::TOMesh& inMesh, const Topologies::GenericMaterial& baseMat);
+	Mesh3D(const Topologies::TOMesh& inMesh, 
+		const Topologies::GenericMaterial& baseMat, 
+		const std::vector<MaterialFunction>& optimizationToMaterialFuns);
 	//! Constructor which takes in a vector of Point3D pointers and a vector of Cell objects. err is returned with any error conditions
 	/*! This constructor generates a 3D mesh from a set of nodes (inNodeVec) and elements (inElemVec).  These objects will be copied into for internal use and the mesh will be processed to generate and store topological information such as cell edges and faces.  err indicates whether an error has occured on return during the mesh processing.
 	*/
@@ -68,7 +70,8 @@ public:
 	//! Returns the linear elastic element matrix
 	virtual Eigen::MatrixXd getElementMatrix(std::size_t k) const {return getCell(k)->getElemMat();}
 	//! Returns the linear elastic element matrix
-  virtual Eigen::MatrixXd getElementMatrix(std::size_t k, const ElasticProblemType theEPT) const {return getCell(k)->getElemMat();}
+	virtual Eigen::MatrixXd getElementMatrix(std::size_t k, const ElasticProblemType theEPT) const {return getCell(k)->getElemMat();}
+	Eigen::MatrixXd getLaplacianElemMat(std::size_t k) const override {return getCell(k)->getLaplacianElemMat();}
 	//! Returns the element matrix for the Laplacian operator for element k and material value matVal
 	virtual Eigen::MatrixXd getLaplacianElemMat(std::size_t k, double matVal) const {return getCell(k)->getLaplacianElemMat(matVal);}
 	//! Returns the element matrix for the Laplacian operator for element k and anisotropic material value matVal
@@ -93,7 +96,7 @@ public:
 	//! Output the mesh to a file with name fileName.  Uses a Matlab-like format
 	virtual void printMesh(const std::string& fileName) const;
 	//! Returns a copy of the mesh wrapped in a unique_ptr
-	virtual std::unique_ptr<FEMMesh> clone() const {return std::unique_ptr<FEMMesh>(new Mesh3D(*this));}
+	virtual std::unique_ptr<FEMMesh> clone() const {return std::make_unique<Mesh3D>(*this);}
 	//! Returns the dimension of the mesh
 	virtual unsigned getDim() const {return 3;}
 	//! Returns the material properties associated with Cell k

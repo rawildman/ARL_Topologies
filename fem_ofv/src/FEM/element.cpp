@@ -69,7 +69,7 @@ template <typename T>
 std::unique_ptr<ElemEdge<T>> Element<T>::createEdge(unsigned short int edgeNum) const
 {
 	assert(edgeNum < nodeVec.size());
-	return std::unique_ptr<ElemEdge<T>>(new ElemEdge<T>(nodeVec[edgeNum], nodeVec[(edgeNum + 1) % nodeVec.size()]));
+	return std::make_unique<ElemEdge<T>>(nodeVec[edgeNum], nodeVec[(edgeNum + 1) % nodeVec.size()]);
 }
 
 template <typename T>
